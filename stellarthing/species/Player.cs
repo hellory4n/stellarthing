@@ -73,10 +73,6 @@ public class Player : IEntity {
             colorStartFunc = () => color.white,
             colorEndFunc = () => (255, 255, 255, 0),
         };
-
-        var aaa = await load<Audio>("music/Legacy-Menu.mp3");
-        aaa.position = (0, 0);
-        aaa.play();
     }
 
     public async void update(double delta)
@@ -128,6 +124,19 @@ public class Player : IEntity {
         // why though
         if (Input.isKeyJustPressed(Key.SPACE)) {
             lasparticulas!.emit();
+        }
+
+        if (Input.isKeyJustPressed(Key.F9)) {
+            await Music.play("music/" + StMath.randomChoice([
+                "lava1.mp3",
+                "Legacy-Menu.mp3",
+                "menu.mp3",
+                "outsidetheuniverse.mp3",
+                "ruins1.mp3",
+                "space1.mp3",
+                "twilight-forest1-_4_.mp3",
+                "wasteland1.mp3"
+            ]));
         }
     }
 

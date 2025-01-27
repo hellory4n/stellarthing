@@ -61,6 +61,7 @@ public static class Starry {
             await Task.Run(Tilemap.update);
             await DebugMode.update();
             await Task.Run(Audio.update);
+            await Task.Run(Music.update);
             await Task.Run(() => Input.update(Window.deltaTime));
 
             Graphics.endDrawing();

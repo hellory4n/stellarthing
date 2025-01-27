@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 namespace starry;
 
@@ -74,5 +75,13 @@ public static class StMath
             str.Append(base64chars[randint(0, base64chars.Length)]);
         }
         return str.ToString();
+    }
+
+    /// <summary>
+    /// chooses a random element from a collection
+    /// </summary>
+    public static T randomChoice<T>(IList<T> collection)
+    {
+        return collection[(int)randint(0, collection.Count)];
     }
 }

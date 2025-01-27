@@ -15,20 +15,26 @@ public class Audio: IAsset {
 
     vec2? pos = null;
     /// <summary>
-    /// the position of the audio. setting it turns your audio into spatial audio, if you want it to go back for some reason just set it to null
+    /// the position of the audio. setting it turns your audio into spatial audio. setting it to null makes it not spatial anymore but it also resets the volume and panning
     /// </summary>
-    public vec2 position {
-        get => pos ?? (0, 0);
+    public vec2? position {
+        get => pos;
         set {
             pos = value;
-            vec2 delta = value - listener;
-            double distance = Math.Sqrt(delta.x * delta.x + delta.y * delta.y);
-            pan = Math.Clamp(delta.x / distance, -1, 1);
-            volume = volume / volume + distance;
+            if (value == null) {
+                volume = 1;
+                pan = 0;
+            }
+            else {
+                vec2 delta = value ?? (0, 0) - listener;
+                double distance = Math.Sqrt(delta.x * delta.x + delta.y * delta.y);
+                pan = Math.Clamp(delta.x / distance, -1, 1);
+                volume = volume / volume + distance;
+            }
         }
     }
 
-    double vol = 0;
+    double vol = 1;
     /// <summary>
     /// volume multiplier. 1 is the normal volume. this can't go above 300%
     /// </summary>
@@ -37,7 +43,7 @@ public class Audio: IAsset {
         set {
             vol = Math.Clamp(value, 0, 3);
             if (stream == 0) return;
-            Bass.ChannelSetAttribute(stream, ChannelAttribute.Volume, vol + 1);
+            Bass.ChannelSetAttribute(stream, ChannelAttribute.Volume, vol);
         }
     }
 
@@ -68,6 +74,9 @@ public class Audio: IAsset {
         }
     }
 
+    public delegate void AudioFinished();
+    public event AudioFinished? onAudioFinished;
+
     public void load(string path)
     {
         Graphics.actions.Enqueue(() => {
@@ -92,6 +101,7 @@ public class Audio: IAsset {
     {
         Graphics.actions.Enqueue(() => {
             if (stream == 0) return;
+            Bass.ChannelSetPosition(stream, 0);
             Bass.ChannelPlay(stream);
         });
         Graphics.actionLoopEvent.Set();
@@ -130,10 +140,16 @@ public class Audio: IAsset {
         // i can't be fucking bothered
         // (this is so it updates to match whatever the listener position is now)
         foreach (Audio a in mate) {
-            vec2 delta = a.position - listener;
-            double distance = Math.Sqrt(delta.x * delta.x + delta.y * delta.y);
-            a.pan = Math.Clamp(delta.x / distance, -1, 1);
-            a.volume = a.volume / a.volume + distance;
+            if (a.position != null) {
+                vec2 delta = a.position ?? (0, 0) - listener;
+                double distance = Math.Sqrt(delta.x * delta.x + delta.y * delta.y);
+                a.pan = Math.Clamp(delta.x / distance, -1, 1);
+                a.volume = a.volume / a.volume + distance;
+            }
+
+            if (Bass.ChannelIsActive(a.stream) == PlaybackState.Stopped) {
+                a.onAudioFinished?.Invoke();
+            }
         }
     }
 }
