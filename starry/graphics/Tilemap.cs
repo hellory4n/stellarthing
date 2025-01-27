@@ -57,6 +57,9 @@ public static class Tilemap {
                 }
             }
             currentChunks[currentWorld] = chunk;
+
+            // idfk
+            Audio.listener = value;
         }
     }
     /// <summary>

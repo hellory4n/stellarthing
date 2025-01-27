@@ -1,23 +1,30 @@
 using System;
-using MiniaudioSharp;
+using ManagedBass;
 namespace starry;
 
 /// <summary>
-/// it's audio. supported formats are wav, mp3, and flac. i would support ogg but this is just using miniaudio and i'm too stupid to add ogg support
+/// it's audio.
 /// </summary>
 public class Audio: IAsset {
-    // Field 'Audio.engine' is never assigned to, and will always have its default value 
-    // shut the fuck up
-    unsafe static ma_engine* engine;
-    unsafe ma_sound* snd;
-    vec3? pos = null;
     /// <summary>
-    /// the posiiton of the audio. setting it turns your audio into spatial audio, if you want it to go back for some reason just set it to null
+    /// the position of the listener. <c>Tilemap.camPosition</c> overrides this.
     /// </summary>
-    public vec3? position {
-        get => pos;
+    public static vec2 listener { get; set; } = (0, 0);
+    int stream = 0;
+    static ConcurrentHashSet<Audio> mate = [];
+
+    vec2? pos = null;
+    /// <summary>
+    /// the position of the audio. setting it turns your audio into spatial audio, if you want it to go back for some reason just set it to null
+    /// </summary>
+    public vec2 position {
+        get => pos ?? (0, 0);
         set {
             pos = value;
+            vec2 delta = value - listener;
+            double distance = Math.Sqrt(delta.x * delta.x + delta.y * delta.y);
+            pan = Math.Clamp(delta.x / distance, -1, 1);
+            volume = volume / volume + distance;
         }
     }
 
@@ -29,19 +36,21 @@ public class Audio: IAsset {
         get => vol;
         set {
             vol = Math.Clamp(value, 0, 3);
-            iCantMakeAnUnsafeSetter1(vol);
+            if (stream == 0) return;
+            Bass.ChannelSetAttribute(stream, ChannelAttribute.Volume, vol + 1);
         }
     }
 
     double pain = 0;
     /// <summary>
-    /// the stereo panning, -1 is completely on the left and 1 is completely on the right
+    /// the stereo panning, -1 is completely on the left, 1 is completely on the right, 0 is on the center
     /// </summary>
     public double pan {
         get => pain;
         set {
-            pain = Math.Clamp(value, 0, 1);
-            iCantMakeAnUnsafeSetter2(pain);
+            pain = Math.Clamp(value, -1, 1);
+            if (stream == 0) return;
+            Bass.ChannelSetAttribute(stream, ChannelAttribute.Pan, pain);
         }
     }
 
@@ -53,38 +62,37 @@ public class Audio: IAsset {
         get => elpauso;
         set {
             elpauso = value;
+            if (stream == 0) return;
+            if (elpauso) Bass.ChannelPause(stream);
+            else Bass.ChannelPlay(stream);
         }
     }
 
-    public unsafe void load(string path)
+    public void load(string path)
     {
         Graphics.actions.Enqueue(() => {
-            // i know
-            if (Miniaudio.ma_sound_init_from_file(engine, Starry.string2sbytePtr(path),
-            (uint)ma_sound_flags.MA_SOUND_FLAG_STREAM, null, null, snd) != ma_result.MA_SUCCESS) {
-                Starry.log($"Couldn't load {path}.");
+            stream = Bass.CreateStream(path);
+            if (stream != 0) {
+                Starry.log($"Loaded audio file at {path}");
+                mate.Add(this);
+            }
+            else {
+                Starry.log($"Couldn't load audio file at {path}: {Bass.LastError}");
             }
         });
         Graphics.actionLoopEvent.Set();
     }
 
-    public unsafe void cleanup()
-    {
-        Graphics.actions.Enqueue(() => {
-            Miniaudio.ma_sound_uninit(snd);
-        });
-        Graphics.actionLoopEvent.Set();
-    }
+    public void cleanup() => mate.Remove(this);
 
     /// <summary>
     /// it plays audio :)
     /// </summary>
-    public unsafe void play()
+    public void play()
     {
         Graphics.actions.Enqueue(() => {
-            if (Miniaudio.ma_sound_start(snd) != ma_result.MA_SUCCESS) {
-                Starry.log("Couldn't play audio.");
-            }
+            if (stream == 0) return;
+            Bass.ChannelPlay(stream);
         });
         Graphics.actionLoopEvent.Set();
     }
@@ -92,44 +100,40 @@ public class Audio: IAsset {
     /// <summary>
     /// it stops the audio :)
     /// </summary>
-    public unsafe void stop() {
+    public void stop() {
         Graphics.actions.Enqueue(() => {
-            if (Miniaudio.ma_sound_stop(snd) != ma_result.MA_SUCCESS) {
-                Starry.log("It seems audio is busted.");
-            }
+            if (stream == 0) return;
+            Bass.ChannelStop(stream);
         });
         Graphics.actionLoopEvent.Set();
     }
 
     // engine stuff
-    public static unsafe void create()
+    public static void create()
     {
         Graphics.actions.Enqueue(() => {
-            if (Miniaudio.ma_engine_init(null, engine) != ma_result.MA_SUCCESS) {
-                throw new Exception("Couldn't initialize audio engine (Miniaudio)");
+            if (Bass.Init()) {
+                Starry.log("Initialized Bass");
             }
-
-            Starry.log("Initialized Miniaudio");
+            else {
+                throw new Exception($"no more bass: {Bass.LastError}");
+            }
         });
         Graphics.actionLoopEvent.Set();
     }
 
-    public static unsafe void cleanupButAtTheEndBecauseItCleansUpTheBackend()
+    // keeping this here just in case i change the backend idfk
+    public static void cleanupButAtTheEndBecauseItCleansUpTheBackend() {}
+
+    public static void update()
     {
-        Graphics.actions.Enqueue(() => {
-            Miniaudio.ma_engine_uninit(engine);
-            Starry.log("Cleaned up Miniaudio");
-        });
-        Graphics.actionLoopEvent.Set();
-    }
-
-    unsafe void iCantMakeAnUnsafeSetter1(double vol) {
-        if (snd == null) return;
-        Miniaudio.ma_sound_set_volume(snd, (float)vol);
-    }
-
-    unsafe void iCantMakeAnUnsafeSetter2(double pan) {
-        if (snd == null) return;
-        Miniaudio.ma_sound_set_pan(snd, (float)pan);
+        // i can't be fucking bothered
+        // (this is so it updates to match whatever the listener position is now)
+        foreach (Audio a in mate) {
+            vec2 delta = a.position - listener;
+            double distance = Math.Sqrt(delta.x * delta.x + delta.y * delta.y);
+            a.pan = Math.Clamp(delta.x / distance, -1, 1);
+            a.volume = a.volume / a.volume + distance;
+        }
     }
 }

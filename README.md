@@ -26,18 +26,6 @@ best game engine in the world awards 1921 winner
 
 First you need the .NET 8 SDK
 
-On Linux you're gonna have to install some libraries
-
-Ubuntu:
-```sh
-sudo apt install libminiaudio-dev -y
-```
-
-Fedora:
-```sh
-sudo dnf install libminiaudio -y
-```
-
 To release:
 ```sh
 # idk how it goes on windows

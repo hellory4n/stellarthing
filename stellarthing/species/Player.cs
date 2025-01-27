@@ -74,7 +74,8 @@ public class Player : IEntity {
             colorEndFunc = () => (255, 255, 255, 0),
         };
 
-        var aaa = await load<Audio>("music/Legacy Menu.mp3");
+        var aaa = await load<Audio>("music/Legacy-Menu.mp3");
+        aaa.position = (0, 0);
         aaa.play();
     }
 
