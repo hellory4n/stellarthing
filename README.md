@@ -18,7 +18,7 @@ best game engine in the world awards 1921 winner
 - Async await everywhere
 - Esoteric tilemap
 - Blazingly fast and very handsome entity system
-- COMING SOON: Sick sound effect and music system
+- Sick sound effect and music system
 - COMING SOON: Acceptable UI
 - COMING SOON: Modding through lua
 
