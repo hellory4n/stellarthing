@@ -7,8 +7,9 @@ namespace starry;
 
 public static class Input {
     public static vec2 mousePosition { get; internal set; }
-    // you should minimize this
+    // i know
     internal static Dictionary<Key, KeyInfo> keyinfo { get; set; } = new() {
+        { Key.UNKNOWN, new() },
         { Key.SPACE, new() },
         { Key.APOSTROPHE, new() },
         { Key.COMMA, new() },
@@ -130,7 +131,18 @@ public static class Input {
         { Key.RIGHT_SUPER, new() },
         { Key.MENU, new() },
     };
+    internal static Dictionary<MouseButton, MouseInfo> mouseinfo { get; set; } = new() {
+        { MouseButton.LEFT, new() },
+        { MouseButton.MIDDLE, new() },
+        { MouseButton.RIGHT, new() },
+        { MouseButton.BUTTON_4, new() },
+        { MouseButton.BUTTON_5, new() },
+        { MouseButton.BUTTON_6, new() },
+        { MouseButton.BUTTON_7, new() },
+        { MouseButton.BUTTON_8, new() },
+    };
     internal static List<Key> pressed { get; set; } = [];
+    internal static List<MouseButton> mressed { get; set; } = [];
 
     // called every frame to do some check stuff
     internal static void update(double delta)
@@ -138,7 +150,7 @@ public static class Input {
         Stack<Key> released = [];
         foreach (Key key in pressed) {
             KeyInfo kinf = keyinfo[key];
-            // a key should only be in the just pressed or release for 1 frame
+            // a key should only be in the just pressed or release state for 1 frame
             if (kinf.framesPressed > 0 && kinf.state == KeypressState.JUST_PRESSED) {
                 kinf.state = KeypressState.PRESSED;
             }
@@ -147,6 +159,7 @@ public static class Input {
                 kinf.state = KeypressState.INACTIVE;
                 // we can't just .Remove() in a foreach loop lmao
                 released.Push(key);
+                kinf.framesPressed = 0;
             }
 
             kinf.framesPressed++;
@@ -155,6 +168,28 @@ public static class Input {
         // we can't just .Remove() in a foreach loop lmao
         while (released.Count > 0) {
             pressed.Remove(released.Pop());
+        }
+
+        // help
+        Stack<MouseButton> meleased = [];
+        foreach (MouseButton buittno in mressed) {
+            MouseInfo minf = mouseinfo[buittno];
+            if (minf.framesPressed > 0 && minf.state == KeypressState.JUST_PRESSED) {
+                minf.state = KeypressState.PRESSED;
+            }
+
+            if (minf.framesPressed > 0 && minf.state == KeypressState.RELEASED) {
+                minf.state = KeypressState.INACTIVE;
+                // we can't just .Remove() in a foreach loop lmao
+                meleased.Push(buittno);
+                minf.framesPressed = 0;
+            }
+
+            minf.framesPressed++;
+        }
+
+        while (meleased.Count > 0) {
+            mressed.Remove(meleased.Pop());
         }
     }
 
@@ -170,6 +205,21 @@ public static class Input {
             pressed.Add(key);
         }
         var hola = keyinfo[key];
+        hola.state = systate;
+    }
+
+    internal static void setStouseMate(MouseButton notkey, InputAction state)
+    {
+        KeypressState systate = state switch {
+            InputAction.Press => KeypressState.JUST_PRESSED,
+            InputAction.Release => KeypressState.RELEASED,
+            InputAction.Repeat => KeypressState.PRESSED,
+            _ => throw new Exception("c# shut up"),
+        };
+        if (systate == KeypressState.JUST_PRESSED) {
+            mressed.Add(notkey);
+        }
+        var hola = mouseinfo[notkey];
         hola.state = systate;
     }
 
@@ -225,9 +275,32 @@ public static class Input {
         }
         return false;
     }
+
+    /// <summary>
+    /// self explanatory
+    /// </summary>
+    public static bool isMouseButtonHeld(MouseButton button) =>
+        mouseinfo[button].state != KeypressState.INACTIVE;
+    
+    /// <summary>
+    /// self explanatory
+    /// </summary>
+    public static bool isMouseButtonJustPressed(MouseButton button) =>
+        mouseinfo[button].state == KeypressState.JUST_PRESSED;
+    
+    /// <summary>
+    /// self explanatory
+    /// </summary>
+    public static bool isMouseButtonJustReleased(MouseButton button) =>
+        mouseinfo[button].state == KeypressState.RELEASED;
 }
 
-internal class KeyInfo() {
+internal class KeyInfo {
+    public int framesPressed { get; set; } = 0;
+    public KeypressState state { get; set; } = KeypressState.INACTIVE;
+}
+
+internal class MouseInfo {
     public int framesPressed { get; set; } = 0;
     public KeypressState state { get; set; } = KeypressState.INACTIVE;
 }

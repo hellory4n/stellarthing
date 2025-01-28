@@ -90,7 +90,12 @@ public static unsafe class Window {
                 // end the suffering
                 Input.setKeyState((Key)fucking, me);
             });
-            //glfw.SetMouseButtonCallback(window, (window, button, action, mods) => {})
+
+            // help me axon dendrite help me axon dendrite help me axon dendrite
+            // HELP ME AXON DENDRITE
+            glfw.SetMouseButtonCallback(window, (window, button, action, mods) => {
+                Input.setStouseMate((MouseButton)button, action);
+            });
         });
         Graphics.actionLoopEvent.Set();
     }

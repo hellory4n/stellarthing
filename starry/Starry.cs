@@ -55,13 +55,13 @@ public static class Starry {
             }
             
             // stuff
+            await Task.Run(() => Input.update(Window.deltaTime));
             await Entities.update();
             await Task.Run(Timer.update);
             await Task.Run(Tilemap.update);
             await DebugMode.update();
             await Task.Run(Audio.update);
             await Task.Run(Music.update);
-            await Task.Run(() => Input.update(Window.deltaTime));
 
             Graphics.endDrawing();
         }

@@ -126,7 +126,7 @@ public class Player : IEntity {
             lasparticulas!.emit();
         }
 
-        if (Input.isKeyJustPressed(Key.F9)) {
+        if (Input.isMouseButtonJustPressed(MouseButton.LEFT)) {
             await Music.play("music/" + StMath.randomChoice([
                 "lava1.mp3",
                 "Legacy-Menu.mp3",

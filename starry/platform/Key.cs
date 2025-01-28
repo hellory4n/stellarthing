@@ -4,7 +4,7 @@ namespace starry;
 /// mouse buttons
 /// </summary>
 public enum MouseButton {
-    LEFT,
+    LEFT = 0,
     MIDDLE,
     RIGHT,
     BUTTON_4,
@@ -18,6 +18,7 @@ public enum MouseButton {
 /// 1:1 copy of glfw keys lmao
 /// </summary>
 public enum Key {
+    UNKNOWN = -1,
     SPACE = 32,
     APOSTROPHE = 39, // '
     COMMA = 44, // ,

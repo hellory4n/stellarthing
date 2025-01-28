@@ -20,7 +20,7 @@ public static class DebugMode {
     public static async Task update()
     {
         await Task.Run(() => {
-            if (Input.isKeyJustPressed(Key.F3)) showing = !showing;
+            if (Input.isKeyJustReleased(Key.F3)) showing = !showing;
             if (!showing) return;
 
             var p = Process.GetCurrentProcess();
