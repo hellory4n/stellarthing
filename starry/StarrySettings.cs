@@ -28,10 +28,6 @@ public struct StarrySettings() {
     /// </summary>
     public bool fullscreen { get; set; } = true;
     /// <summary>
-    /// enable this if you're putting the game on a dedicated server. this disables rendering and does some other stuff
-    /// </summary>
-    public bool server { get; set; } = false;
-    /// <summary>
     /// the resolution the game is rendered at (it gets scaled to become the actual resolution)
     /// </summary>
     public vec2i renderSize { get; set; } = (200, 100);

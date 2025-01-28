@@ -38,8 +38,6 @@ public record class Sprite: IAsset, ISprite {
 
     public void load(string path)
     {
-        if (Starry.settings.server) return;
-
         Graphics.actions.Enqueue(() => {
             skbmp = SKBitmap.Decode(path);
             if (skbmp == null) {
@@ -57,8 +55,6 @@ public record class Sprite: IAsset, ISprite {
 
     public void cleanup()
     {
-        if (Starry.settings.server) return;
-        
         Graphics.actions.Enqueue(() => {
             skbmp?.Dispose();
             skimg?.Dispose();

@@ -13,7 +13,6 @@ internal class Program {
                 Entities.addEntity(new Player());
             },
             verbose = isDebug() || args.Contains("--verbose") || args.Contains("-v"),
-            server = args.Contains("--server"),
             gameName = "Stellarthing",
             gameVersion = (0, 11, 0),
             fullscreen = true,

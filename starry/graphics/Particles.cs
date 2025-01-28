@@ -41,8 +41,6 @@ public class Particles: IParticles {
     /// </summary>
     public void emit()
     {
-        if (Starry.settings.server) return;
-
         uint amount = amountFunc();
         for (int i = 0; i < amount; i++) {
             Timer timetimetimetimetimetimetimetimetime = new(durationFunc(), false);
@@ -70,8 +68,6 @@ public class Particles: IParticles {
     /// </summary>
     public void draw()
     {
-        if (Starry.settings.server) return;
-        
         Queue<Particle> queuedForAnnihilation = [];
         foreach (Particle article in particles) {
             // don't kill your pc

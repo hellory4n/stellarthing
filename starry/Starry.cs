@@ -25,7 +25,6 @@ public static class Starry {
         Starry.settings = settings;
         Console.WriteLine($"{settings.gameName} {settings.gameVersion.asVersion()} - Starry {starryVersion.asVersion()}");
         Console.WriteLine("Use --verbose if the game is broken.");
-        Console.WriteLine("Use --server to enable server mode.");
 
         // opengl thread lmao
         Thread thread = new(Graphics.glLoop) {

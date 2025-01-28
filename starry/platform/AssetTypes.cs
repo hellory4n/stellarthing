@@ -24,17 +24,14 @@ public record class Font: IAsset {
 
     public void load(string path)
     {
-        if (Starry.settings.server) return;
-
         Graphics.actions.Enqueue(() => {
             skfnt = SKTypeface.FromFile(path);
         });
         Graphics.actionLoopEvent.Set();
     }
 
-    public void cleanup() {
-        if (Starry.settings.server) return;
-        
+    public void cleanup()
+    {
         Graphics.actions.Enqueue(() => {
             skfnt?.Dispose();
         });
