@@ -144,10 +144,12 @@ public class Player : IEntity {
     {
         Tilemap.pushTile(lol!);
         lasparticulas!.draw();
-        Graphics.drawTriangle(new Triangle(
-            new Vert((100, 0, 0), (255, 0, 0, 255)),
-            new Vert((0, 0, 200), (0, 255, 0, 255)),
-            new Vert((200, 0, 200), (0, 0, 255, 255))
-        ));
+        Graphics.drawMesh(new Mesh([
+            new Triangle(
+                new Vert((0.5, 0, 0), (255, 0, 0, 255)),
+                new Vert((0, 0, 1), (0, 255, 0, 255)),
+                new Vert((1, 0, 1), (0, 0, 255, 255))
+            ),
+        ]), (0, 0, 0));
     }
 }
