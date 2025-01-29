@@ -30,10 +30,11 @@ public static partial class Graphics {
     public static void drawMesh(Mesh mesh, vec3 position)
     {
         foreach (Triangle t in mesh.triangles) {
+            float[,] materix = persp((float)fov, Starry.settings.renderSize.x / Starry.settings.renderSize.y, (float)near, (float)far);
             SKPoint[] points = [
-                perspective(t.v1.pos + position),
-                perspective(t.v2.pos + position),
-                perspective(t.v3.pos + position),
+                project(t.v1.pos + position, materix, (int)Starry.settings.renderSize.x, (int)Starry.settings.renderSize.y),
+                project(t.v2.pos + position, materix, (int)Starry.settings.renderSize.x, (int)Starry.settings.renderSize.y),
+                project(t.v3.pos + position, materix, (int)Starry.settings.renderSize.x, (int)Starry.settings.renderSize.y),
             ];
 
             SKColor[] colors = [
@@ -47,23 +48,33 @@ public static partial class Graphics {
         }
     }
 
-    /// <summary>
-    /// projects shit in a perspective camera :)
-    /// </summary>
-    internal static SKPoint perspective(vec3 from)
+    static float[,] persp(float fov, float aspect, float near, float far)
     {
-        double fovrad = fov * Math.PI / 180;
-        double tanfov = Math.Tan(fovrad / 2);
-        double zedzee = from.z + camDistance;
-        double xproj = from.x / (tanfov * zedzee) * camDistance * Starry.settings.renderSize.x;
-        double yproj = from.y / (tanfov * zedzee) * camDistance * Starry.settings.renderSize.y;
+        float fovRad = 1.0f / MathF.Tan(fov * 0.5f * MathF.PI / 180.0f);
+        return new float[,] {
+            { fovRad / aspect, 0, 0,  0 },
+            { 0, fovRad, 0,  0 },
+            { 0, 0, far / (far - near), -far * near / (far - near) },
+            { 0, 0, 1,  0 }
+        };
+    }
 
-        Starry.log("help", (float)(xproj + Starry.settings.renderSize.x / 2.0), (float)(-yproj + Starry.settings.renderSize.y / 2.0));
+    static SKPoint project(vec3 pint, float[,] projectionMatrix, int width, int height)
+    {
+        var point = new SKPoint3((float)pint.x, (float)pint.y, (float)pint.z);
+        float x = point.X * projectionMatrix[0, 0] + point.Z * projectionMatrix[0, 2];
+        float y = point.Y * projectionMatrix[1, 1] + point.Z * projectionMatrix[1, 2];
+        float z = point.Z * projectionMatrix[2, 2] + projectionMatrix[2, 3];
+        float w = point.Z * projectionMatrix[3, 2] + projectionMatrix[3, 3];
 
-        return new SKPoint(
-            (float)(xproj + Starry.settings.renderSize.x / 2.0
-            ),
-            (float)(-yproj + Starry.settings.renderSize.y / 2.0)
-        );
+        if (w != 0) {
+            x /= w;
+            y /= w;
+        }
+
+        x = (x + 1) * width / 2;
+        y = (1 - y) * height / 2;
+
+        return new SKPoint(x, y);
     }
 }

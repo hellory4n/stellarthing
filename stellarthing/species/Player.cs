@@ -146,9 +146,9 @@ public class Player : IEntity {
         lasparticulas!.draw();
         Graphics.drawMesh(new Mesh([
             new Triangle(
-                new Vert((0.5, 0, 0), (255, 0, 0, 255)),
-                new Vert((0, 0, 1), (0, 255, 0, 255)),
-                new Vert((1, 0, 1), (0, 0, 255, 255))
+                new Vert(( 0,  1, 5), (255, 0, 0, 255)),
+                new Vert((-1, -1, 5), (0, 255, 0, 255)),
+                new Vert(( 1, -1, 5), (0, 0, 255, 255))
             ),
         ]), (0, 0, 0));
     }
