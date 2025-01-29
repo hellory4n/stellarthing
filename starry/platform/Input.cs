@@ -279,20 +279,20 @@ public static class Input {
     /// <summary>
     /// self explanatory
     /// </summary>
-    public static bool isMouseButtonHeld(MouseButton button) =>
-        mouseinfo[button].state != KeypressState.INACTIVE;
+    public static bool isMouseButtonHeld(MouseButton btn) =>
+        mouseinfo[btn].state != KeypressState.INACTIVE;
+
+    /// <summary>
+    /// self explanatory
+    /// </summary>
+    public static bool isMouseButtonJustPressed(MouseButton btn) =>
+        mouseinfo[btn].state == KeypressState.JUST_PRESSED;
     
     /// <summary>
     /// self explanatory
     /// </summary>
-    public static bool isMouseButtonJustPressed(MouseButton button) =>
-        mouseinfo[button].state == KeypressState.JUST_PRESSED;
-    
-    /// <summary>
-    /// self explanatory
-    /// </summary>
-    public static bool isMouseButtonJustReleased(MouseButton button) =>
-        mouseinfo[button].state == KeypressState.RELEASED;
+    public static bool isMouseButtonJustReleased(MouseButton btn) =>
+        mouseinfo[btn].state == KeypressState.RELEASED;
 }
 
 internal class KeyInfo {

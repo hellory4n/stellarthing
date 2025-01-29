@@ -68,6 +68,7 @@ public static partial class Graphics {
             Starry.log("Annihilating Skia");
             skpaint?.Dispose();
             paint?.Dispose();
+            help?.Dispose();
             surface?.Dispose();
             grContext?.Dispose();
             Starry.log("Skia has been annihilated");
