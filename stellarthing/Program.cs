@@ -17,9 +17,6 @@ internal class Program {
             gameVersion = (0, 11, 0),
             fullscreen = true,
             assetPath = Path.GetFullPath("assets"),
-            renderSize = (320, 180),
-            antiAliasing = false,
-            tileSize = (16, 16),
             keymap = new() {
                 {"move_left", [Key.A, Key.LEFT]},
                 {"move_right", [Key.D, Key.RIGHT]},

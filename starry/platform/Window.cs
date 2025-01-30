@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Silk.NET.GLFW;
 namespace starry;
@@ -33,13 +35,15 @@ public static unsafe class Window {
     internal static bool fullscreen = false;
     internal static vec2i screensize = (0, 0);
     internal static bool closing = false;
+    internal static ConcurrentQueue<Action> actions = [];
+    internal static AutoResetEvent actionLoopEvent = new(false);
 
     /// <summary>
     /// creates the window :D
     /// </summary>
-    public static unsafe void create(string title, vec2i size)
+    public static unsafe void create(string title)
     {
-        Graphics.actions.Enqueue(() => {
+        actions.Enqueue(() => {
             // first we need glfw
             glfw = Glfw.GetApi();
             if (!glfw.Init()) {
@@ -54,8 +58,7 @@ public static unsafe class Window {
             Starry.log("GLFW has been initialized");
 
             // make the infamous window
-            window = glfw.CreateWindow((int)Starry.settings.renderSize.x,
-                (int)Starry.settings.renderSize.y, title, null, null);
+            window = glfw.CreateWindow(1280, 720, title, null, null);
             
             if (window == null) {
                 glfw.Terminate();
@@ -66,16 +69,13 @@ public static unsafe class Window {
 
             // there's a lot of callbacks
             setupCallbacks();
-
-            // this setups up opengl
-            Graphics.create();
         });
-        Graphics.actionLoopEvent.Set();
+        actionLoopEvent.Set();
     }
 
     static unsafe void setupCallbacks()
     {
-        Graphics.actions.Enqueue(() => {
+        actions.Enqueue(() => {
             if (glfw == null) return;
 
             glfw.SetErrorCallback((error, description) => {
@@ -102,7 +102,7 @@ public static unsafe class Window {
                 Input.mouseCursorCallback(x, y);
             });
         });
-        Graphics.actionLoopEvent.Set();
+        actionLoopEvent.Set();
     }
 
     /// <summary>
@@ -110,12 +110,12 @@ public static unsafe class Window {
     /// </summary>
     public static void setFullscreen(bool fullscreen)
     {
-        Graphics.actions.Enqueue(() => {
+        actions.Enqueue(() => {
             if (glfw == null) return;
             Window.fullscreen = fullscreen;
 
             if (fullscreen) {
-                Monitor* monitor = glfw.GetPrimaryMonitor();
+                Silk.NET.GLFW.Monitor* monitor = glfw.GetPrimaryMonitor();
                 if (monitor == null) return;
                 VideoMode* mode = glfw.GetVideoMode(monitor);
                 glfw.SetWindowMonitor(window, monitor, 0, 0, mode->Width, mode->Height,
@@ -126,13 +126,12 @@ public static unsafe class Window {
                 Starry.log("Window is now fullscreen");
             }
             else {
-                glfw.SetWindowMonitor(window, null, 40, 40, (int)Starry.settings.renderSize.x,
-                (int)Starry.settings.renderSize.y, Glfw.DontCare);
+                glfw.SetWindowMonitor(window, null, 40, 40, 1280, 720, Glfw.DontCare);
                 
                 Starry.log("Windows is now windowed");
             }
         });
-        Graphics.actionLoopEvent.Set();
+        actionLoopEvent.Set();
     }
 
     /// <summary>
@@ -146,7 +145,7 @@ public static unsafe class Window {
     public static Task<bool> isClosing()
     {
         TaskCompletionSource<bool> tcs = new();
-        Graphics.actions.Enqueue(() => {
+        actions.Enqueue(() => {
             if (glfw == null) {
                 tcs.SetResult(false);
                 return;
@@ -161,7 +160,7 @@ public static unsafe class Window {
 
             tcs.SetResult(glfw.WindowShouldClose(window) || closing);
         });
-        Graphics.actionLoopEvent.Set();
+        actionLoopEvent.Set();
         return tcs.Task;
     }
 
@@ -170,15 +169,14 @@ public static unsafe class Window {
     /// </summary>
     public static void cleanup()
     {
-        Graphics.actions.Enqueue(() => {
+        actions.Enqueue(() => {
             if (glfw == null) return;
 
-            Graphics.cleanup();
             glfw.DestroyWindow(window);
             glfw.Terminate();
             Starry.log("🛑 ITS JOEVER");
         });
-        Graphics.actionLoopEvent.Set();
+        actionLoopEvent.Set();
     }
 
     /// <summary>
@@ -187,7 +185,7 @@ public static unsafe class Window {
     public static Task<vec2i> getSize()
     {
         TaskCompletionSource<vec2i> tcs = new();
-            Graphics.actions.Enqueue(() => {
+            actions.Enqueue(() => {
             if (glfw == null) {
                 tcs.SetResult((0, 0));
                 return;
@@ -196,22 +194,35 @@ public static unsafe class Window {
             glfw.GetFramebufferSize(window, out int width, out int height);
             tcs.SetResult((width, height));
         });
-        Graphics.actionLoopEvent.Set();
+        actionLoopEvent.Set();
         return tcs.Task;
     }
 
     internal static void invokeTheInfamousCloseEventBecauseCeeHashtagIsStupid()
     {
-        Graphics.actions.Enqueue(() => {
+        actions.Enqueue(() => {
             onClose?.Invoke(null, EventArgs.Empty);
         });
-        Graphics.actionLoopEvent.Set();
+        actionLoopEvent.Set();
     }
 
     /// <summary>
     /// closes the window :) (it's actualy gonna close on the next frame)
     /// </summary>
     public static void close() => closing = true;
+
+    /// <summary>
+    /// this manages opengl shit so it works with async/await multithreading all that crap
+    /// </summary>
+    internal static void glLoop()
+    {
+        while (true) {
+            actionLoopEvent.WaitOne();
+            while (actions.TryDequeue(out Action? man)) {
+                man();
+            }
+        }
+    }
 
     public delegate void ResizeEvent(vec2i newSize);
 }

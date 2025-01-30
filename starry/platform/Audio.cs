@@ -79,7 +79,7 @@ public class Audio: IAsset {
 
     public void load(string path)
     {
-        Graphics.actions.Enqueue(() => {
+        Window.actions.Enqueue(() => {
             stream = Bass.CreateStream(path);
             if (stream != 0) {
                 Starry.log($"Loaded audio file at {path}");
@@ -89,7 +89,7 @@ public class Audio: IAsset {
                 Starry.log($"Couldn't load audio file at {path}: {Bass.LastError}");
             }
         });
-        Graphics.actionLoopEvent.Set();
+        Window.actionLoopEvent.Set();
     }
 
     public void cleanup() => mate.Remove(this);
@@ -99,29 +99,29 @@ public class Audio: IAsset {
     /// </summary>
     public void play()
     {
-        Graphics.actions.Enqueue(() => {
+        Window.actions.Enqueue(() => {
             if (stream == 0) return;
             Bass.ChannelSetPosition(stream, 0);
             Bass.ChannelPlay(stream);
         });
-        Graphics.actionLoopEvent.Set();
+        Window.actionLoopEvent.Set();
     }
 
     /// <summary>
     /// it stops the audio :)
     /// </summary>
     public void stop() {
-        Graphics.actions.Enqueue(() => {
+        Window.actions.Enqueue(() => {
             if (stream == 0) return;
             Bass.ChannelStop(stream);
         });
-        Graphics.actionLoopEvent.Set();
+        Window.actionLoopEvent.Set();
     }
 
     // engine stuff
     public static void create()
     {
-        Graphics.actions.Enqueue(() => {
+        Window.actions.Enqueue(() => {
             if (Bass.Init()) {
                 Starry.log("Initialized Bass");
             }
@@ -129,7 +129,7 @@ public class Audio: IAsset {
                 throw new Exception($"no more bass: {Bass.LastError}");
             }
         });
-        Graphics.actionLoopEvent.Set();
+        Window.actionLoopEvent.Set();
     }
 
     // keeping this here just in case i change the backend idfk

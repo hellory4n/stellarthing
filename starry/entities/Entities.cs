@@ -141,11 +141,11 @@ public static class Entities {
             await Parallel.ForEachAsync(getGroup(GAME_WORLD_GROUP), async (entity, ct) => {
                 // chunk stuff :)
                 // its generally not a good idea to process everythin\g on the other side of the galaxy
-                if (hasComponent<Tile>(entity)) {
+                /*if (hasComponent<Tile>(entity)) {
                     Tile tile = getComponent<Tile>(entity);
                     vec2i chunk = (tile.position.as2d() / (Tilemap.CHUNK_DIMENSIONS, Tilemap.CHUNK_DIMENSIONS)).floor();
                     if (chunk != Tilemap.currentChunks[Tilemap.currentWorld]) return;
-                }
+                }*/
                 await Task.Run(() => mate(ref2ent(entity)));
             });
         }

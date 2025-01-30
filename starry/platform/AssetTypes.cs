@@ -15,26 +15,3 @@ public interface IAsset {
     /// </summary>
     public void cleanup();
 }
-
-/// <summary>
-/// font
-/// </summary>
-public record class Font: IAsset {
-    internal SKTypeface? skfnt;
-
-    public void load(string path)
-    {
-        Graphics.actions.Enqueue(() => {
-            skfnt = SKTypeface.FromFile(path);
-        });
-        Graphics.actionLoopEvent.Set();
-    }
-
-    public void cleanup()
-    {
-        Graphics.actions.Enqueue(() => {
-            skfnt?.Dispose();
-        });
-        Graphics.actionLoopEvent.Set();
-    }
-}
