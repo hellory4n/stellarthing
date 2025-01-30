@@ -43,13 +43,14 @@ public static class Music {
     {
         previousSong = currentSong;
         currentSong = await Starry.load<Audio>(file);
-        currentSong.volume = 0.75; // TODO dont
 
         if (isSongPlaying) {
             theShitfuck3 = 0;
             transitioning = true;
+            currentSong.volume = 0;
         }
         else {
+            currentSong.volume = 0.75; // TODO dont
             currentSong.play();
             isSongPlaying = true;
 
@@ -77,6 +78,7 @@ public static class Music {
             previousSong.volume = StMath.lerp(0.75, 0, theShitfuck3);
 
             if (theShitfuck3 >= 1) {
+                currentSong.volume = 0.75; // TODO dont
                 currentSong.play();
                 transitioning = false;
             }

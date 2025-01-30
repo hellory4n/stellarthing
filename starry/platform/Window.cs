@@ -86,15 +86,20 @@ public static unsafe class Window {
                 onResize?.Invoke((w, h));
             });
 
+            // end the suffering
             glfw.SetKeyCallback(window, (just, fucking, kill, me, now) => {
-                // end the suffering
-                Input.setKeyState((Key)fucking, me);
+                // they're not fucking me
+                Input.keyCallback(fucking, me);
             });
 
             // help me axon dendrite help me axon dendrite help me axon dendrite
             // HELP ME AXON DENDRITE
             glfw.SetMouseButtonCallback(window, (window, button, action, mods) => {
-                Input.setStouseMate((MouseButton)button, action);
+                Input.mouseButtonCallback((MouseButton)button, action);
+            });
+
+            glfw.SetCursorPosCallback(window, (oimate, x, y) => {
+                Input.mouseCursorCallback(x, y);
             });
         });
         Graphics.actionLoopEvent.Set();

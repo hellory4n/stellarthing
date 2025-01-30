@@ -51,17 +51,17 @@ public static class Starry {
 
             // it's hardcoded into my brain
             if (isDebug()) {
-                if (Input.isKeyJustPressed(Key.F8)) return;
+                if (Input.isKeyJustPressed(Key.F8)) Window.close();
             }
             
             // stuff
-            await Task.Run(() => Input.update(Window.deltaTime));
-            await Entities.update();
             await Task.Run(Timer.update);
-            await Task.Run(Tilemap.update);
             await DebugMode.update();
             await Task.Run(Audio.update);
             await Task.Run(Music.update);
+            await Task.Run(Tilemap.update);
+            await Entities.update();
+            Input.update();
 
             Graphics.endDrawing();
         }
