@@ -55,6 +55,8 @@ public static unsafe class Window {
             glfw.WindowHint(WindowHintInt.ContextVersionMajor, 3);
             glfw.WindowHint(WindowHintInt.ContextVersionMinor, 3);
             glfw.WindowHint(WindowHintInt.RefreshRate, Glfw.DontCare);
+            glfw.WindowHint(WindowHintOpenGlProfile.OpenGlProfile, OpenGlProfile.Core);
+            glfw.WindowHint(WindowHintInt.Samples, 4);
             Starry.log("GLFW has been initialized");
 
             // make the infamous window
@@ -172,6 +174,7 @@ public static unsafe class Window {
         actions.Enqueue(() => {
             if (glfw == null) return;
 
+            Graphics.cleanup();
             glfw.DestroyWindow(window);
             glfw.Terminate();
             Starry.log("🛑 ITS JOEVER");
