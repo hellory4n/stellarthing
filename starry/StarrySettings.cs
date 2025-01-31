@@ -39,4 +39,9 @@ public struct StarrySettings() {
     /// keyboard actions that can be remapped
     /// </summary>
     public Dictionary<string, Key[]> keymap { get; set; } = new();
+
+    /// <summary>
+    /// WHERES MY shaders I THOUGHT IT WAS HERE
+    /// </summary>
+    internal string shaderPath { get; set; } = "";
 }

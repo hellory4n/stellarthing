@@ -1,5 +1,6 @@
 ﻿﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ public static class Starry {
     public static async Task create(StarrySettings settings)
     {
         // funni
+        settings.shaderPath = Path.GetFullPath("assets/engine/shaders");
         Starry.settings = settings;
         Console.WriteLine($"{settings.gameName} {settings.gameVersion.asVersion()} - Starry {starryVersion.asVersion()}");
         Console.WriteLine("Use --verbose if the game is broken.");
