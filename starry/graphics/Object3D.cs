@@ -94,6 +94,7 @@ public class Object3D {
     /// </summary>
     public bool receiveShadows { get; set; } = false;
     public aabb box { get; set; } = new();
+    public uint shader { get; set; } = 0;
 
     /// <summary>
     /// makes a matrix thing shitfuck crapfrick
@@ -183,4 +184,11 @@ public class Object3D {
         res.maxz += position.z * scale.z;
         return res;
     }
+
+    public void create()
+    {
+        // man.
+        Graphics.initObject(this);
+    }
+    public void cleanup() => Graphics.freeObject(this);
 }

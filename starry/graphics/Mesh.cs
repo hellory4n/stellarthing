@@ -51,15 +51,15 @@ public class Mesh {
             tangent = tangent.normalize();
 
             // help me axon dendrite
-            v1.tx = tangent.x;
-            v1.ty = tangent.y;
-            v1.tz = tangent.z;
-            v2.tx = tangent.x;
-            v2.ty = tangent.y;
-            v2.tz = tangent.z;
-            v3.tx = tangent.x;
-            v3.ty = tangent.y;
-            v3.tz = tangent.z;
+            v1.tx = (float)tangent.x;
+            v1.ty = (float)tangent.y;
+            v1.tz = (float)tangent.z;
+            v2.tx = (float)tangent.x;
+            v2.ty = (float)tangent.y;
+            v2.tz = (float)tangent.z;
+            v3.tx = (float)tangent.x;
+            v3.ty = (float)tangent.y;
+            v3.tz = (float)tangent.z;
 
             vertices[indices[i]] = v1;
             vertices[indices[i + 1]] = v2;
@@ -71,9 +71,9 @@ public class Mesh {
             Vertex v = vertices[indices[i]];
             vec3 tnorm = (v.tx, v.ty, v.tz);
             tnorm = tnorm.normalize();
-            vertices[indices[i]].tx = tnorm.x;
-            vertices[indices[i]].ty = tnorm.y;
-            vertices[indices[i]].tz = tnorm.z;
+            vertices[indices[i]].tx = (float)tnorm.x;
+            vertices[indices[i]].ty = (float)tnorm.y;
+            vertices[indices[i]].tz = (float)tnorm.z;
         }
     }
 }

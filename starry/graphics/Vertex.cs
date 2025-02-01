@@ -1,18 +1,21 @@
+using System.Runtime.InteropServices;
+
 namespace starry;
 
 /// <summary>
 /// point
 /// </summary>
+[StructLayout(LayoutKind.Sequential)]
 public class Vertex {
-    public double x { get; set; } = 0;
-    public double y { get; set; } = 0;
-    public double z { get; set; } = 0;
-    public double u { get; set; } = 0;
-    public double v { get; set; } = 0;
-    public double nx { get; set; } = 0;
-    public double ny { get; set; } = 0;
-    public double nz { get; set; } = 0;
-    public double tx { get; set; } = 0;
-    public double ty { get; set; } = 0;
-    public double tz { get; set; } = 0;
+    public float x { get; set; } = 0;
+    public float y { get; set; } = 0;
+    public float z { get; set; } = 0;
+    public float u { get; set; } = 0;
+    public float v { get; set; } = 0;
+    public float nx { get; set; } = 0;
+    public float ny { get; set; } = 0;
+    public float nz { get; set; } = 0;
+    public float tx { get; set; } = 0;
+    public float ty { get; set; } = 0;
+    public float tz { get; set; } = 0;
 }
