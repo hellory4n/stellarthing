@@ -71,6 +71,8 @@ public static unsafe class Window {
 
             // there's a lot of callbacks
             setupCallbacks();
+
+            Graphics.create();
         });
         actionLoopEvent.Set();
     }

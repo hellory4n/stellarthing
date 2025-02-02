@@ -32,6 +32,7 @@ public static class Graphics {
     public const uint SHADOW_HEIGHT = 1024 * 4;
     internal static ConcurrentQueue<Object3D> renderobjs = [];
     internal static ConcurrentDictionary<int, Light> lights = [];
+    static int man = 0;
     public static Camera currentCamera { get; set; } = new();
     public static Skybox? sky { get; set; } = null;
 
@@ -118,10 +119,7 @@ public static class Graphics {
     /// </summary>
     public static void drawObject3D(Object3D obj)
     {
-        Window.actions.Enqueue(() => {
-            renderobjs.Enqueue(obj);
-        });
-        Window.actionLoopEvent.Set();
+        renderobjs.Enqueue(obj);
     }
 
     /// <summary>
@@ -535,5 +533,14 @@ public static class Graphics {
             setOpenGlState();
         });
         Window.actionLoopEvent.Set();
+    }
+
+    /// <summary>
+    /// puts a light :)
+    /// </summary>
+    public static void drawLight(Light light)
+    {
+        lights[man] = light;
+        man++;
     }
 }

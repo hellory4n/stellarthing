@@ -7,7 +7,7 @@ public class Camera {
     /// <summary>
     /// front
     /// </summary>
-    public vec3 front { get; set; } = (0, 0, 1);
+    public vec3 front { get; set; } = (0, 0, -1);
     /// <summary>
     /// up
     /// </summary>

@@ -60,6 +60,8 @@ public static class Starry {
             await Task.Run(Music.update);
             await Entities.update();
             Input.update();
+
+            Graphics.endDrawing();
         }
 
         log("Starry is closing...");
