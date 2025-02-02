@@ -76,7 +76,7 @@ public class Object3D {
     /// <summary>
     /// mesesessheseseshzsesehs
     /// </summary>
-    public Mesh[] meshes { get; set; } = [];
+    public Model model { get; set; } = new();
     /// <summary>
     /// whats this
     /// </summary>
@@ -128,9 +128,9 @@ public class Object3D {
     /// </summary>
     public vec3 getCenter()
     {
-        if (meshes.Length == 0) return (0, 0, 0);
+        if (model.meshes.Length == 0) return (0, 0, 0);
 
-        Mesh firstMesh = meshes[0];
+        Mesh firstMesh = model.meshes[0];
         double minx = firstMesh.vertices[0].x;
         double maxx = firstMesh.vertices[0].x;
         double miny = firstMesh.vertices[0].y;
@@ -139,8 +139,8 @@ public class Object3D {
         double maxz = firstMesh.vertices[0].z;
         
         // akson dendryt
-        for (int i = 0; i < meshes.Length; i++) {
-            Mesh mesh = meshes[i];
+        for (int i = 0; i < model.meshes.Length; i++) {
+            Mesh mesh = model.meshes[i];
             for (int j = 0; j < mesh.vertices.Length; j++) {
                 Vertex v = mesh.vertices[j];
                 if (v.x < minx) minx = v.x;
@@ -185,10 +185,7 @@ public class Object3D {
         return res;
     }
 
-    public void create()
-    {
-        // man.
-        Graphics.initObject(this);
-    }
-    public void cleanup() => Graphics.freeObject(this);
+    public Object3D() => Graphics.initObject(this);
+    // tragic
+    ~Object3D() => Graphics.freeObject(this);
 }

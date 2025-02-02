@@ -159,7 +159,7 @@ public static class Graphics {
     {
         if (gl == null) return;
 
-        foreach (Mesh mesh in obj.meshes) {
+        foreach (Mesh mesh in obj.model.meshes) {
             gl.GenVertexArrays(1, out uint vaodeeznuts);
             mesh.vao = vaodeeznuts;
             gl.GenBuffers(1, out uint vbodeeznuts);
@@ -217,7 +217,7 @@ public static class Graphics {
     {
         if (gl == null) return;
 
-        foreach (Mesh mesh in obj.meshes) {
+        foreach (Mesh mesh in obj.model.meshes) {
             gl.DeleteVertexArray(mesh.vao);
             gl.DeleteBuffer(mesh.vbo);
             gl.DeleteBuffer(mesh.ebo);
@@ -296,7 +296,7 @@ public static class Graphics {
             gl.Uniform1(gl.GetUniformLocation(shader, "receive_shadows"), o.receiveShadows ? 1 : 0);
 
             // :(
-            foreach (Mesh mesh in o.meshes) {
+            foreach (Mesh mesh in o.model.meshes) {
                 // psdd smyritsldj
                 // pass material
                 gl.Uniform3(gl.GetUniformLocation(shader, "material.diffuse"), 1, new float[] { (float)mesh.material.diffuse.x, (float)mesh.material.diffuse.y, (float)mesh.material.diffuse.z });
