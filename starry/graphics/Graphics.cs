@@ -31,7 +31,7 @@ public static class Graphics {
     public const uint SHADOW_WIDTH = 1024 * 4;
     public const uint SHADOW_HEIGHT = 1024 * 4;
     internal static ConcurrentQueue<Object3D> renderobjs = [];
-    internal static ConcurrentQueue<Light> lights = [];
+    internal static ConcurrentDictionary<int, Light> lights = [];
     internal static Camera currentCamera = new();
     internal static Skybox? sky;
 
@@ -292,7 +292,7 @@ public static class Graphics {
             // sh
             gl.Uniform3(gl.GetUniformLocation(shader, "color_mask"), 1, new float[] { (float)o.colorMask.x, (float)o.colorMask.y, (float)o.colorMask.z });
             gl.Uniform1(gl.GetUniformLocation(shader, "glowing"), o.glowing ? 1 : 0);
-            gl.Uniform3(gl.GetUniformLocation(shader, "glow_color"), 1, new float[] { o.glowColor.r / 256f, o.glowColor.g / 256f, o.glowColor.b / 256f });
+            gl.Uniform3(gl.GetUniformLocation(shader, "glow_color"), 1, new float[] { o.glowColor.r / 255f, o.glowColor.g / 255f, o.glowColor.b / 255f });
             gl.Uniform1(gl.GetUniformLocation(shader, "receive_shadows"), o.receiveShadows ? 1 : 0);
 
             // :(
@@ -346,7 +346,7 @@ public static class Graphics {
         }
     }
 
-    static unsafe void debugQuad()
+    static unsafe void renderDebugQuad()
     {
         if (gl == null) return;
         // tehre eeneeds to be debug vao to use the debug vao
@@ -373,9 +373,126 @@ public static class Graphics {
         gl.BindVertexArray(0);       
     }
 
-    public void endDrawing()
+    public static unsafe void endDrawing()
     {
         if (Window.glfw == null) return;
+        if (gl == null) return;
+        if (shadowShader == null) return;
+        if (mainShader == null) return;
         Glfw glfw = Window.glfw;
+
+        glfw.GetFramebufferSize(Window.window, out int width, out int height);
+
+        // sahdowf,g
+        gl.ClearColor(138f / 255f, 220f / 255f, 244f / 255f, 1f);
+        gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+        Vector3 up = new(0, 1, 0);
+        Vector3 dir = new(0, 0, 0);
+        Matrix4x4 lightproj = Matrix4x4.CreateOrthographic(-40, 40, shadowNear, shadowFar);
+        Matrix4x4 lightview = Matrix4x4.CreateLookAt(new Vector3((float)lights[0].position.x, (float)lights[0].position.y, (float)lights[0].position.z), dir, up);
+        Matrix4x4 lightspace = lightproj * lightview;
+
+        // render scene from light's point of view
+        gl.UseProgram(shadowShader.obj);
+        var aksondendryt = MemoryMarshal.CreateSpan(ref lightspace.M11, 16).ToArray();
+        gl.UniformMatrix4(gl.GetUniformLocation(shadowShader.obj, "lightSpaceMatrix"), 1, false, aksondendryt);
+
+        // reset viewport and clear color
+        gl.Viewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+        gl.BindFramebuffer(FramebufferTarget.Framebuffer, depthFbo);
+        gl.Clear(ClearBufferMask.DepthBufferBit);
+        //gl.CullFace(GLEnum.Front);
+        renderObjects(renderobjs.ToArray(), shadowShader.obj);
+        //gl.CullFace(GLEnum.Back);
+        gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+        // scene
+        gl.UseProgram(mainShader.obj);
+        // DON'T.
+        float ratio = width / height;
+        gl.Viewport(0, 0, (uint)width, (uint)height);
+        gl.ClearColor(138f / 255f, 220f / 255f, 244f / 255f, 1f);
+        gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+        // camera position
+        gl.Uniform3(gl.GetUniformLocation(mainShader.obj, "cameraPos"), 1, new float[] { (float)currentCamera.position.x, (float)currentCamera.position.y, (float)currentCamera.position.z });
+
+        // fucking process the fucking lights
+        gl.Uniform1(gl.GetUniformLocation(mainShader.obj, "lightsNr"), lights.Count);
+        foreach (var light in lights) {
+            gl.Uniform3(gl.GetUniformLocation(mainShader.obj, $"lightsPos[{light.Key}]"), 1, new float[] { (float)light.Value.position.x, (float)light.Value.position.y, (float)light.Value.position.z });
+            gl.Uniform3(gl.GetUniformLocation(mainShader.obj, $"lightsColors[{light.Key}]"), 1, new float[] { light.Value.color.r / 255f, light.Value.color.g / 255f, light.Value.color.b / 255f });
+        }
+
+        // shadow map to shader
+        gl.Uniform1(gl.GetUniformLocation(mainShader.obj, "shadowMap"), 0);
+        gl.Uniform1(gl.GetUniformLocation(mainShader.obj, "shadowBias"), shadowBias);
+        gl.Uniform1(gl.GetUniformLocation(mainShader.obj, "shadowPCFEnabled"), shadowPcfEnabled ? 1 : 0);
+
+        // skybox to shader
+        if (sky != null) {
+            gl.Uniform1(gl.GetUniformLocation(mainShader.obj, "skybox"), 4);
+            gl.ActiveTexture(GLEnum.Texture4);
+            gl.BindTexture(GLEnum.TextureCubeMap, sky.textureId);
+        }
+
+        // compute mvp matrix
+        vec3 cameradir = currentCamera.position + currentCamera.front;
+        Matrix4x4 v = Matrix4x4.CreateLookAt(new Vector3((float)currentCamera.position.x, (float)currentCamera.position.y, (float)currentCamera.position.z), new Vector3((float)cameradir.x, (float)cameradir.y, (float)cameradir.z), new Vector3((float)currentCamera.up.x, (float)currentCamera.up.y, (float)currentCamera.up.z));
+        Matrix4x4 p = Matrix4x4.CreatePerspective((float)StMath.deg2rad(45), ratio, 0.1f, 100f);
+
+        // pass mvp to shader
+        var pee = MemoryMarshal.CreateSpan(ref p.M11, 16).ToArray();
+        var vee = MemoryMarshal.CreateSpan(ref v.M11, 16).ToArray();
+        gl.UniformMatrix4(gl.GetUniformLocation(mainShader.obj, "V"), 1, false, vee);
+        gl.UniformMatrix4(gl.GetUniformLocation(mainShader.obj, "P"), 1, false, pee);
+
+        // passs light-space matrix to shader
+        gl.UniformMatrix4(gl.GetUniformLocation(mainShader.obj, "lightSpaceMatrix"), 1, false, aksondendryt);
+
+        // YOU UNDERSTAND MECHANICAL HANDS ARE THE RULER OF EVERYTHING
+        gl.Uniform1(gl.GetUniformLocation(mainShader.obj, "time"), (float)glfw.GetTime());
+
+        // pass depth map
+        gl.ActiveTexture(GLEnum.Texture0);
+        gl.BindTexture(GLEnum.Texture2D, depthMap);
+
+        // process objects
+        renderObjects(renderobjs.ToArray(), mainShader.obj);
+
+        // skybox
+        if (sky != null && skyboxShader != null) {
+            gl.DepthFunc(DepthFunction.Lequal);
+            gl.UseProgram(skyboxShader.obj);
+            gl.Uniform1(gl.GetUniformLocation(sky.textureId, "skybox"), 0);
+            v[3, 0] = 0;
+            v[3, 1] = 0;
+            v[3, 2] = 0;
+            v[3, 3] = 0;
+            gl.UniformMatrix4(gl.GetUniformLocation(skyboxShader.obj, "view"), 1, false, vee);
+            gl.UniformMatrix4(gl.GetUniformLocation(skyboxShader.obj, "projection"), 1, false, pee);
+
+            // skybox cube
+            gl.BindVertexArray(sky.vao);
+            gl.ActiveTexture(GLEnum.Texture0);
+            gl.BindTexture(GLEnum.TextureCubeMap, sky.textureId);
+            gl.DrawArrays(GLEnum.Triangles, 0, 36);
+            gl.BindVertexArray(0);
+            gl.DepthFunc(DepthFunction.Less); // reset depth function
+        }
+
+        // debug
+        if (debugShader != null) {
+            gl.UseProgram(debugShader.obj);
+            gl.Uniform1(gl.GetUniformLocation(debugShader.obj, "near_plane"), shadowNear);
+            gl.Uniform1(gl.GetUniformLocation(debugShader.obj, "far_plane"), shadowFar);
+            gl.Uniform1(gl.GetUniformLocation(debugShader.obj, "depthMap"), 0);
+            gl.ActiveTexture(GLEnum.Texture0);
+            gl.BindTexture(GLEnum.Texture2D, depthMap);
+            if (debugEnabled) renderDebugQuad();
+        }
+
+        setOpenGlState();
     }
 }
