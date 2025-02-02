@@ -14,11 +14,20 @@ public class Player : IEntity {
     public string[] initGroups =>
         [Groups.PLAYER_GROUP, Groups.HUMAN_GROUP, Groups.SPECIES_GROUP];
 
-    readonly double speed = 3.5;
+    Object3D? bob;
 
-    public void create() {}
+    public async void create()
+    {
+        bob = new Object3D() {
+            model = await load<Model>("bob_guy.obj"),
+            rotationEuler = (125, 125, 125)
+        };
+    }
 
     public void update(double delta) {}
 
-    public void draw() {}
+    public void draw()
+    {
+        Graphics.drawObject3D(bob!);
+    }
 }

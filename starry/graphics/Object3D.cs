@@ -94,7 +94,6 @@ public class Object3D {
     /// </summary>
     public bool receiveShadows { get; set; } = false;
     public aabb box { get; set; } = new();
-    public uint shader { get; set; } = 0;
 
     /// <summary>
     /// makes a matrix thing shitfuck crapfrick

@@ -46,65 +46,90 @@ public class Shader {
     /// <summary>
     /// checks if the shader is busted, returns true if it is busted
     /// </summary>
-    public unsafe bool didCompilationFail(uint obj, ShaderType type)
+    public unsafe Task<bool> didCompilationFail(uint obj, ShaderType type)
     {
-        if (Graphics.gl == null) return true;
-        GL gl = Graphics.gl;
-
-        string shadertypestr = type switch {
-            ShaderType.PROGRAM => "program",
-            ShaderType.FRAGMENT => "fragment",
-            ShaderType.VERTEX => "vertex",
-            _ => "what",
-        };
-
-        if (type != ShaderType.PROGRAM) {
-            gl.GetShader(obj, GLEnum.CompileStatus, out int success);
-            if (success == 0) {
-                gl.GetShaderInfoLog(obj, 1024, null, out string infolog);
-                Starry.log($"Error compiling {shadertypestr} shader: {infolog}");
-                return true;
+        TaskCompletionSource<bool> tcs = new();
+        Window.actions.Enqueue(() => {
+            if (Graphics.gl == null) {
+                tcs.SetResult(true);
+                return;
             }
-            else return false;
-        }
-        else {
-            gl.GetProgram(obj, GLEnum.LinkStatus, out int success);
-            if (success == 0) {
-                gl.GetProgramInfoLog(obj, 1024, null, out string infolog);
-                Starry.log($"Error linking {shadertypestr} shader: {infolog}");
-                return true;
+            GL gl = Graphics.gl;
+
+            string shadertypestr = type switch {
+                ShaderType.PROGRAM => "program",
+                ShaderType.FRAGMENT => "fragment",
+                ShaderType.VERTEX => "vertex",
+                _ => "what",
+            };
+
+            if (type != ShaderType.PROGRAM) {
+                gl.GetShader(obj, GLEnum.CompileStatus, out int success);
+                if (success == 0) {
+                    gl.GetShaderInfoLog(obj, 1024, null, out string infolog);
+                    Starry.log($"Error compiling {shadertypestr} shader: {infolog}");
+                    tcs.SetResult(true);
+                }
+                else tcs.SetResult(false);
             }
-            else return false;
-        }
+            else {
+                gl.GetProgram(obj, GLEnum.LinkStatus, out int success);
+                if (success == 0) {
+                    gl.GetProgramInfoLog(obj, 1024, null, out string infolog);
+                    Starry.log($"Error linking {shadertypestr} shader: {infolog}");
+                    tcs.SetResult(true);
+                }
+                else tcs.SetResult(false);
+            }
+        });
+        Window.actionLoopEvent.Set();
+        return tcs.Task;
     }
 
     /// <summary>
     /// compiles the shader. returns true if it succeeded, returns false otherwise
     /// </summary>
-    public bool compile()
+    public Task<bool> compile()
     {
-        if (Graphics.gl == null) return false;
-        GL gl = Graphics.gl;
+        TaskCompletionSource<bool> tcs = new();
+        Window.actions.Enqueue(async () => {
+            if (Graphics.gl == null) {
+                tcs.SetResult(false);
+                return;
+            }
+            GL gl = Graphics.gl;
 
-        uint svert = gl.CreateShader(GLEnum.VertexShader);
-        gl.ShaderSource(svert, vertSrc);
-        gl.CompileShader(svert);
-        if (didCompilationFail(svert, ShaderType.VERTEX)) return false;
+            uint svert = gl.CreateShader(GLEnum.VertexShader);
+            gl.ShaderSource(svert, vertSrc);
+            gl.CompileShader(svert);
+            if (await didCompilationFail(svert, ShaderType.VERTEX)) {
+                tcs.SetResult(false);
+                return;
+            }
 
-        uint sfrag = gl.CreateShader(GLEnum.FragmentShader);
-        gl.ShaderSource(sfrag, fragSrc);
-        gl.CompileShader(sfrag);
-        if (didCompilationFail(sfrag, ShaderType.FRAGMENT)) return false;
+            uint sfrag = gl.CreateShader(GLEnum.FragmentShader);
+            gl.ShaderSource(sfrag, fragSrc);
+            gl.CompileShader(sfrag);
+            if (await didCompilationFail(sfrag, ShaderType.FRAGMENT)) {
+                tcs.SetResult(false);
+                return;
+            }
 
-        obj = gl.CreateProgram();
-        gl.AttachShader(obj, svert);
-        gl.AttachShader(obj, sfrag);
-        gl.LinkProgram(obj);
-        if (didCompilationFail(obj, ShaderType.PROGRAM)) return false;
+            obj = gl.CreateProgram();
+            gl.AttachShader(obj, svert);
+            gl.AttachShader(obj, sfrag);
+            gl.LinkProgram(obj);
+            if (await didCompilationFail(obj, ShaderType.PROGRAM)) {
+                tcs.SetResult(false);
+                return;
+            }
 
-        // we dont need those anymore :)
-        gl.DeleteShader(svert);
-        gl.DeleteShader(sfrag);
-        return true;
+            // we dont need those anymore :)
+            gl.DeleteShader(svert);
+            gl.DeleteShader(sfrag);
+            tcs.SetResult(true);
+        });
+        Window.actionLoopEvent.Set();
+        return tcs.Task;
     }
 }

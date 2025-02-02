@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -44,6 +45,7 @@ public class Model : IAsset {
                     ny = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].y : 0.0f),
                     nz = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].z : 0.0f)
                 };
+                
 
                 int index = vertices.Count;
                 vertices.Add(vertex);
