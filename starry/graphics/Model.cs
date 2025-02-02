@@ -41,12 +41,13 @@ public class Model : IAsset {
                     z = (float)tmpverts[vIndex].z,
                     u = (float)(vtIndex >= 0 ? tmpuvs[vtIndex].x : 0.0f),
                     v = (float)(vtIndex >= 0 ? tmpuvs[vtIndex].y : 0.0f),
-                    nx = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].x : 0.0f),
-                    ny = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].y : 0.0f),
-                    nz = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].z : 0.0f)
                 };
+                if (tmpnormals.Count > 0) {
+                    vertex.nx = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].x : 0.0f);
+                    vertex.ny = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].y : 0.0f);
+                    vertex.nz = (float)(vnIndex >= 0 ? tmpnormals[vnIndex].z : 0.0f);
+                }
                 
-
                 int index = vertices.Count;
                 vertices.Add(vertex);
                 vertexHash[vkey] = (uint)index;
