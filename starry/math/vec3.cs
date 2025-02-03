@@ -62,19 +62,4 @@ public struct vec3(double x, double y, double z) {
     /// rounds the components :)
     /// </summary>
     public readonly vec3i round() => new((long)Math.Round(x), (long)Math.Round(y), (long)Math.Round(z));
-
-    /// <summary>
-    /// normalize
-    /// </summary>
-    public readonly vec3 normalize()
-    {
-        vec3 v = this;
-        double man = Math.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-        if (man > 0.0) {
-            v.x /= man;
-            v.y /= man;
-            v.z /= man;
-        }
-        return v;
-    }
 }

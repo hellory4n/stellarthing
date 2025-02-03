@@ -37,6 +37,8 @@ public static class Input {
 
     internal static void keyCallback(Keys key, InputAction action)
     {
+        Starry.log(keys);
+
         if (key >= 0 && (int)key < MAX_KEYS) {
             if (action != InputAction.Release) {
                 if (keys[(int)key] == PressedState.INACTIVE || keys[(int)key] == PressedState.JUST_RELEASED) {
@@ -82,11 +84,10 @@ public static class Input {
     internal static void mouseCursorCallback(double x, double y)
     {
         // mate
-        /*mousepos = (
+        mousepos = (
             (x * Graphics.scale) - Graphics.offset.x,
             (y * Graphics.scale) - Graphics.offset.y
-        );*/
-        mousepos = (x, y);
+        );
     }
 
     // the fucking api

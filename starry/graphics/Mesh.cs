@@ -1,79 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using SkiaSharp;
+
 namespace starry;
 
 /// <summary>
-/// uhhh uhmmm umm uhhhhh
+/// mesh
 /// </summary>
-public class Mesh {
-    public string name { get; set; } = "";
-    public Vertex[] vertices { get; set; } = [];
-    public uint[] indices { get; set; } = [];
-    public uint vao { get; set; } = 0;
-    public uint vbo { get; set; } = 0;
-    public uint ebo { get; set; } = 0;
-    public Material material { get; set; } = new();
-    public uint textureId { get; set; } = 0;
-    public uint normalMapId { get; set; } = 0;
-    public uint specularMapId { get; set; } = 0;
-
+public class Mesh(IEnumerable<Triangle> triangles) {
     /// <summary>
-    /// as the name implies it computes the tangent
+    /// triângulo
     /// </summary>
-    public void computeTangent()
+    public Triangle[] triangles { get; set; } = triangles.ToArray();
+}
+
+/// <summary>
+/// triangle :)
+/// </summary>
+public class Triangle(Vert one, Vert two, Vert three) {
+    public Vert v1 { get; } = one;
+    public Vert v2 { get; } = two;
+    public Vert v3 { get; } = three;
+    SKVertices? verts;
+
+    public SKVertices asSkVerts()
     {
-        // don't ask, i stole this
-        for (int i = 0; i < indices.Length; i += 3) {
-            Vertex v1 = vertices[indices[i]];
-            Vertex v2 = vertices[indices[i + 1]];
-            Vertex v3 = vertices[indices[i + 2]];
+        // man
+        if (verts != null) return verts;
 
-            vec2 uv1 = (v1.u, v1.v);
-            vec2 uv2 = (v2.u, v3.v);
-            vec2 uv3 = (v3.u, v3.v);
+        // TODO add projections :)
+        SKPoint[] points = [
+            new SKPoint((float)v1.pos.x, (float)v1.pos.z),
+            new SKPoint((float)v2.pos.x, (float)v2.pos.z),
+            new SKPoint((float)v3.pos.x, (float)v3.pos.z),
+        ];
 
-            vec3 v1pos = (v1.x, v1.y, v1.z);
-            vec3 v2pos = (v2.x, v2.y, v2.z);
-            vec3 v3pos = (v3.x, v3.y, v3.z);
+        SKColor[] colors = [
+            new SKColor(v1.col.r, v1.col.g, v1.col.b, v1.col.a),
+            new SKColor(v2.col.r, v2.col.g, v2.col.b, v2.col.a),
+            new SKColor(v3.col.r, v3.col.g, v3.col.b, v3.col.a),
+        ];
 
-            vec3 edge1 = v2pos - v1pos;
-            vec3 edge2 = v3pos - v1pos;
+        verts = SKVertices.CreateCopy(SKVertexMode.Triangles, points, colors);
+        return verts;
+    }
 
-            vec2 deltaUv1 = uv2 - uv1;
-            vec2 deltaUv2 = uv3 - uv1;
+    public override int GetHashCode()
+    {
+        HashCode help = new();
+        help.Add(v1.GetHashCode());
+        help.Add(v2.GetHashCode());
+        help.Add(v3.GetHashCode());
+        return help.ToHashCode();
+    }
 
-            double f = 1.0 / (deltaUv1.x * deltaUv2.y - deltaUv2.x * deltaUv1.y);
+    // i know
+    ~Triangle()
+    {
+        verts?.Dispose();
+    }
+}
 
-            // the titular tangent is being computed!
-            vec3 tangent = (
-                f * (deltaUv2.y * edge1.x - deltaUv1.y * edge2.x),
-                f * (deltaUv2.y * edge1.y - deltaUv1.y * edge2.y),
-                f * (deltaUv2.y * edge1.z - deltaUv1.y * edge2.z)
-            );
-            tangent = tangent.normalize();
+/// <summary>
+/// point in a 3d space. also has a color bcuz why not
+/// </summary>
+public struct Vert(vec3 pos, color col) {
+    public vec3 pos { get; set; } = pos;
+    public color col { get; set; } = col;
 
-            // help me axon dendrite
-            v1.tx = (float)tangent.x;
-            v1.ty = (float)tangent.y;
-            v1.tz = (float)tangent.z;
-            v2.tx = (float)tangent.x;
-            v2.ty = (float)tangent.y;
-            v2.tz = (float)tangent.z;
-            v3.tx = (float)tangent.x;
-            v3.ty = (float)tangent.y;
-            v3.tz = (float)tangent.z;
-
-            vertices[indices[i]] = v1;
-            vertices[indices[i + 1]] = v2;
-            vertices[indices[i + 2]] = v3;
-        }
-
-        // el normalize
-        for (uint i = 0; i < indices.Length; i++) {
-            Vertex v = vertices[indices[i]];
-            vec3 tnorm = (v.tx, v.ty, v.tz);
-            tnorm = tnorm.normalize();
-            vertices[indices[i]].tx = (float)tnorm.x;
-            vertices[indices[i]].ty = (float)tnorm.y;
-            vertices[indices[i]].tz = (float)tnorm.z;
-        }
+    public override readonly int GetHashCode()
+    {
+        HashCode help = new();
+        help.Add(pos.GetHashCode());
+        help.Add(col.GetHashCode());
+        return help.ToHashCode();
     }
 }

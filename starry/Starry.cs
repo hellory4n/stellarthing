@@ -1,6 +1,5 @@
 ﻿﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,13 +22,12 @@ public static class Starry {
     public static async Task create(StarrySettings settings)
     {
         // funni
-        settings.shaderPath = Path.GetFullPath("assets/engine/shaders");
         Starry.settings = settings;
         Console.WriteLine($"{settings.gameName} {settings.gameVersion.asVersion()} - Starry {starryVersion.asVersion()}");
         Console.WriteLine("Use --verbose if the game is broken.");
 
         // opengl thread lmao
-        Thread thread = new(Window.glLoop) {
+        Thread thread = new(Graphics.glLoop) {
             IsBackground = true,
         };
         thread.Start();
@@ -38,16 +36,19 @@ public static class Starry {
         if (settings.showVersion) title += " " + settings.gameVersion.asVersion();
         
         // the size doesn't matter once you make it fullscreen
-        Window.create(title);
+        Window.create(title, settings.renderSize);
         Window.setFullscreen(settings.fullscreen);
         
         // fccking kmodules
         Audio.create(); // can't multithread that
+        await Task.Run(Tilemap.create);
         await DebugMode.create();
 
         settings.startup();
         
         while (!await Window.isClosing()) {
+            Graphics.clear(color.darkGreen);
+
             // it's hardcoded into my brain
             if (isDebug()) {
                 if (Input.isKeyJustPressed(Key.F8)) Window.close();
@@ -58,6 +59,7 @@ public static class Starry {
             await DebugMode.update();
             await Task.Run(Audio.update);
             await Task.Run(Music.update);
+            await Task.Run(Tilemap.update);
             await Entities.update();
             Input.update();
 

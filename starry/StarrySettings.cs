@@ -28,7 +28,15 @@ public struct StarrySettings() {
     /// </summary>
     public bool fullscreen { get; set; } = true;
     /// <summary>
-    /// man
+    /// the resolution the game is rendered at (it gets scaled to become the actual resolution)
+    /// </summary>
+    public vec2i renderSize { get; set; } = (200, 100);
+    /// <summary>
+    /// livia forced me to add this
+    /// </summary>
+    public bool antiAliasing { get; set; } = true;
+    /// <summary>
+    /// you could probably change this so there's resource packs
     /// </summary>
     public string assetPath { get; set; } = "";
     /// <summary>
@@ -36,12 +44,11 @@ public struct StarrySettings() {
     /// </summary>
     public bool verbose { get; set; } = false;
     /// <summary>
+    /// the size of the tiles
+    /// </summary>
+    public vec2i tileSize { get; set; } = (0, 0);
+    /// <summary>
     /// keyboard actions that can be remapped
     /// </summary>
     public Dictionary<string, Key[]> keymap { get; set; } = new();
-
-    /// <summary>
-    /// WHERES MY shaders I THOUGHT IT WAS HERE
-    /// </summary>
-    internal string shaderPath { get; set; } = "";
 }
