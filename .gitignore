@@ -1,2 +1,4 @@
 bin
 .vscode/settings.json
+# so the dumb c++ extension detects the standard library lmao
+.vscode/c_cpp_properties.json
