@@ -1,47 +1,96 @@
-#include <stdio.h>
-#include <stdlib.h>
-#define GLAD_GL_IMPLEMENTATION
-#include <glad/glad.h>
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
+/*******************************************************************************************
+*
+*   project_name
+*
+*   This example has been created using raylib 1.0 (www.raylib.com)
+*   raylib is licensed under an unmodified zlib/libpng license (View raylib.h for details)
+*
+*   Copyright (c) 2013-2024 Ramon Santamaria (@raysan5)
+*
+********************************************************************************************/
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+#include "raylib.h"
+
+#if defined(PLATFORM_WEB)
+    #include <emscripten/emscripten.h>
+#endif
+
+//----------------------------------------------------------------------------------
+// Local Variables Definition (local to this module)
+//----------------------------------------------------------------------------------
+Camera camera = { 0 };
+Vector3 cubePosition = { 0 };
+
+//----------------------------------------------------------------------------------
+// Local Functions Declaration
+//----------------------------------------------------------------------------------
+static void UpdateDrawFrame(void);          // Update and draw one frame
+
+//----------------------------------------------------------------------------------
+// Main entry point
+//----------------------------------------------------------------------------------
+int main()
+{
+    // Initialization
+    //--------------------------------------------------------------------------------------
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+
+    InitWindow(screenWidth, screenHeight, "raylib - project_name");
+
+    camera.position = (Vector3){ 3.0f, 3.0f, 2.0f };
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
+    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
+    camera.fovy = 60.0f;
+    camera.projection = CAMERA_PERSPECTIVE;
+
+#if defined(PLATFORM_WEB)
+    emscripten_set_main_loop(UpdateDrawFrame, 60, 1);
+#else
+    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
+    //--------------------------------------------------------------------------------------
+
+    // Main game loop
+    while (!WindowShouldClose())    // Detect window close button or ESC key
+    {
+        UpdateDrawFrame();
+    }
+#endif
+
+    // De-Initialization
+    //--------------------------------------------------------------------------------------
+    CloseWindow();                  // Close window and OpenGL context
+    //--------------------------------------------------------------------------------------
+
+    return 0;
 }
 
-int main() {
-    if (!glfwInit()) {
-        fprintf(stderr, "Failed to initialize GLFW\n");
-        return -1;
-    }
+// Update and draw game frame
+static void UpdateDrawFrame(void)
+{
+    // Update
+    //----------------------------------------------------------------------------------
+    UpdateCamera(&camera, CAMERA_ORBITAL);
+    //----------------------------------------------------------------------------------
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    // Draw
+    //----------------------------------------------------------------------------------
+    BeginDrawing();
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Window", NULL, NULL);
-    if (!window) {
-        fprintf(stderr, "Failed to create GLFW window\n");
-        glfwTerminate();
-        return -1;
-    }
+        ClearBackground(RAYWHITE);
 
-    glfwMakeContextCurrent(window);
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        fprintf(stderr, "Failed to initialize GLAD\n");
-        return -1;
-    }
+        BeginMode3D(camera);
 
-    glViewport(0, 0, 800, 600);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+            DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
+            DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+            DrawGrid(10, 1.0f);
 
-    while (!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT);
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
+        EndMode3D();
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
-    return 0;
+        DrawText("Welcome to raylib basic sample", 10, 40, 20, DARKGRAY);
+
+        DrawFPS(10, 10);
+
+    EndDrawing();
+    //----------------------------------------------------------------------------------
 }
