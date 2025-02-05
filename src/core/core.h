@@ -1,6 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 /// random "size"s everywhere would be weird
 typedef size_t nint;

@@ -1,6 +1,6 @@
 #pragma once
 #include <math.h>
-#include "core.h"
+#include "core/core.h"
 
 /// the world's worst vector2
 typedef struct {

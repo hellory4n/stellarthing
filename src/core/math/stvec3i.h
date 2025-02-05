@@ -1,6 +1,6 @@
 #pragma once
 #include <math.h>
-#include "core.h"
+#include "core/core.h"
 
 /// vector3 but integer
 typedef struct {

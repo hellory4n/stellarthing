@@ -13,6 +13,8 @@
 #include "lib/raylib_nuklear.h"
 #define LUA_IMPL
 #include "lib/minilua.h"
+#include "core/math/math.h"
+#include "core/stlist.h"
 
 int main() {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
@@ -32,6 +34,16 @@ int main() {
         .b = 0.24f,
         .a = 1.00f,
     };
+
+    StList* list = StList_new(0);
+    StList_add(list, (void*)336531);
+    StList_add(list, (void*)336532);
+    StList_add(list, (void*)336533);
+    StList_add(list, (void*)336534);
+    for (nint i = 0; i < list->length; i++) {
+        printf("man. %i", StList_at(list, i));
+    }
+    StList_free(list);
 
     while (!WindowShouldClose()) {
         UpdateNuklear(ctx);

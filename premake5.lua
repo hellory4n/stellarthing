@@ -150,8 +150,7 @@ workspace (workspaceName)
         startproject(workspaceName)
     end
 
-cdialect "C17"
-cppdialect "C++17"
+cdialect "C99"
 check_raylib();
 
 include ("raylib_premake5.lua")
