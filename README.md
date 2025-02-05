@@ -4,29 +4,11 @@ Got a random segfault in C#, C is great because all of your segfaults are your o
 
 ## Building
 
-If you're using Windows then good luck lmao
+premake.
 
-First you need GCC and Make and stuff.
+you can also compile from linux to windows if you're insane
 
-Then you have to install some libraries
-
-On Fedora it's
-
-```sh
-sudo dnf install glfw glfw-devel glew glew-devel mesa-libGL mesa-libGL-devel mesa-libGLU-devel -y
-```
-
-GLAD requires [generating header files](https://glad.dav1d.de/#language=c&specification=gl&api=gl%3D3.3&api=gles1%3Dnone&api=gles2%3Dnone&api=glsc2%3Dnone&profile=core&loader=on&localfiles=on) (just click generate and download the `.h` files) and then putting them in your `/usr/include/glad`
-
-Now you can compile and run with:
-
-```sh
-make && ./bin/stellarthing
-```
-
-Compiling to Windows requires MinGW
-
-```sh
-sudo dnf install mingw64-gcc
-make windows
-```
+1. step 1: install wine
+2. step 2: install w64devkit on wine
+3. step 3: run w64devkit.exe
+4. step 4: compile the project like you would on linux
