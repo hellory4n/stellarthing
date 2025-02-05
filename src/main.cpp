@@ -2,8 +2,6 @@
 #include "raymath.h"
 
 #include "game.h"   // an external header in this project
-#include "lib.h"	// an external header in the static lib project
-
 
 void GameInit()
 {
@@ -31,7 +29,7 @@ void GameDraw()
     BeginDrawing();
     ClearBackground(DARKGRAY);
 
-    DrawText("Hello Raylib!", 10, 10, 20, GetTextColor());
+    DrawText("Hello Raylib!", 10, 10, 20, RED);
 
     EndDrawing();
 }
