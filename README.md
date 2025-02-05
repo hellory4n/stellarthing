@@ -15,6 +15,7 @@ you can also compile from linux to windows if you're insane
 
 you can release stuff with these commands: (you have to generate makefiles first)
 
+
 ```sh
 make config=release_x64
 # arm is supported, i just don't know anyone with an arm pc
