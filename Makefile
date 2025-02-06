@@ -9,8 +9,16 @@ PLATFORM              ?= PLATFORM_DESKTOP
 PROJECT_NAME          ?= stellarthing
 PROJECT_VERSION       ?= 0.11.0
 PROJECT_BUILD_PATH    ?= .
-# idfk why stlist isnt compiled
-PROJECT_SOURCE_FILES  ?= $(wildcard src/*.c) src/core/collections/stlist.c
+# i love make
+# youre just supposed to put every folder here
+PROJECT_SOURCE_FILES ?= \
+    $(wildcard src/**.c) \
+    $(wildcard src/lib/**.c) \
+    $(wildcard src/core/**.c) \
+    $(wildcard src/core/collections/**.c) \
+    $(wildcard src/core/math/**.c) \
+
+INCLUDE_PATHS = -Isrc
 
 # raylib library variables
 RAYLIB_SRC_PATH       ?= ../../raylib/src

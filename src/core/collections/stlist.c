@@ -33,20 +33,21 @@ bool StList_add(StList* l, void* item)
         }
     }
     // man
-    memcpy(l->items + l->length * sizeof(void*), item, sizeof(void*));
+    ((void**)l->items)[l->length] = item;
     l->length++;
     return true;
 }
 
 void* StList_at(StList* l, nint idx)
 {
+    fflush(stdout);
     // not a huge fan of segfaults
     if (idx >= l->length) {
         fprintf(stderr, "Index out of range\n");
         return NULL;
     }
 
-    return l->items + idx * sizeof(void*);
+    return ((void**)l->items)[idx];
 }
 
 void StList_set(StList* l, nint idx, void* item)
@@ -57,7 +58,7 @@ void StList_set(StList* l, nint idx, void* item)
         return;
     }
 
-    memcpy(l->items + idx * sizeof(void*), item, sizeof(void*));
+    ((void**)l->items)[idx] = item;
 }
 
 void StList_free(StList* l)

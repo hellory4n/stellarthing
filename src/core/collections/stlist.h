@@ -3,7 +3,7 @@
 
 /// dynamically sized list
 typedef struct {
-    void* items;
+    void** items;
     nint capacity;
     nint length;
 } StList;
