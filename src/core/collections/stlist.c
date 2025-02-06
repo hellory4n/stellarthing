@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "stlist.h"
+#include "core/starry.h"
 
 StList* StList_new(nint capacity)
 {
@@ -32,6 +33,7 @@ bool StList_add(StList* l, void* item)
             return false;
         }
     }
+    
     // man
     ((void**)l->items)[l->length] = item;
     l->length++;
@@ -40,13 +42,14 @@ bool StList_add(StList* l, void* item)
 
 void* StList_at(StList* l, nint idx)
 {
-    fflush(stdout);
     // not a huge fan of segfaults
     if (idx >= l->length) {
         fprintf(stderr, "Index out of range\n");
+        // a segfault is about to happen!
+        fflush(stdout);
         return NULL;
     }
-
+    
     return ((void**)l->items)[idx];
 }
 
@@ -55,6 +58,8 @@ void StList_set(StList* l, nint idx, void* item)
     // not a huge fan of segfaults
     if (idx >= l->length) {
         fprintf(stderr, "Index out of range\n");
+        // a segfault is about to happen!
+        fflush(stdout);
         return;
     }
 

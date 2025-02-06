@@ -29,8 +29,10 @@ int main() {
     st_log("goddamit 4", NULL, ST_LOG_TYPE_ADDRESS);
     StList_add(list, (void*)8888);
     st_log("goddamit 5", NULL, ST_LOG_TYPE_ADDRESS);
+    StList_set(list, 0, (void*)162);
+    st_log("goddamit 5.5", NULL, ST_LOG_TYPE_ADDRESS);
     for (nint i = 0; i < list->length; i++) {
-        st_log("goddamit 6", NULL, ST_LOG_TYPE_ADDRESS);
+        st_log("goddamit 6.0", (void*)list, ST_LOG_TYPE_ADDRESS);
         st_log("man.", StList_at(list, i), ST_LOG_TYPE_INT32);
         st_log("goddamit 7", NULL, ST_LOG_TYPE_ADDRESS);
     }
