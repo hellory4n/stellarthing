@@ -1,6 +1,4 @@
-// it doesnt work if it's a c file for some reason
 #include "raylib.h"
-#include "raymath.h"
 //#define NK_INCLUDE_FIXED_TYPES
 //#define NK_INCLUDE_STANDARD_IO
 #define NK_INCLUDE_STANDARD_VARARGS
@@ -12,19 +10,32 @@
 #define RAYLIB_NUKLEAR_INCLUDE_DEFAULT_FONT
 #include "lib/raylib_nuklear.h"
 #define LUA_IMPL
-#include "lib/minilua.h"
+// TURNS OUT LUA INCLUDES WINDOWS.H AND THAT CONFLICTS WITH RAYLIB
+//#include "lib/minilua.h"
 #include "core/math/math.h"
-#include "core/stlist.h"
+#include "core/collections/stlist.h"
+#include <stdio.h>
 
 int main() {
+    StList* list = StList_new(0);
+    StList_add(list, (void*)336531);
+    StList_add(list, (void*)336532);
+    StList_add(list, (void*)336533);
+    StList_add(list, (void*)336534);
+    for (nint i = 0; i < list->length; i++) {
+        printf("man. %i", (int64)StList_at(list, i));
+    }
+    StList_free(list);
+
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(1280, 720, "Example");
     SetTargetFPS(144);
 
-    lua_State* L = luaL_newstate();
-    luaL_openlibs(L);
-    luaL_loadstring(L, "print 'hello from lua'");
-    lua_call(L, 0, 0);
+    // TURNS OUT LUA INCLUDES WINDOWS.H AND THAT CONFLICTS WITH RAYLIB
+    // lua_State* L = luaL_newstate();
+    // luaL_openlibs(L);
+    // luaL_loadstring(L, "print 'hello from lua'");
+    // lua_call(L, 0, 0);
 
     Font font = LoadFontFromNuklear(13);
     struct nk_context *ctx = InitNuklearEx(font, 13);
@@ -34,16 +45,6 @@ int main() {
         .b = 0.24f,
         .a = 1.00f,
     };
-
-    StList* list = StList_new(0);
-    StList_add(list, (void*)336531);
-    StList_add(list, (void*)336532);
-    StList_add(list, (void*)336533);
-    StList_add(list, (void*)336534);
-    for (nint i = 0; i < list->length; i++) {
-        printf("man. %i", StList_at(list, i));
-    }
-    StList_free(list);
 
     while (!WindowShouldClose()) {
         UpdateNuklear(ctx);
@@ -92,7 +93,8 @@ int main() {
 
     UnloadNuklear(ctx);
     CloseWindow();
-    lua_close(L);
+    // TURNS OUT LUA INCLUDES WINDOWS.H AND THAT CONFLICTS WITH RAYLIB
+    //lua_close(L);
 
     return 0;
 }

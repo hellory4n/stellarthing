@@ -1,7 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <math.h>
-#include "core/core.h"
+#include "../core.h"
 
 /// it's pi
 const double ST_PI = 3.141592653589793238463;

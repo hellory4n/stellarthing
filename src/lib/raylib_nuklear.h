@@ -710,10 +710,10 @@ nk_raylib_input_keyboard(struct nk_context * ctx)
     for (int i = 0; i < NK_RAYLIB_INPUT_KEYBOARD_CHECK_NUM; i++) {
         struct nk_raylib_input_keyboard_check check = checks[i];
         if (IsKeyDown(check.key) && check.modifier) {
-            nk_input_key(ctx, (nk_keys)check.input_key, true);
+            nk_input_key(ctx, check.input_key, true);
             checked = true;
         } else {
-            nk_input_key(ctx, (nk_keys)check.input_key, false);
+            nk_input_key(ctx, check.input_key, false);
         }
     }
     #undef NK_RAYLIB_INPUT_KEYBOARD_CHECK_NUM
