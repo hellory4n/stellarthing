@@ -9,6 +9,9 @@ typedef struct {
     int64 y;
 } stvec2i;
 
+/// makes a new vector
+stvec2i stvec2i_new(int64 x, int64 y);
+
 /// adds 2 vector2s together
 stvec2i stvec2i_add(stvec2i a, stvec2i b);
 

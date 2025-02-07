@@ -1,6 +1,11 @@
 #include <math.h>
 #include "stvec2.h"
 
+stvec2 stvec2_new(float64 x, float64 y)
+{
+    return (stvec2){ .x = x, .y = y };
+}
+
 stvec2 stvec2_add(stvec2 a, stvec2 b)
 {
     return (stvec2){ .x = a.x + b.x, .y = a.y + b.y };

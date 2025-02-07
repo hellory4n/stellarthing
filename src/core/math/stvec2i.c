@@ -1,5 +1,10 @@
 #include "stvec2i.h"
 
+stvec2i stvec2i_new(int64 x, int64 y)
+{
+    return (stvec2i){ .x = x, .y = y };
+}
+
 stvec2i stvec2i_add(stvec2i a, stvec2i b)
 {
     return (stvec2i){ .x = a.x + b.x, .y = a.y + b.y };

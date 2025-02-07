@@ -11,6 +11,9 @@ typedef struct {
     float64 z;
 } stvec3;
 
+/// makes a new vector
+stvec3 stvec3_new(float64 x, float64 y, float64 z);
+
 /// adds 2 vector3s together
 stvec3 stvec3_add(stvec3 a, stvec3 b);
 

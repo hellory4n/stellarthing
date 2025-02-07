@@ -133,3 +133,11 @@ But if the functions are supposed to return something, return null if it fails
 Use `const char*` for strings, conveniently UTF-8 supports comes (mostly) for free
 
 Use `core/core.h` numbers instead of `stdint.h`, they're mostly the same except without the `_t` and `size_t` is `nint` (native int) because having "size" everywhere would be weird
+
+Use `#pragma once`.
+
+Includes should be in this order:
+- Standard library stuff
+- Other third party stuff (raylib, `src/lib`)
+- Starry stuff
+- Game stuff

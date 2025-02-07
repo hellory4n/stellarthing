@@ -65,7 +65,7 @@ void st_log(const char* msg, void* data, StLogType type)
 
 bool st_new()
 {
-    printf("Initializing Starry %s\n", ST_STARRY_VERSION_STR);
+    printf("[STARRY CORE] Starry %s\n", ST_STARRY_VERSION_STR);
 
     // so random!
     srand(time(NULL));
