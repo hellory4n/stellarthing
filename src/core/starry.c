@@ -1,8 +1,9 @@
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 #include "starry.h"
-#include "core.h"
-#include "vectors.h"
+
+const stvec3i ST_STARRY_VERSION = { .x = 3, .y = 0, .z = 0 };
 
 void st_to_str(void* data, StLogType type, char* out)
 {
@@ -62,4 +63,16 @@ void st_log(const char* msg, void* data, StLogType type)
     st_to_str(data, type, shia_labuffer);
     printf("%s: %s\n", msg, shia_labuffer);
     fflush(stdout);
+}
+
+bool st_new()
+{
+    char verstr[16];
+    st_to_str(&ST_STARRY_VERSION, ST_LOG_TYPE_VEC3I_VERSION, verstr);
+    printf("Initializing Starry %s", verstr);
+
+    // so random!
+    srand(time(NULL));
+
+    return true;
 }

@@ -13,7 +13,7 @@ typedef int16_t int16;
 /// 32-bit signed integer
 typedef int32_t int32;
 /// 64-bit signed integer
-typedef int32_t int64;
+typedef int64_t int64;
 
 /// 8-bit unsigned integer
 typedef uint8_t uint8;
@@ -22,7 +22,7 @@ typedef uint16_t uint16;
 /// 32-bit unsigned integer
 typedef uint32_t uint32;
 /// 64-bit unsigned integer
-typedef uint32_t uint64;
+typedef uint64_t uint64;
 
 /// 32-bit floating point number
 typedef float float32;

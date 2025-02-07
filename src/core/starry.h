@@ -1,4 +1,6 @@
 #pragma once
+#include <stdbool.h>
+#include "vectors.h"
 
 /// common starry types
 typedef enum {
@@ -17,6 +19,12 @@ typedef enum {
     ST_LOG_TYPE_VEC3I,
     ST_LOG_TYPE_VEC3I_VERSION
 } StLogType;
+
+/// version of the engine
+const stvec3i ST_STARRY_VERSION;
+
+/// initializes the core components of the engine. returns true if it succeeded, returns false otherwise
+bool st_new();
 
 /// converts common types to strings and writes them to `out`
 void st_to_str(void* data, StLogType type, char* out);

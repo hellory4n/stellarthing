@@ -13,32 +13,16 @@
 // TURNS OUT LUA INCLUDES WINDOWS.H AND THAT CONFLICTS WITH RAYLIB
 //#include "lib/minilua.h"
 #include "core/math/math.h"
-#include "core/collections/stlist.h"
 #include <stdio.h>
 #include "core/starry.h"
 
 int main() {
-    st_log("let's go gambling!", NULL, ST_LOG_TYPE_ADDRESS);
-    StList* list = StList_new(0);
-    st_log("goddamit 1", NULL, ST_LOG_TYPE_ADDRESS);
-    StList_add(list, (void*)199);
-    st_log("goddamit 2", NULL, ST_LOG_TYPE_ADDRESS);
-    StList_add(list, (void*)299);
-    st_log("goddamit 3", NULL, ST_LOG_TYPE_ADDRESS);
-    StList_add(list, (void*)399);
-    st_log("goddamit 4", NULL, ST_LOG_TYPE_ADDRESS);
-    StList_add(list, (void*)8888);
-    st_log("goddamit 5", NULL, ST_LOG_TYPE_ADDRESS);
-    StList_set(list, 0, (void*)162);
-    st_log("goddamit 5.5", NULL, ST_LOG_TYPE_ADDRESS);
-    for (nint i = 0; i < list->length; i++) {
-        st_log("goddamit 6.0", (void*)list, ST_LOG_TYPE_ADDRESS);
-        st_log("man.", StList_at(list, i), ST_LOG_TYPE_INT32);
-        st_log("goddamit 7", NULL, ST_LOG_TYPE_ADDRESS);
-    }
-    st_log("goddamit 8", NULL, ST_LOG_TYPE_ADDRESS);
-    StList_free(list);
-    st_log("bbankrupt", NULL, ST_LOG_TYPE_ADDRESS);
+    st_new();
+    
+    char shia_labuffer[11];
+    st_rand_base64(10, shia_labuffer);
+    st_log("hehehehhea", NULL, ST_LOG_TYPE_ADDRESS);
+    printf("bmgmgm, %s\n", shia_labuffer);
 
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(1280, 720, "Example");
