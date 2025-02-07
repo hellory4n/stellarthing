@@ -365,7 +365,7 @@ clean_shell_sh:
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),LINUX)
 		find . -type f -executable -delete
-		rm -fv *.o
+		find . -name "*.o" -type f -delete
     endif
     ifeq ($(PLATFORM_OS),OSX)
 		find . -type f -perm +ugo+x -delete

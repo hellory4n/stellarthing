@@ -20,8 +20,15 @@ typedef enum {
     ST_LOG_TYPE_VEC3I_VERSION
 } StLogType;
 
+#ifndef ST_STARRY_VERSION
 /// version of the engine
-const stvec3i ST_STARRY_VERSION;
+#define ST_STARRY_VERSION (stvec3i){ .x = 3, .y = 0, .z = 0 }
+#endif
+
+#ifndef ST_STARRY_VERSION_STR
+/// version of the engine but as a string
+#define ST_STARRY_VERSION_STR "v3.0.0"
+#endif
 
 /// initializes the core components of the engine. returns true if it succeeded, returns false otherwise
 bool st_new();

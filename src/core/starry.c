@@ -3,8 +3,6 @@
 #include <time.h>
 #include "starry.h"
 
-const stvec3i ST_STARRY_VERSION = { .x = 3, .y = 0, .z = 0 };
-
 void st_to_str(void* data, StLogType type, char* out)
 {
     switch (type) {
@@ -67,9 +65,7 @@ void st_log(const char* msg, void* data, StLogType type)
 
 bool st_new()
 {
-    char verstr[16];
-    st_to_str(&ST_STARRY_VERSION, ST_LOG_TYPE_VEC3I_VERSION, verstr);
-    printf("Initializing Starry %s", verstr);
+    printf("Initializing Starry %s\n", ST_STARRY_VERSION_STR);
 
     // so random!
     srand(time(NULL));

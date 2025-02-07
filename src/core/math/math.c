@@ -23,7 +23,7 @@ char st_rand_char(char min, char max)
 
 float64 st_deg2rad(float64 deg)
 {
-    return deg * (ST_PI / 180);
+    return deg * (ST_PI / 180.0);
 }
 
 float64 st_rad2deg(float64 rad)
