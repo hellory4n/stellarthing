@@ -14,15 +14,13 @@
 //#include "lib/minilua.h"
 #include "core/math/math.h"
 #include <stdio.h>
-#include "core/starry.h"
+#include "core/collections/sthashmap.h"
 
 int main() {
-    st_new();
-    
-    char shia_labuffer[11];
-    st_rand_base64(10, shia_labuffer);
-    st_log("hehehehhea", NULL, ST_LOG_TYPE_ADDRESS);
-    printf("bmgmgm, %s\n", shia_labuffer);
+    StHashMap* mashhap = StHashMap_new(0);
+    StHashMap_set(mashhap, "TJjgjITjgGJIjgiGJIjiGJIo", "Man.");
+    printf("man. %s\n", StHashMap_get(mashhap, "TJjgjITjgGJIjgiGJIjiGJIo"));
+    StHashMap_free(mashhap);
 
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(1280, 720, "Example");
