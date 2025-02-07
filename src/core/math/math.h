@@ -5,9 +5,8 @@
 #include "core/core.h"
 #include "core/collections/stlist.h"
 
-/// it's pi
-#ifndef ST_PI
-#define ST_PI 3.141592653589793238463
+#ifndef PI
+#define PI 3.141592653589793238463
 #endif
 
 /// returns a random integer equal or greater than the min parameter and less than the max parameter

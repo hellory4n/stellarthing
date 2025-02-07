@@ -2,21 +2,35 @@
 #include <stdbool.h>
 #include "vectors.h"
 
-/// common starry types
+/// things you can log with `st_log`
 typedef enum {
+    /// memory address
     ST_LOG_TYPE_ADDRESS = 0,
+    /// int of 32
     ST_LOG_TYPE_INT32,
+    /// int of 64
     ST_LOG_TYPE_INT64,
+    /// int of u of 32
     ST_LOG_TYPE_UINT32,
+    /// int of u of 64
     ST_LOG_TYPE_UINT64,
+    /// shit float
     ST_LOG_TYPE_FLOAT32,
+    /// float
     ST_LOG_TYPE_FLOAT64,
+    /// character
     ST_LOG_TYPE_CHAR,
+    /// stirng
     ST_LOG_TYPE_STRING,
+    /// vector of 2
     ST_LOG_TYPE_VEC2,
+    /// vector of i of 2
     ST_LOG_TYPE_VEC2I,
+    /// vector of 3
     ST_LOG_TYPE_VEC3,
+    /// vector of i of 3
     ST_LOG_TYPE_VEC3I,
+    /// just a vec3i but formatted as a version string
     ST_LOG_TYPE_VEC3I_VERSION
 } StLogType;
 

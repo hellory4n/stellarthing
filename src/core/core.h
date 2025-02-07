@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-/// random "size"s everywhere would be weird
+/// random "size"s everywhere would be weird. this is equivalent to an uint64 on most pcs i think
 typedef size_t nint;
 
 /// 8-bit signed integer

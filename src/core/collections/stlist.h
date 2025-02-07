@@ -3,8 +3,11 @@
 
 /// dynamically sized list
 typedef struct {
+    /// internal array of items
     void** items;
+    /// how many items the internal array can hold
     nint capacity;
+    /// how many items the array already has
     nint length;
 } StList;
 

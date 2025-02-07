@@ -3,9 +3,13 @@
 
 /// the world's worst color type
 typedef struct {
+    /// red, from 0 to 255
     uint8 r;
+    /// green, from 0 to 255
     uint8 g;
+    /// blue, from 0 to 255
     uint8 b;
+    /// alpha (transparency), from 0 to 255
     uint8 a;
 } stcolor;
 

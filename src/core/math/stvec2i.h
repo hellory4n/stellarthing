@@ -1,9 +1,11 @@
 #pragma once
 #include "core/core.h"
 
-/// the world's worst vector2
+/// vector2 but with integers
 typedef struct {
+    /// x
     int64 x;
+    /// y
     int64 y;
 } stvec2i;
 

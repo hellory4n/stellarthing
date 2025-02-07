@@ -3,7 +3,9 @@
 
 /// the world's worst vector2
 typedef struct {
+    /// x
     float64 x;
+    /// y
     float64 y;
 } stvec2;
 
