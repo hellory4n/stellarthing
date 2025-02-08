@@ -26,5 +26,8 @@ void* StList_at(StList* l, nint idx);
 /// sets the item at the index
 void StList_set(StList* l, nint idx, void* item);
 
-/// frees the list. if the items are heap allocated you should manually free them before calling this.
+/// frees the list. if the items are heap allocated you should manually free them before calling this. if you want to just call `free()` to every item, use `StList_free_with_items()`
 void StList_free(StList* l);
+
+/// similar to `StList_free()`, but it also calls `free()` to every item. if your items are more complicated than that then you can manually free the items and then call `StList_free()`
+void StList_free_with_items(StList* l);

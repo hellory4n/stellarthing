@@ -1,6 +1,7 @@
 #pragma once
 #include "lib/hashmap.h"
 #include "core/core.h"
+#include "core/collections/stlist.h"
 
 /// this is just a wrapper around [a library i stole](https://github.com/sheredom/hashmap.h)
 typedef struct hashmap_s StHashMap;
@@ -20,5 +21,17 @@ bool StHashMap_remove(StHashMap* h, const char* key);
 /// returns the amount of items in the hash map
 nint StHashMap_length(StHashMap* h);
 
+/// returns how many items the hash map can hold without growing
+nint StHashMap_capacity(StHashMap* h);
+
 /// frees the hash map
 void StHashMap_free(StHashMap* h);
+
+/// if true, the hashmap contains that key
+bool StHashMap_contains(StHashMap* h, const char* key);
+
+/// if there's already that key, returns it. otherwise it adds the default value and returns that
+void* StHashMap_get_or_add(StHashMap* h, const char* key, void* default_val);
+
+/// converts the hashmap to a list. useful for iterating over the dictionary. remember to free it after you're done
+StList* StHashMap_items(StHashMap* h);

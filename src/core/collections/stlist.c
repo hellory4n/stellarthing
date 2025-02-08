@@ -34,8 +34,7 @@ bool StList_add(StList* l, void* item)
         }
     }
     
-    // man
-    ((void**)l->items)[l->length] = item;
+    l->items[l->length] = item;
     l->length++;
     return true;
 }
@@ -70,4 +69,12 @@ void StList_free(StList* l)
 {
     free(l->items);
     free(l);
+}
+
+void StList_free_with_items(StList* l)
+{
+    for (nint i = 0; i < l->length; i++) {
+        free(StList_at(l, i));
+    }
+    StList_free(l);
 }

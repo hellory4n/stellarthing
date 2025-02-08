@@ -4,11 +4,14 @@
 
 bool __st_fullscreen__ = false;
 bool __st_closing__ = false;
+bool __st_ready__ = false;
 
 void StWindow_create(const char* title, stvec2i size)
 {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(size.x, size.y, title);
+
+    __st_ready__ = true;
 }
 
 void StWindow_set_fullscreen(bool fullscreen)
@@ -48,6 +51,12 @@ void StWindow_set_target_fps(uint32 fps)
 
 void StWindow_free()
 {
+    __st_ready__ = false;
     CloseWindow();
     printf("[STARRY WINDOW] Window closed\n");
+}
+
+bool StWindow_is_ready()
+{
+    return __st_ready__;
 }

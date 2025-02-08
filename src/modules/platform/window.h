@@ -24,3 +24,6 @@ void StWindow_set_target_fps(uint32 fps);
 
 /// frees the window
 void StWindow_free();
+
+/// if true, there is in fact a window
+bool StWindow_is_ready();
