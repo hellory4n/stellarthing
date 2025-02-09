@@ -13,7 +13,7 @@ int main(int argc, char const *argv[])
     StList* oy = StHashMap_items(man);
     for (nint i = 0; i < oy->length; i++) {
         StTuple2* mate = StList_at(oy, i);
-        printf("Mmm: %s: %s", mate->item1, mate->item2);
+        printf("Mmm: %s: %s\n", mate->item1, mate->item2);
     }
     StList_free_with_items(oy);
 

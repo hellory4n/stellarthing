@@ -21,9 +21,6 @@ bool StHashMap_remove(StHashMap* h, const char* key);
 /// returns the amount of items in the hash map
 nint StHashMap_length(StHashMap* h);
 
-/// returns how many items the hash map can hold without growing
-nint StHashMap_capacity(StHashMap* h);
-
 /// frees the hash map
 void StHashMap_free(StHashMap* h);
 

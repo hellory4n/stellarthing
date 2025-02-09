@@ -28,12 +28,12 @@ bool StList_resize(StList* l, nint new_capacity)
 bool StList_add(StList* l, void* item)
 {
     if (l->length >= l->capacity) {
-        nint new_cap = l->capacity == 0 ? 8 : l->capacity * 2;
+        nint new_cap = l->capacity * 2 + 1;
         if (!StList_resize(l, new_cap)) {
             return false;
         }
     }
-    
+
     l->items[l->length] = item;
     l->length++;
     return true;

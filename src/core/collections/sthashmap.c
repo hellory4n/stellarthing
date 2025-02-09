@@ -38,11 +38,6 @@ nint StHashMap_length(StHashMap* h)
     return hashmap_num_entries(h);
 }
 
-nint StHashMap_capacity(StHashMap* h)
-{
-    return hashmap_capacity(h);
-}
-
 void StHashMap_free(StHashMap* h)
 {
     hashmap_destroy(h);
@@ -64,34 +59,20 @@ void* StHashMap_get_or_add(StHashMap* h, const char* key, void* default_val)
     }
 }
 
-static int __st_man__(void* list, struct hashmap_element_s* const e)
-{
-    printf("Man.1\n");
-    fflush(stdout);
-    if (!e->in_use) return 0;
-    printf("Man.2\n");
-    fflush(stdout);
-
-    const char lekey[e->key_len];
-    strncpy(lekey, e->key, e->key_len);
-    printf("Man.3\n");
-    fflush(stdout);
-
-    StTuple2* pair = malloc(sizeof(StTuple2));
-    printf("Man.4\n");
-    fflush(stdout);
-    pair->item1 = lekey;
-    pair->item2 = e->data;
-    printf("Man.5\n");
-    fflush(stdout);
-    StList_add(list, pair);
-    printf("Man.6\n");
-    fflush(stdout);
-}
-
 StList* StHashMap_items(StHashMap* h)
 {
-    StList* man = StList_new(StHashMap_capacity(h));
-    hashmap_iterate_pairs(h, &__st_man__, &man);
-    return man;
+    StList* lsit = StList_new(h->size);
+    void** mate = malloc(h->size * sizeof(void*));
+    for (nint i = 1; i < h->size + 1; i++) {
+        struct hashmap_element_s m = h->data[i];
+
+        if (!m.in_use) continue;
+
+        StTuple2* pair = malloc(sizeof(StTuple2));
+        pair->item1 = m.key;
+        pair->item2 = m.data;
+
+        StList_add(lsit, pair);
+    }
+    return lsit;
 }
