@@ -20,15 +20,15 @@ PROJECT_SOURCE_FILES ?= \
     $(wildcard src/modules/platform/**.c) \
     $(wildcard src/modules/graphics/**.c) \
 
-INCLUDE_PATHS = -Isrc
+INCLUDE_PATHS = -Isrc -Ilib
 
 # raylib library variables
-RAYLIB_SRC_PATH       ?= ../../raylib/src
-RAYLIB_INCLUDE_PATH   ?= $(RAYLIB_SRC_PATH)
-RAYLIB_LIB_PATH       ?= $(RAYLIB_SRC_PATH)
+RAYLIB_SRC_PATH       ?= lib/raylib_linux
+RAYLIB_INCLUDE_PATH   ?= lib/raylib_linux/include
+RAYLIB_LIB_PATH       ?= lib/raylib_linux/lib
 
 # Library type used for raylib: STATIC (.a) or SHARED (.so/.dll)
-RAYLIB_LIBTYPE        ?= STATIC
+RAYLIB_LIBTYPE        ?= SHARED
 
 # Define compiler path on Windows
 COMPILER_PATH         ?= C:\raylib\w64devkit\bin

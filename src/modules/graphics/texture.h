@@ -1,5 +1,5 @@
 #pragma once
-#include "core/core.h";
+#include "core/core.h"
 #include "core/vectors.h"
 
 /// texture :) this maps directly to a raylib texture
