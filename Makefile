@@ -18,6 +18,7 @@ PROJECT_SOURCE_FILES ?= \
     $(wildcard src/core/collections/**.c) \
     $(wildcard src/core/math/**.c) \
     $(wildcard src/modules/platform/**.c) \
+    $(wildcard src/modules/graphics/**.c) \
 
 INCLUDE_PATHS = -Isrc
 

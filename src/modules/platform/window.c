@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <raylib.h>
 #include "window.h"
+#include "modules/graphics/texture.h"
 
 bool __st_fullscreen__ = false;
 bool __st_closing__ = false;
@@ -10,6 +11,9 @@ void StWindow_create(const char* title, stvec2i size)
 {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(size.x, size.y, title);
+
+    // start subsystems
+    __st_init_textures__();
 
     __st_ready__ = true;
 }
@@ -52,8 +56,11 @@ void StWindow_set_target_fps(uint32 fps)
 void StWindow_free()
 {
     __st_ready__ = false;
+
+    // clean up subsystems
+
     CloseWindow();
-    printf("[STARRY WINDOW] Window closed\n");
+    printf("[WINDOW] Window closed\n");
 }
 
 bool StWindow_is_ready()
