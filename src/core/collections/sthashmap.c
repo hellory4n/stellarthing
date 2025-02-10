@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "core/collections/sttuple.h"
-#include "sthashmap.h"
 #include "core/starry.h"
+#include "sthashmap.h"
 
 StHashMap* StHashMap_new(nint capacity)
 {

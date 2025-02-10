@@ -11,6 +11,7 @@ void StWindow_create(const char* title, stvec2i size)
 {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(size.x, size.y, title);
+    printf("[WINDOW] Window has been created\n");
 
     // start subsystems
     __st_init_textures__();
@@ -20,11 +21,11 @@ void StWindow_create(const char* title, stvec2i size)
 
 void StWindow_set_fullscreen(bool fullscreen)
 {
-    if (fullscreen) SetConfigFlags(FLAG_FULLSCREEN_MODE);
-    else SetConfigFlags(FLAG_FULLSCREEN_MODE);
+    if (!fullscreen) SetConfigFlags(FLAG_BORDERLESS_WINDOWED_MODE);
+    else SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     __st_fullscreen__ = fullscreen;
-
-    printf("[WINDOW] Window has been created\n");
+    
+    printf("[WINDOW] Window is now fullscreen\n");
 }
 
 bool StWindow_fullscreen()
@@ -58,6 +59,7 @@ void StWindow_free()
     __st_ready__ = false;
 
     // clean up subsystems
+    __st_free_textures__();
 
     CloseWindow();
     printf("[WINDOW] Window closed\n");

@@ -49,3 +49,6 @@ bool stvec3i_lte(stvec3i a, stvec3i b);
 
 /// negates the vector.
 stvec3i stvec3i_neg(stvec3i a);
+
+/// zero.
+#define STVEC3I_ZERO stvec3_new(0, 0, 0)

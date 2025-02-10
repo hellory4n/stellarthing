@@ -16,6 +16,14 @@ void StGraphics_end_drawing();
 /// draws texture. rotation is in degrees.
 void StGraphics_draw_texture(StTexture* texture, stvec2 pos, float32 rotation);
 
-/// extended drawing texture. src allows cropping the image, dst is the final position and size, rotation is in degrees, and tint changes the color (use white so it doesn't change color)
+/// @brief extended draw texture
+/// @param texture it's a texture
+/// @param srcPos used for cropping the texture
+/// @param srcSize used for cropping the texture
+/// @param dstPos the actual position of the texture
+/// @param dstSize the actual size of the texture
+/// @param origin origin point. (0, 0) is the top left, (0.5, 0.5) is the center, and (1, 1) is the bottom right
+/// @param rotation rotation in degrees
+/// @param tint changes the color of the texture.
 void StGraphics_draw_texture_ext(StTexture* texture, stvec2 srcPos, stvec2 srcSize, stvec2 dstPos,
-    stvec2 dstSize, float32 rotation, stcolor tint);
+    stvec2 dstSize, stvec2 origin, float32 rotation, stcolor tint);

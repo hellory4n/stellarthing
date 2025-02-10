@@ -1,7 +1,4 @@
-#include <stdio.h>
 #include "modules/platform/window.h"
-#include "core/collections/sthashmap.h"
-#include "core/collections/sttuple.h"
 #include "modules/graphics/graphics.h"
 
 int main(int argc, char const *argv[])

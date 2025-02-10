@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include "core/collections/sthashmap.h"
 #include "texture.h"
+#include "core/starry.h"
 
 StHashMap* __st_textures__;
 
@@ -13,10 +14,10 @@ void __st_free_textures__()
 {
     // free items in the hashmap
     StList* items = StHashMap_items(__st_textures__);
-    for (nint i = 0; i < items->items; i++) {
-        StTexture_free(items->items[i]);
+    for (nint i = 0; i < items->length; i++) {
+        StTexture_free(((StTuple2*)items->items[i])->item2);
     }
-    StList_free(items);
+    StList_free_with_items(items);
 
     StHashMap_free(__st_textures__);
 }
@@ -35,6 +36,7 @@ StTexture* StTexture_new(const char* path)
     dog->height = mate.height;
     dog->mipmaps = mate.mipmaps;
     dog->format = mate.format;
+    StHashMap_set(__st_textures__, path, dog);
     return dog;
 }
 
@@ -49,5 +51,4 @@ void StTexture_free(StTexture* t)
         .mipmaps = t->mipmaps,
     };
     UnloadTexture(mmmm_mmmm_mmmm);
-    free(t);
 }

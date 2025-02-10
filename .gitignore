@@ -3,3 +3,7 @@
 # linux executable
 stellarthing
 .vscode/c_cpp_properties.json
+stellarthing-windows
+stellarthing-linux
+stellarthing-*linux.tar.gz
+stellarthing-*windows.zip

@@ -2,6 +2,8 @@
 #include "lib/hashmap.h"
 #include "core/core.h"
 #include "core/collections/stlist.h"
+// it's required to use StHashMap_items
+#include "core/collections/sttuple.h"
 
 /// this is just a wrapper around [a library i stole](https://github.com/sheredom/hashmap.h)
 typedef struct hashmap_s StHashMap;
