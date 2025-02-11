@@ -10,12 +10,17 @@ int main(int argc, char const *argv[])
     StWindow_set_fullscreen(true);
     StWindow_set_target_fps(144);
 
+    // mate
+    StInput_add_keymap("test_move", ST_KEY_SPACE);
+    StInput_add_keymap("test_move", ST_KEY_NUM6);
+    StInput_add_keymap("test_move", ST_KEY_J);
+
     StTexture* m = StTexture_new("assets/test.png");
     stvec2 pos = (stvec2){ 40, 60 };
 
     while (!StWindow_closing()) {
-        if (StInput_is_key_held(ST_KEY_SPACE)) {
-            pos.x += 3;
+        if (StInput_is_keymap_held("test_move")) {
+            pos.x += 30 * StWindow_get_delta_time();
         }
 
         StGraphics_clear(ST_WHITE);

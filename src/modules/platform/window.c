@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <raylib.h>
-#include "window.h"
 #include "modules/graphics/texture.h"
+#include "input.h"
+#include "window.h"
 
 bool __st_fullscreen__ = false;
 bool __st_closing__ = false;
@@ -15,6 +16,7 @@ void StWindow_create(const char* title, stvec2i size)
 
     // start subsystems
     __st_init_textures__();
+    __st_init_input__();
 
     __st_ready__ = true;
 }
@@ -46,7 +48,8 @@ void StWindow_close()
 
 void StWindow_update()
 {
-    // TODO: use this function lmao
+    // update subsystems
+    __st_update_input__();
 }
 
 void StWindow_set_target_fps(uint32 fps)
@@ -60,6 +63,7 @@ void StWindow_free()
 
     // clean up subsystems
     __st_free_textures__();
+    __st_free_input__();
 
     CloseWindow();
     printf("[WINDOW] Window closed\n");
@@ -68,4 +72,14 @@ void StWindow_free()
 bool StWindow_is_ready()
 {
     return __st_ready__;
+}
+
+float64 StWindow_get_time()
+{
+    return GetTime();
+}
+
+float64 StWindow_get_delta_time()
+{
+    return GetFrameTime();
 }

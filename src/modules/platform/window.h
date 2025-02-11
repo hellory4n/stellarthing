@@ -27,3 +27,9 @@ void StWindow_free();
 
 /// if true, there is in fact a window
 bool StWindow_is_ready();
+
+/// returns seconds since the window was opened
+float64 StWindow_get_time();
+
+/// returns time between frames in seconds. look up delta time
+float64 StWindow_get_delta_time();
