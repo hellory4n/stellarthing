@@ -9,9 +9,6 @@ typedef struct {
     int64 y;
 } stvec2i;
 
-/// makes a new vector
-stvec2i stvec2i_new(int64 x, int64 y);
-
 /// adds 2 vector2s together
 stvec2i stvec2i_add(stvec2i a, stvec2i b);
 
@@ -49,4 +46,4 @@ bool stvec2i_lte(stvec2i a, stvec2i b);
 stvec2i stvec2i_neg(stvec2i a);
 
 /// zero.
-#define STVEC2I_ZERO stvec2i_new(0, 0)
+#define STVEC2I_ZERO (stvec2i){ 0, 0 }

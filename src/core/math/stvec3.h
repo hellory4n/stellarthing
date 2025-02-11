@@ -11,9 +11,6 @@ typedef struct {
     float64 z;
 } stvec3;
 
-/// makes a new vector
-stvec3 stvec3_new(float64 x, float64 y, float64 z);
-
 /// adds 2 vector3s together
 stvec3 stvec3_add(stvec3 a, stvec3 b);
 
@@ -51,4 +48,4 @@ bool stvec3_lte(stvec3 a, stvec3 b);
 stvec3 stvec3_neg(stvec3 a);
 
 /// zero.
-#define STVEC3_ZERO stvec3_new(0, 0, 0)
+#define STVEC3_ZERO (stvec3){ 0, 0, 0 }

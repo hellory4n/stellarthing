@@ -17,10 +17,10 @@ void StGraphics_draw_texture(StTexture* texture, stvec2 pos, float32 rotation)
     StGraphics_draw_texture_ext(
         texture,
         STVEC2_ZERO,
-        stvec2_new(texture->width, texture->height),
+        (stvec2){ texture->width, texture->height },
         pos,
-        stvec2_new(texture->width, texture->height),
-        stvec2_new(0.5, 0.5),
+        (stvec2){ texture->width, texture->height },
+        (stvec2){ 0.5, 0.5 },
         rotation,
         ST_WHITE
     );

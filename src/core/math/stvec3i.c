@@ -1,10 +1,5 @@
 #include "stvec3i.h"
 
-stvec3i stvec3i_new(int64 x, int64 y, int64 z)
-{
-    return (stvec3i){ .x = x, .y = y, .z = z };
-}
-
 stvec3i stvec3i_add(stvec3i a, stvec3i b)
 {
     return (stvec3i){ .x = a.x + b.x, .y = a.y + b.y, .z = a.z + b.z };

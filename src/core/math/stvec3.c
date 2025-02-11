@@ -1,11 +1,6 @@
 #include <math.h>
 #include "stvec3.h"
 
-stvec3 stvec3_new(float64 x, float64 y, float64 z)
-{
-    return (stvec3){ .x = x, .y = y, .z = z };
-}
-
 stvec3 stvec3_add(stvec3 a, stvec3 b)
 {
     return (stvec3){ .x = a.x + b.x, .y = a.y + b.y, .z = a.z + b.z };
