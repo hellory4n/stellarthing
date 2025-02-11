@@ -20,6 +20,7 @@ PROJECT_SOURCE_FILES ?= \
     $(wildcard src/modules/platform/**.c) \
     $(wildcard src/modules/graphics/**.c) \
     $(wildcard src/modules/audio/**.c) \
+    $(wildcard src/modules/util/**.c) \
 
 INCLUDE_PATHS = -Isrc -Ilib
 

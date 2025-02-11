@@ -26,7 +26,7 @@ void StWindow_create(const char* title, stvec2i size)
 
 void StWindow_set_fullscreen(bool fullscreen)
 {
-    if (!fullscreen) SetConfigFlags(FLAG_BORDERLESS_WINDOWED_MODE);
+    if (fullscreen) SetConfigFlags(FLAG_BORDERLESS_WINDOWED_MODE);
     else SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     __st_fullscreen__ = fullscreen;
     
@@ -86,4 +86,9 @@ float64 StWindow_get_time()
 float64 StWindow_get_delta_time()
 {
     return GetFrameTime();
+}
+
+int64 StWindow_get_fps()
+{
+    return GetFPS();
 }

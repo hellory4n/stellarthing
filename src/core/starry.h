@@ -20,7 +20,7 @@ typedef enum {
     ST_LOG_TYPE_FLOAT64,
     /// character
     ST_LOG_TYPE_CHAR,
-    /// stirng
+    /// string
     ST_LOG_TYPE_STRING,
     /// vector of 2
     ST_LOG_TYPE_VEC2,
@@ -42,6 +42,11 @@ typedef enum {
 #ifndef ST_STARRY_VERSION_STR
 /// version of the engine but as a string
 #define ST_STARRY_VERSION_STR "v3.0.0"
+#endif
+
+#ifndef ST_GAME_VERSION_STR
+/// game version :)
+#define ST_GAME_VERSION_STR "v0.11.0"
 #endif
 
 /// initializes the core components of the engine. returns true if it succeeded, returns false otherwise

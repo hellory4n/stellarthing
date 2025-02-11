@@ -28,3 +28,14 @@ typedef uint64_t uint64;
 typedef float float32;
 /// 64-bit floating point number
 typedef double float64;
+
+// os crap
+#if defined(_WIN32)
+    #ifndef ST_WINDOWS
+        #define ST_WINDOWS
+    #endif
+#elif defined(__unix__)
+    #ifndef ST_LINUXBSD
+        #define ST_LINUXBSD
+    #endif
+#endif

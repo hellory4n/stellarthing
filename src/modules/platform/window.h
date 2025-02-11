@@ -33,3 +33,6 @@ float64 StWindow_get_time();
 
 /// returns time between frames in seconds. look up delta time
 float64 StWindow_get_delta_time();
+
+/// returns the frame rate the game is running at
+int64 StWindow_get_fps();
