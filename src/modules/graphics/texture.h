@@ -15,7 +15,7 @@ void __st_init_textures__();
 
 void __st_free_textures__();
 
-/// loads a texture from a path
+/// loads a texture from a path. supported formats are PNG, BMP, TGA, JPG, GIF, QOI, PSD, DDS, HDR, KTX, ASTC, PKM, and PVR
 StTexture* StTexture_new(const char* path);
 
 /// frees the texture

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <raylib.h>
 #include "modules/graphics/texture.h"
+#include "modules/audio/audio.h"
 #include "input.h"
 #include "window.h"
 
@@ -12,11 +13,13 @@ void StWindow_create(const char* title, stvec2i size)
 {
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(size.x, size.y, title);
+    SetExitKey(KEY_NULL);
     printf("[WINDOW] Window has been created\n");
 
     // start subsystems
     __st_init_textures__();
     __st_init_input__();
+    __st_init_audio__();
 
     __st_ready__ = true;
 }
@@ -64,6 +67,7 @@ void StWindow_free()
     // clean up subsystems
     __st_free_textures__();
     __st_free_input__();
+    __st_free_audio__();
 
     CloseWindow();
     printf("[WINDOW] Window closed\n");

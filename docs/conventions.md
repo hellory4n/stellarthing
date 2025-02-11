@@ -4,9 +4,11 @@
 
 Types start with `St` and are in `PascalCase`, e.g. `StObject`
 
-Functions start with `st_` and are in `camel_case`, e.g. `st_log`
+Please note acronyms and abbreviations are NOT capitalized, so for example it would be `StJson`, not `StJSON`
 
-Member functions start with the type name and then are in `camel_case`, e.g. `StObject_annihilate_all_that_has_ever_lived`
+Functions start with `st_` and are in `snake_case`, e.g. `st_log`
+
+Member functions start with the type name and then are in `snake_case`, e.g. `StObject_annihilate_all_that_has_ever_lived`
 
 Macros start with `ST_` and are in `UPPER_CASE`, e.g. `ST_IDK_MAN`
 
