@@ -2,6 +2,7 @@
 #include <raylib.h>
 #include "modules/graphics/texture.h"
 #include "modules/audio/audio.h"
+#include "modules/util/timer.h"
 #include "input.h"
 #include "window.h"
 
@@ -20,6 +21,7 @@ void StWindow_create(const char* title, stvec2i size)
     __st_init_textures__();
     __st_init_input__();
     __st_init_audio__();
+    __st_init_timers__();
 
     __st_ready__ = true;
 }
@@ -52,6 +54,7 @@ void StWindow_close()
 void StWindow_update()
 {
     // update subsystems
+    __st_update_timers__();
 }
 
 void StWindow_set_target_fps(uint32 fps)
@@ -67,6 +70,7 @@ void StWindow_free()
     __st_free_textures__();
     __st_free_input__();
     __st_free_audio__();
+    __st_free_timers__();
 
     CloseWindow();
     printf("[WINDOW] Window closed\n");

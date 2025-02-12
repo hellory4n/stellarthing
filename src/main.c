@@ -4,6 +4,16 @@
 #include "modules/platform/input.h"
 #include "modules/util/debug_mode.h"
 #include "modules/audio/audio.h"
+#include "modules/util/timer.h"
+
+StAudio leaudio;
+bool paus = false;
+
+static void __timer_callback__(StTimer* timer)
+{
+    paus = !paus;
+    StAudio_pause(leaudio, paus);
+}
 
 int main(int argc, char const *argv[])
 {
@@ -21,9 +31,10 @@ int main(int argc, char const *argv[])
     StInput_add_keymap("test_move", ST_KEY_J);
 
     StTexture* m = StTexture_new("assets/test.png");
-    StAudio leaudio = StAudio_new("assets/ross_tibeeth_jr_hhhh.ogg");
+    leaudio = StAudio_new("assets/ross_tibeeth_jr_hhhh.ogg");
+    StTimer* TIMERULESALL = StTimer_new(3, true, &__timer_callback__);
+    StTimer_start(TIMERULESALL);
     stvec2 pos = (stvec2){ 40, 60 };
-    bool paus = false;
 
     while (!StWindow_closing()) {
         if (StInput_is_keymap_held("test_move")) {
@@ -32,11 +43,6 @@ int main(int argc, char const *argv[])
 
         if (StInput_is_key_just_pressed(ST_KEY_F9)) {
             StAudio_play(leaudio);
-        }
-
-        if (StInput_is_key_just_pressed(ST_KEY_F10)) {
-            paus = !paus;
-            StAudio_pause(leaudio, paus);
         }
 
         StGraphics_clear(ST_WHITE);
