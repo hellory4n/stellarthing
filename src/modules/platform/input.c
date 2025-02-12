@@ -12,10 +12,6 @@ void __st_init_input__()
     __st_keymaps__ = StHashMap_new(0);
 }
 
-void __st_update_input__()
-{
-}
-
 void __st_free_input__()
 {
     // sometimes you start losing your fucking mind

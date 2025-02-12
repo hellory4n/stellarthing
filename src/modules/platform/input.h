@@ -30,6 +30,4 @@ bool StInput_is_keymap_not_pressed(const char* keymap);
 
 void __st_init_input__();
 
-void __st_update_input__();
-
 void __st_free_input__();

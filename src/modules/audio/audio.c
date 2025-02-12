@@ -24,6 +24,8 @@ void __st_free_audio__()
     StList_free_with_items(items);
 
     StHashMap_free(__st_audio__);
+
+    CloseAudioDevice();
 }
 
 StAudio StAudio_new(const char* path)
@@ -50,5 +52,28 @@ void StAudio_play(StAudio a)
     }
     else {
         PlaySound(*sound);
+    }
+}
+
+void StAudio_stop(StAudio a)
+{
+    Sound* sound = StHashMap_get(__st_audio__, a);
+    if (sound == NULL) {
+        printf("[AUDIO] Audio at %s is invalid\n", a);
+    }
+    else {
+        StopSound(*sound);
+    }
+}
+
+void StAudio_pause(StAudio a, bool pause)
+{
+    Sound* sound = StHashMap_get(__st_audio__, a);
+    if (sound == NULL) {
+        printf("[AUDIO] Audio at %s is invalid\n", a);
+    }
+    else {
+        if (pause) PauseSound(*sound);
+        else ResumeSound(*sound);
     }
 }

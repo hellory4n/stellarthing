@@ -1,5 +1,4 @@
 #pragma once
-#include "raylib.h"
 
 void __st_init_audio__();
 
@@ -13,3 +12,9 @@ StAudio StAudio_new(const char* path);
 
 /// plays audio.
 void StAudio_play(StAudio a);
+
+/// stops audio
+void StAudio_stop(StAudio a);
+
+/// if true it's gonna pause, if false it's gonna resume
+void StAudio_pause(StAudio a, bool pause);
