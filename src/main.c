@@ -2,8 +2,8 @@
 #include "modules/platform/window.h"
 #include "modules/graphics/graphics.h"
 #include "modules/platform/input.h"
-#include "modules/audio/music.h"
 #include "modules/util/debug_mode.h"
+#include "modules/audio/audio.h"
 
 int main(int argc, char const *argv[])
 {
@@ -21,7 +21,7 @@ int main(int argc, char const *argv[])
     StInput_add_keymap("test_move", ST_KEY_J);
 
     StTexture* m = StTexture_new("assets/test.png");
-    StMusic_play("assets/ross_tibeeth_jr_hhhh.ogg", true);
+    StAudio leaudio = StAudio_new("assets/ross_tibeeth_jr_hhhh.ogg");
     stvec2 pos = (stvec2){ 40, 60 };
     bool paus = false;
 
@@ -31,8 +31,12 @@ int main(int argc, char const *argv[])
         }
 
         if (StInput_is_key_just_pressed(ST_KEY_F9)) {
+            StAudio_play(leaudio);
+        }
+
+        if (StInput_is_key_just_pressed(ST_KEY_F10)) {
             paus = !paus;
-            StMusic_set_pause(paus);
+            StAudio_pause(leaudio, paus);
         }
 
         StGraphics_clear(ST_WHITE);
