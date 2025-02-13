@@ -5,6 +5,7 @@
 #include "modules/util/debug_mode.h"
 #include "modules/audio/audio.h"
 #include "modules/util/timer.h"
+#include "modules/util/tween.h"
 
 StAudio leaudio;
 bool paus = false;
@@ -18,7 +19,7 @@ static void __timer_callback__(StTimer* timer)
 int main(int argc, char const *argv[])
 {
     st_new();
-    StWindow_create("Stellarthing", (stvec2i){ 640, 480 });
+    StWindow_new("Stellarthing", (stvec2i){ 640, 480 });
     StWindow_set_fullscreen(true);
     StWindow_set_target_fps(144);
 
@@ -35,19 +36,26 @@ int main(int argc, char const *argv[])
     StTimer* TIMERULESALL = StTimer_new(3, true, &__timer_callback__);
     StTimer_start(TIMERULESALL);
     stvec2 pos = (stvec2){ 40, 60 };
+    float64 rot = 0;
+    stcolor color = ST_WHITE;
 
     while (!StWindow_closing()) {
-        if (StInput_is_keymap_held("test_move")) {
-            pos.x += 30 * StWindow_get_delta_time();
+        if (StInput_is_keymap_just_pressed("test_move")) {
+            StTween_float(&rot, -360, 360, 5, ST_EASING_QUAD_IN_OUT);
+            StTween_vec2(&pos, (stvec2){ 40, 60}, (stvec2){600, 400}, 5, ST_EASING_QUAD_IN_OUT);
+            StTween_color(&color, ST_WHITE, ST_TRANSPARENT, 5, ST_EASING_QUAD_IN_OUT);
         }
 
         if (StInput_is_key_just_pressed(ST_KEY_F9)) {
             StAudio_play(leaudio);
         }
 
-        StGraphics_clear(ST_WHITE);
+        StGraphics_clear(ST_BLACK);
 
-        StGraphics_draw_texture(m, pos, 65);
+        StGraphics_draw_texture_ext(
+            m, STVEC2_ZERO, (stvec2){m->width, m->height}, pos, (stvec2){m->width, m->height},
+            (stvec2){0.5, 0.5}, rot, color
+        );
 
         StDebugMode_update();
         StGraphics_end_drawing();

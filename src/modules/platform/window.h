@@ -2,7 +2,7 @@
 #include "core/vectors.h"
 
 /// makes a window
-void StWindow_create(const char* title, stvec2i size);
+void StWindow_new(const char* title, stvec2i size);
 
 /// if true, the window becomes fullscreen
 void StWindow_set_fullscreen(bool fullscreen);
