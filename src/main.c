@@ -20,8 +20,8 @@ int main(int argc, char const *argv[])
 {
     st_new();
     StWindow_new("Stellarthing", (stvec2i){ 640, 480 });
-    StWindow_set_fullscreen(true);
-    StWindow_set_target_fps(144);
+    StWindow_toggle_fullscreen();
+    //StWindow_set_target_fps(144);
 
     //
     StDebugMode_new();

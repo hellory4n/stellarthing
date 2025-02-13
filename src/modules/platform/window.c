@@ -28,18 +28,10 @@ void StWindow_new(const char* title, stvec2i size)
     __st_ready__ = true;
 }
 
-void StWindow_set_fullscreen(bool fullscreen)
+void StWindow_toggle_fullscreen()
 {
-    if (fullscreen) SetConfigFlags(FLAG_BORDERLESS_WINDOWED_MODE);
-    else SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    __st_fullscreen__ = fullscreen;
-    
-    printf("[WINDOW] Window is now fullscreen\n");
-}
-
-bool StWindow_fullscreen()
-{
-    return __st_fullscreen__;
+    ToggleBorderlessWindowed();
+    printf("[WINDOW] Toggled fullscreen\n");
 }
 
 bool StWindow_closing()

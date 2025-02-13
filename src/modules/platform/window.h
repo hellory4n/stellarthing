@@ -4,11 +4,8 @@
 /// makes a window
 void StWindow_new(const char* title, stvec2i size);
 
-/// if true, the window becomes fullscreen
-void StWindow_set_fullscreen(bool fullscreen);
-
-/// if true, the window becomes fullscreen
-bool StWindow_fullscreen();
+/// toggles fullscreen
+void StWindow_toggle_fullscreen();
 
 /// if true, the window is closing
 bool StWindow_closing();
@@ -25,7 +22,7 @@ void StWindow_set_target_fps(uint32 fps);
 /// frees the window
 void StWindow_free();
 
-/// if true, there is in fact a window
+/// if true, there is, in fact, a window
 bool StWindow_is_ready();
 
 /// returns seconds since the window was opened
