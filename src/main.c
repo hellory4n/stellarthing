@@ -6,6 +6,7 @@
 #include "modules/audio/audio.h"
 #include "modules/util/timer.h"
 #include "modules/util/tween.h"
+#include "modules/graphics/tilemap.h"
 
 StAudio leaudio;
 bool paus = false;
@@ -38,6 +39,11 @@ int main(int argc, char const *argv[])
     stvec2 pos = (stvec2){ 40, 60 };
     float64 rot = 0;
     stcolor color = ST_WHITE;
+
+    // the infamous tilemap
+    StWorld_set_current(StWorld_new((stvec2i){10, 10}, (stvec2i){10, 10}));
+    StTile* bob = StWorld_get_tile(StWorld_current(), (stvec3){1, 0, 3}, false);
+    bob->textures[0] = StTexture_new("assets/bob_guy.png");
 
     while (!StWindow_closing()) {
         if (StInput_is_keymap_just_pressed("test_move")) {

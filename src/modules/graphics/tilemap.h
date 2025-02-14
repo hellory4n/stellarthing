@@ -7,12 +7,12 @@
 /// tile
 typedef struct {
     /// y is up
-    stvec2 position;
+    stvec3 position;
     /// changes the color of the tile. make it white to not change the color
     stcolor tint;
     /// textures. each element is one of the sides. order doesn't really matter
     StTexture* textures[4];
-    /// the world the tile is on. usually a 4 character base64 string (5 with the null character`)
+    /// the world the tile is on. usually a 4 character base64 string (5 with the null character)
     const char world[5];
     /// side, from 0 to 3
     uint8 side;
@@ -40,8 +40,8 @@ typedef struct {
 
 /// man
 typedef struct {
-    StTile* ground[ST_CHUNK_DIMENSIONS][ST_CHUNK_DIMENSIONS];
-    StTile* objects[ST_CHUNK_DIMENSIONS][ST_CHUNK_DIMENSIONS];
+    StTile ground[ST_CHUNK_DIMENSIONS][ST_CHUNK_DIMENSIONS];
+    StTile objects[ST_CHUNK_DIMENSIONS][ST_CHUNK_DIMENSIONS];
 } StLayer;
 
 typedef struct {
@@ -51,12 +51,16 @@ typedef struct {
 typedef struct {
     /// key is stvec2i, value is StChunk*
     StHashMap* chunks;
-    stvec2i current_chunk;
-    int32 current_layer;
-} StWorld;
+    stvec2i min_chunk;
+    stvec2i max_chunk;
 
-/// current world :)
-StWorld* StTilemap_current_world;
+    stvec2i current_chunk;
+    int64 current_layer;
+
+    stvec2 camera_pos;
+    /// it's a multiplier
+    stvec2 camera_zoom;
+} StWorld;
 
 /// makes a world :)
 StWorld* StWorld_new(stvec2i min_chunk, stvec2i max_chunk);
@@ -65,6 +69,12 @@ StWorld* StWorld_new(stvec2i min_chunk, stvec2i max_chunk);
 void StWorld_free(StWorld* w);
 
 /// tile
-StTile* StWorld_get_tile(StWorld* w, stvec3 pos);
+StTile* StWorld_get_tile(StWorld* w, stvec3 pos, bool ground);
 
-void __st_update_tilemaps__();
+/// returns the current world
+StWorld* StWorld_current();
+
+/// sets the current world
+void StWorld_set_current(StWorld* w);
+
+void __st_update_tilemap__();

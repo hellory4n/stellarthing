@@ -51,7 +51,7 @@ void StWindow_update()
     // update subsystems
     __st_update_timers__();
     __st_update_tweens__();
-    __st_update_tilemaps__();
+    __st_update_tilemap__();
 }
 
 void StWindow_set_target_fps(uint32 fps)
