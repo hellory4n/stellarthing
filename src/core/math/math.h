@@ -29,3 +29,6 @@ float64 st_rad2deg(float64 rad);
 
 /// returns a random base64 string (-_ instead of +/) with the specified length. please note your output needs to be 1 character more than the string so it fits the ending null character
 void st_rand_base64(uint8 len, char* out);
+
+/// clamp
+float64 st_clamp(float64 val, float64 min, float64 max);

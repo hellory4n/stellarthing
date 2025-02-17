@@ -33,11 +33,13 @@ int main(int argc, char const *argv[])
 
     StTexture* m = StTexture_new("assets/test.png");
     leaudio = StAudio_new("assets/ross_tibeeth_jr_hhhh.ogg");
+    StAudio_play(leaudio);
     StTimer* TIMERULESALL = StTimer_new(3, true, &__timer_callback__);
-    StTimer_start(TIMERULESALL);
+    //StTimer_start(TIMERULESALL);
     stvec2 pos = (stvec2){ 40, 60 };
     float64 rot = 0;
     stcolor color = ST_WHITE;
+    stvec3 sndpos = STVEC3_ZERO;
 
     // the infamous tilemap
     StTexture* bob = StTexture_new("assets/bob_guy.png");
@@ -54,6 +56,16 @@ int main(int argc, char const *argv[])
             StTween_float(&rot, -360, 360, 5, ST_EASING_QUAD_IN_OUT);
             StTween_vec2(&pos, (stvec2){ 40, 60}, (stvec2){600, 400}, 5, ST_EASING_QUAD_IN_OUT);
             StTween_color(&color, ST_WHITE, ST_TRANSPARENT, 5, ST_EASING_QUAD_IN_OUT);
+        }
+
+        if (StInput_is_key_just_pressed(ST_KEY_F9)) {
+            StAudio_set_position(leaudio, (stvec3){-60, 0, 0});
+            //StTween_vec3(&sndpos, (stvec3){ 0, 0, 0 }, (stvec3){-60, 0, 0}, 5, ST_EASING_QUAD_IN_OUT);
+        }
+
+        if (StInput_is_key_just_pressed(ST_KEY_F10)) {
+            StAudio_set_position(leaudio, (stvec3){60, 0, 0});
+            //StTween_vec3(&sndpos, (stvec3){ 0, 0, 0 }, (stvec3){60, 0, 0}, 5, ST_EASING_QUAD_IN_OUT);
         }
 
         StGraphics_clear((stcolor){9, 154, 206, 255});

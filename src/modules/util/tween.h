@@ -22,5 +22,8 @@ void StTween_float(float64* prop, float64 from, float64 to, float64 duration, St
 /// tweens a vec2 property :) (duration is in seconds)
 void StTween_vec2(stvec2* prop, stvec2 from, stvec2 to, float64 duration, StEasingType easing);
 
+/// tweens a vec3 property :) (duration is in seconds)
+void StTween_vec3(stvec3* prop, stvec3 from, stvec3 to, float64 duration, StEasingType easing);
+
 /// tweens a color property :) (duration is in seconds)
 void StTween_color(stcolor* prop, stcolor from, stcolor to, float64 duration, StEasingType easing);

@@ -24,6 +24,16 @@ typedef struct {
 } StTweenv2;
 
 typedef struct {
+    stvec3* prop;
+    stvec3 from;
+    stvec3 to;
+    float64 duration;
+    float64 elapsed;
+    StEasingType easing;
+    bool active;
+} StTweenv3;
+
+typedef struct {
     stcolor* prop;
     stcolor from;
     stcolor to;
@@ -35,6 +45,7 @@ typedef struct {
 
 StList* __st_float_tweens__;
 StList* __st_vec2_tweens__;
+StList* __st_vec3_tweens__;
 StList* __st_color_tweens__;
 
 float64 __st_ease__(float64 t, StEasingType type)
@@ -63,6 +74,7 @@ void __st_init_tweens__()
 {
     __st_float_tweens__ = StList_new(0);
     __st_vec2_tweens__ = StList_new(0);
+    __st_vec3_tweens__ = StList_new(0);
     __st_color_tweens__ = StList_new(0);
 }
 
@@ -105,6 +117,26 @@ void __st_update_tweens__()
         // my vectors suck but i cant be bothered to fix them
         *(tween->prop) = stvec2_mul(stvec2_add(tween->from, stvec2_sub(tween->to, tween->from)),
             (stvec2){ __st_ease__(t, tween->easing), __st_ease__(t, tween->easing) });
+    }
+
+    for (nint i = 0; i < __st_vec3_tweens__->length; i++) {
+        StTweenv3* tween = __st_vec3_tweens__->items[i];
+        if (!tween->active) continue;
+
+        tween->elapsed += StWindow_get_delta_time();
+        if (tween->elapsed >= tween->duration) {
+            // snap to the end value
+            *(tween->prop) = tween->to;
+            // it's joever
+            tween->active = false;
+            continue;
+        }
+
+        // actually tween
+        float64 t = tween->elapsed / tween->duration;
+        // my vectors suck but i cant be bothered to fix them
+        *(tween->prop) = stvec3_mul(stvec3_add(tween->from, stvec3_sub(tween->to, tween->from)),
+            (stvec3){__st_ease__(t, tween->easing), __st_ease__(t, tween->easing), __st_ease__(t, tween->easing)});
     }
 
     for (nint i = 0; i < __st_color_tweens__->length; i++) {
@@ -167,6 +199,20 @@ void StTween_vec2(stvec2* prop, stvec2 from, stvec2 to, float64 duration, StEasi
     tween->easing = easing;
     tween->active = true;
     StList_add(__st_vec2_tweens__, tween);
+}
+
+void StTween_vec3(stvec3* prop, stvec3 from, stvec3 to, float64 duration, StEasingType easing)
+{
+    // TODO don't malloc idiot
+    StTweenv3* tween = malloc(sizeof(StTweenv3));
+    tween->prop = prop;
+    tween->from = from;
+    tween->to = to;
+    tween->duration = duration;
+    tween->elapsed = 0;
+    tween->easing = easing;
+    tween->active = true;
+    StList_add(__st_vec3_tweens__, tween);
 }
 
 /// tweens a color property :) (duration is in seconds)

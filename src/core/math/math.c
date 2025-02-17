@@ -45,3 +45,10 @@ void st_rand_base64(uint8 len, char* out)
     }
     out[len] = '\0';
 }
+
+float64 st_clamp(float64 val, float64 min, float64 max)
+{
+    if (val < min) return min;
+    else if (val > max) return max;
+    else return val;
+}
