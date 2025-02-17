@@ -37,8 +37,8 @@ typedef struct {
 #endif
 
 typedef struct {
-    StTile ground[ST_WORLD_DIMENSIONS][ST_TOTAL_LAYERS][ST_WORLD_DIMENSIONS];
-    StTile objects[ST_WORLD_DIMENSIONS][ST_TOTAL_LAYERS][ST_WORLD_DIMENSIONS];
+    StTile ground[ST_WORLD_DIMENSIONS][ST_WORLD_DIMENSIONS][ST_TOTAL_LAYERS];
+    StTile objects[ST_WORLD_DIMENSIONS][ST_WORLD_DIMENSIONS][ST_TOTAL_LAYERS];
 
     stvec2i current_chunk;
     int64 current_layer;

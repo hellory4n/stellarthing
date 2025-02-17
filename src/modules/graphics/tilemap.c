@@ -28,10 +28,10 @@ StTile* StWorld_get_tile(StWorld* w, stvec3 pos, bool ground)
 {
     if (ground) {
         // MANIACAL
-        return &(w->ground[(int64)floor(pos.x)][(int64)floor(pos.y + (-ST_MIN_LAYER))][(int64)floor(pos.z)]);
+        return &(w->ground[(int64)floor(pos.x)][(int64)floor(pos.y)])[(int64)floor(pos.z + (-ST_MIN_LAYER))];
     }
     else {
-        return &(w->objects[(int64)floor(pos.x)][(int64)floor(pos.y + (-ST_MIN_LAYER))][(int64)floor(pos.z)]);
+        return &(w->objects[(int64)floor(pos.x)][(int64)floor(pos.y)])[(int64)floor(pos.z + (-ST_MIN_LAYER))];
     }
 }
 
@@ -60,7 +60,7 @@ void __st_render_tile__(StWorld* world, StTile tile)
         (stvec2){tile.textures[tile.side]->width, tile.textures[tile.side]->height},
         (stvec2){
             (tile.position.x + world->camera_pos.x) * world->camera_zoom.x * tile.textures[tile.side]->width,
-            (tile.position.z + world->camera_pos.y) * world->camera_zoom.y * tile.textures[tile.side]->height,
+            (tile.position.y + world->camera_pos.y) * world->camera_zoom.y * tile.textures[tile.side]->height,
         },
         (stvec2){
             tile.textures[tile.side]->width  * world->camera_zoom.x,
@@ -73,10 +73,10 @@ void __st_render_tile__(StWorld* world, StTile tile)
 void StWorld_draw(StWorld* w)
 {
     for (int64 x = 0; x < ST_WORLD_DIMENSIONS; x++) {
-        for (int64 z = 0; z < ST_WORLD_DIMENSIONS; z++) {
+        for (int64 y = 0; y < ST_WORLD_DIMENSIONS; y++) {
             // man
-            __st_render_tile__(w, *StWorld_get_tile(__st_current__, (stvec3){x, __st_current__->current_layer, z}, true));
-            __st_render_tile__(w, *StWorld_get_tile(__st_current__, (stvec3){x, __st_current__->current_layer, z}, false));
+            __st_render_tile__(w, *StWorld_get_tile(__st_current__, (stvec3){x, y, __st_current__->current_layer}, true));
+            __st_render_tile__(w, *StWorld_get_tile(__st_current__, (stvec3){x, y, __st_current__->current_layer}, false));
         }
     }
 }

@@ -44,10 +44,10 @@ int main(int argc, char const *argv[])
     StWorld_set_current(StWorld_new((stvec2i){10, 10}, (stvec2i){10, 10}));
     StWorld_new_tile(StWorld_current(), (stvec3){0, 0, 0}, false, bob, bob, bob, bob);
     StWorld_new_tile(StWorld_current(), (stvec3){1, 0, 0}, false, bob, bob, bob, bob);
-    StWorld_new_tile(StWorld_current(), (stvec3){0, 0, 1}, false, bob, bob, bob, bob);
+    StWorld_new_tile(StWorld_current(), (stvec3){0, 1, 0}, false, bob, bob, bob, bob);
     StWorld_new_tile(StWorld_current(), (stvec3){2, 0, 0}, false, bob, bob, bob, bob);
     StWorld_new_tile(StWorld_current(), (stvec3){3, 0, 0}, false, bob, bob, bob, bob);
-    StWorld_new_tile(StWorld_current(), (stvec3){5, 0, 5}, false, bob, bob, bob, bob);
+    StWorld_new_tile(StWorld_current(), (stvec3){5, 5, 0}, false, bob, bob, bob, bob);
 
     while (!StWindow_closing()) {
         if (StInput_is_keymap_just_pressed("test_move")) {
