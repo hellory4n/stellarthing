@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <raylib.h>
 #include "modules/graphics/texture.h"
-#include "modules/graphics/tilemap.h"
 #include "modules/audio/audio.h"
 #include "modules/util/timer.h"
 #include "modules/util/tween.h"
@@ -51,7 +50,6 @@ void StWindow_update()
     // update subsystems
     __st_update_timers__();
     __st_update_tweens__();
-    __st_update_tilemap__();
 }
 
 void StWindow_set_target_fps(uint32 fps)

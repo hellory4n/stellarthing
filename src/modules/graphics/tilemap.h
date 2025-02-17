@@ -12,47 +12,33 @@ typedef struct {
     stcolor tint;
     /// textures. each element is one of the sides. order doesn't really matter
     StTexture* textures[4];
-    /// the world the tile is on. usually a 4 character base64 string (5 with the null character)
-    const char world[5];
     /// side, from 0 to 3
     uint8 side;
 } StTile;
 
 #ifndef ST_MIN_LAYER
 /// how down can you go
-#define ST_MIN_LAYER -128
+#define ST_MIN_LAYER -64
 #endif
 
 #ifndef ST_MAX_LAYER
 /// how up can you go
-#define ST_MAX_LAYER 512
+#define ST_MAX_LAYER 256
 #endif
 
 #ifndef ST_TOTAL_LAYERS
 // layer
-#define ST_TOTAL_LAYERS 640
+#define ST_TOTAL_LAYERS 320
 #endif
 
-#ifndef ST_CHUNK_DIMENSIONS
-/// dimensions of the chunks (they're square)
-#define ST_CHUNK_DIMENSIONS 32
+#ifndef ST_WORLD_DIMENSIONS
+/// can't be bothered to make proper chunking for now
+#define ST_WORLD_DIMENSIONS 250
 #endif
 
-/// man
 typedef struct {
-    StTile ground[ST_CHUNK_DIMENSIONS][ST_CHUNK_DIMENSIONS];
-    StTile objects[ST_CHUNK_DIMENSIONS][ST_CHUNK_DIMENSIONS];
-} StLayer;
-
-typedef struct {
-    StLayer layers[ST_TOTAL_LAYERS];
-} StChunk;
-
-typedef struct {
-    /// key is stvec2i, value is StChunk*
-    StHashMap* chunks;
-    stvec2i min_chunk;
-    stvec2i max_chunk;
+    StTile ground[ST_WORLD_DIMENSIONS][ST_TOTAL_LAYERS][ST_WORLD_DIMENSIONS];
+    StTile objects[ST_WORLD_DIMENSIONS][ST_TOTAL_LAYERS][ST_WORLD_DIMENSIONS];
 
     stvec2i current_chunk;
     int64 current_layer;
@@ -63,7 +49,7 @@ typedef struct {
 } StWorld;
 
 /// makes a world :)
-StWorld* StWorld_new(stvec2i min_chunk, stvec2i max_chunk);
+StWorld* StWorld_new();
 
 /// I WANT TO BREAK FREE
 void StWorld_free(StWorld* w);
@@ -71,10 +57,15 @@ void StWorld_free(StWorld* w);
 /// tile
 StTile* StWorld_get_tile(StWorld* w, stvec3 pos, bool ground);
 
+/// makes a new tile :)
+StTile* StWorld_new_tile(StWorld* w, stvec3 pos, bool ground, StTexture* side0, StTexture* side1,
+    StTexture* side2, StTexture* side3);
+
 /// returns the current world
 StWorld* StWorld_current();
 
 /// sets the current world
 void StWorld_set_current(StWorld* w);
 
-void __st_update_tilemap__();
+/// draws a world
+void StWorld_draw(StWorld* w);

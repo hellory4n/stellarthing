@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "core/starry.h"
 #include "modules/platform/window.h"
 #include "modules/graphics/graphics.h"
@@ -41,9 +42,14 @@ int main(int argc, char const *argv[])
     stcolor color = ST_WHITE;
 
     // the infamous tilemap
+    StTexture* bob = StTexture_new("assets/bob_guy.png");
     StWorld_set_current(StWorld_new((stvec2i){10, 10}, (stvec2i){10, 10}));
-    StTile* bob = StWorld_get_tile(StWorld_current(), (stvec3){1, 0, 3}, false);
-    bob->textures[0] = StTexture_new("assets/bob_guy.png");
+    StWorld_new_tile(StWorld_current(), (stvec3){0, 0, 0}, false, bob, bob, bob, bob);
+    StWorld_new_tile(StWorld_current(), (stvec3){1, 0, 0}, false, bob, bob, bob, bob);
+    StWorld_new_tile(StWorld_current(), (stvec3){0, 0, 1}, false, bob, bob, bob, bob);
+    StWorld_new_tile(StWorld_current(), (stvec3){2, 0, 0}, false, bob, bob, bob, bob);
+    StWorld_new_tile(StWorld_current(), (stvec3){3, 0, 0}, false, bob, bob, bob, bob);
+    StWorld_new_tile(StWorld_current(), (stvec3){5, 0, 5}, false, bob, bob, bob, bob);
 
     while (!StWindow_closing()) {
         if (StInput_is_keymap_just_pressed("test_move")) {
@@ -52,11 +58,7 @@ int main(int argc, char const *argv[])
             StTween_color(&color, ST_WHITE, ST_TRANSPARENT, 5, ST_EASING_QUAD_IN_OUT);
         }
 
-        if (StInput_is_key_just_pressed(ST_KEY_F9)) {
-            StAudio_play(leaudio);
-        }
-
-        StGraphics_clear(ST_BLACK);
+        StGraphics_clear((stcolor){9, 154, 206, 255});
 
         StGraphics_draw_texture_ext(
             m, STVEC2_ZERO, (stvec2){m->width, m->height}, pos, (stvec2){m->width, m->height},
@@ -64,10 +66,12 @@ int main(int argc, char const *argv[])
         );
 
         StDebugMode_update();
+        StWorld_draw(StWorld_current());
         StGraphics_end_drawing();
         StWindow_update();
     }
 
+    StWorld_free(StWorld_current());
     StDebugMode_free();
     StWindow_free();
     return 0;
