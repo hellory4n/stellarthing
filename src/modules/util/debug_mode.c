@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "raylib.h"
 #include "core/core.h"
-#include "core/starry.h"
 #include "modules/platform/window.h"
 #include "modules/platform/input.h"
 #include "debug_mode.h"
@@ -21,7 +20,7 @@ void StDebugMode_update()
     char txt[256];
     // man
     sprintf(txt, "Stellarthing %s - Starry %s\n%lu FPS",
-        ST_GAME_VERSION_STR, ST_STARRY_VERSION_STR, StWindow_get_fps());
+        ST_GAME_VERSION, ST_STARRY_VERSION, StWindow_get_fps());
 
     // shadow for contrast
     DrawText(txt,  1,  1, 16, BLACK);

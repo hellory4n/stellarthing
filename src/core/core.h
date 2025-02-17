@@ -39,3 +39,14 @@ typedef double float64;
         #define ST_LINUXBSD
     #endif
 #endif
+
+// versions
+#ifndef ST_STARRY_VERSION
+/// the engine version
+#define ST_STARRY_VERSION "v3.1.0"
+#endif
+
+#ifndef ST_GAME_VERSION
+/// the game version
+#define ST_GAME_VERSION "v0.11.0"
+#endif

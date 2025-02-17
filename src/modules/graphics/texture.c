@@ -2,7 +2,6 @@
 #include <raylib.h>
 #include "core/collections/sthashmap.h"
 #include "texture.h"
-#include "core/starry.h"
 
 StHashMap* __st_textures__;
 

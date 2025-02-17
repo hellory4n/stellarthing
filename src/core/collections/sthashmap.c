@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include "core/starry.h"
 #include "sthashmap.h"
 
 StHashMap* StHashMap_new(nint capacity)

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "core/starry.h"
 #include "modules/platform/window.h"
 #include "modules/graphics/graphics.h"
 #include "modules/platform/input.h"
@@ -20,7 +19,6 @@ static void __timer_callback__(StTimer* timer)
 
 int main(int argc, char const *argv[])
 {
-    st_new();
     StWindow_new("Stellarthing", (stvec2i){ 640, 480 });
     StWindow_toggle_fullscreen();
     //StWindow_set_target_fps(144);

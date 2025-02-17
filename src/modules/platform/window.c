@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include <raylib.h>
 #include "modules/graphics/texture.h"
 #include "modules/audio/audio.h"
@@ -13,6 +14,11 @@ bool __st_ready__ = false;
 
 void StWindow_new(const char* title, stvec2i size)
 {
+    printf("Stellarthing %s: running Starry %s", ST_GAME_VERSION, ST_STARRY_VERSION);
+    
+    // man
+    srand(time(NULL));
+
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(size.x, size.y, title);
     SetExitKey(KEY_NULL);

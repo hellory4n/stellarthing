@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "stlist.h"
-#include "core/starry.h"
 
 StList* StList_new(nint capacity)
 {
