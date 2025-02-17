@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
     stvec2 pos = (stvec2){ 40, 60 };
     float64 rot = 0;
     stcolor color = ST_WHITE;
-    stvec3 sndpos = STVEC3_ZERO;
+    stvec3 sndpos = (stvec3){0.1, 0.1, 0.1};
 
     // the infamous tilemap
     StTexture* bob = StTexture_new("assets/bob_guy.png");

@@ -96,7 +96,7 @@ void StAudio_set_pan(StAudio a, float64 pan)
         printf("[AUDIO] Audio at %s is invalid\n", a);
     }
     else {
-        SetSoundPan(*sound, (pan + 1) / 2);
+        SetSoundPan(*sound, -pan);
     }
 }
 
@@ -122,7 +122,9 @@ void StAudio_set_position(StAudio a, stvec3 pos)
 {
     stvec3 delta = stvec3_sub(pos, listener);
     float64 distance = sqrt(delta.x * delta.x + delta.y * delta.y);
-    StAudio_set_pan(a, st_clamp(delta.x / distance, -1, 1));
     float64 vol = (float64)(uintptr_t)StHashMap_get(__st_audio__, a);
-    StAudio_set_volume(a, vol / vol + distance);
+    float64 pan = st_clamp(delta.x / distance, -1, 1);
+    vol = st_clamp(vol / vol + distance, 0, 1);
+    StAudio_set_pan(a, pan);
+    StAudio_set_volume(a, vol);
 }
