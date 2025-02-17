@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
 
     // the infamous tilemap
     StTexture* bob = StTexture_new("assets/bob_guy.png");
-    StWorld_set_current(StWorld_new((stvec2i){10, 10}, (stvec2i){10, 10}));
+    StWorld_set_current(StWorld_new());
     StWorld_new_tile(StWorld_current(), (stvec3){0, 0, 0}, false, bob, bob, bob, bob);
     StWorld_new_tile(StWorld_current(), (stvec3){1, 0, 0}, false, bob, bob, bob, bob);
     StWorld_new_tile(StWorld_current(), (stvec3){0, 1, 0}, false, bob, bob, bob, bob);
