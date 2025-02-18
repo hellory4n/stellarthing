@@ -54,6 +54,7 @@ int main(int argc, char const *argv[])
 
     // im in tremendous pain
     StExtensions_new();
+    StExtensions_run("scripts/main.lua");
 
     while (!StWindow_closing()) {
         if (StInput_is_keymap_just_pressed("test_move")) {
