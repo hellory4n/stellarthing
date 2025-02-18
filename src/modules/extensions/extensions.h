@@ -1,4 +1,5 @@
 #pragma once
+#include "core/core.h"
 
 /// initializes the extension system
 void StExtensions_new();

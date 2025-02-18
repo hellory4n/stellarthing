@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
 
     StTexture* m = StTexture_new("assets/test.png");
     leaudio = StAudio_new("assets/ross_tibeeth_jr_hhhh.ogg");
-    StAudio_play(leaudio);
+    //StAudio_play(leaudio);
     StTimer* TIMERULESALL = StTimer_new(3, true, &__timer_callback__);
     //StTimer_start(TIMERULESALL);
     stvec2 pos = (stvec2){ 40, 60 };
