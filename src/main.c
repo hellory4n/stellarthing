@@ -7,6 +7,7 @@
 #include "modules/util/timer.h"
 #include "modules/util/tween.h"
 #include "modules/graphics/tilemap.h"
+#include "modules/extensions/extensions.h"
 
 StAudio leaudio;
 bool paus = false;
@@ -51,6 +52,9 @@ int main(int argc, char const *argv[])
     StWorld_new_tile(StWorld_current(), (stvec3){3, 0, 0}, false, bob, bob, bob, bob);
     StWorld_new_tile(StWorld_current(), (stvec3){5, 5, 0}, false, bob, bob, bob, bob);
 
+    // im in tremendous pain
+    StExtensions_new();
+
     while (!StWindow_closing()) {
         if (StInput_is_keymap_just_pressed("test_move")) {
             StTween_float(&rot, -360, 360, 5, ST_EASING_QUAD_IN_OUT);
@@ -81,6 +85,7 @@ int main(int argc, char const *argv[])
         StWindow_update();
     }
 
+    StExtensions_free();
     StWorld_free(StWorld_current());
     StDebugMode_free();
     StWindow_free();
