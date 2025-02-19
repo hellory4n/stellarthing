@@ -2,6 +2,7 @@
 #define LUA_IMPL
 #include "minilua.h"
 #include "core/math/math.h"
+#include "modules/audio/audio.h"
 #include "extensions.h"
 
 lua_State* lua;
@@ -982,6 +983,151 @@ static int32 starry_vec3i_str(lua_State* lua)
     return 1;
 }
 
+static int32 starry_color_rgba(lua_State* lua)
+{
+    int64 r = luaL_checkinteger(lua, 1);
+    int64 g = luaL_checkinteger(lua, 2);
+    int64 b = luaL_checkinteger(lua, 3);
+    int64 a = luaL_checkinteger(lua, 4);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "color");
+    lua_setmetatable(lua, -2);
+
+    lua_pushinteger(lua, r);
+    lua_setfield(lua, -2, "r");
+    lua_pushinteger(lua, g);
+    lua_setfield(lua, -2, "g");
+    lua_pushinteger(lua, b);
+    lua_setfield(lua, -2, "b");
+    lua_pushinteger(lua, a);
+    lua_setfield(lua, -2, "a");
+
+    return 1;
+}
+
+static int32 starry_color_rgb(lua_State* lua)
+{
+    int64 r = luaL_checkinteger(lua, 1);
+    int64 g = luaL_checkinteger(lua, 2);
+    int64 b = luaL_checkinteger(lua, 3);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "color");
+    lua_setmetatable(lua, -2);
+
+    lua_pushinteger(lua, r);
+    lua_setfield(lua, -2, "r");
+    lua_pushinteger(lua, g);
+    lua_setfield(lua, -2, "g");
+    lua_pushinteger(lua, b);
+    lua_setfield(lua, -2, "b");
+    lua_pushinteger(lua, 255);
+    lua_setfield(lua, -2, "a");
+
+    return 1;
+}
+
+static int32 starry_color_str(lua_State* lua)
+{
+    lua_getfield(lua, 1, "r");
+    int64 r = lua_tointeger(lua, -1);
+    lua_getfield(lua, 1, "g");
+    int64 g = lua_tointeger(lua, -1);
+    lua_getfield(lua, 1, "b");
+    int64 b = lua_tointeger(lua, -1);
+    lua_getfield(lua, 1, "a");
+    int64 a = lua_tointeger(lua, -1);
+
+    lua_pushfstring(lua, "color(%d, %d, %d, %d)", r, g, b, a);
+    return 1;
+}
+
+static int32 starry_audio_new(lua_State* lua)
+{
+    const char* path = luaL_checkstring(lua, 1);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "Audio");
+    lua_setmetatable(lua, -2);
+
+    lua_pushstring(lua, path);
+    lua_setfield(lua, -2, "path");
+
+    StAudio_new(path);
+    return 1;
+}
+
+static int32 starry_audio_play(lua_State* lua)
+{
+    lua_getfield(lua, 1, "path");
+    const char* path = lua_tostring(lua, -1);
+    StAudio_play(path);
+    return 1;
+}
+
+static int32 starry_audio_pause(lua_State* lua)
+{
+    lua_getfield(lua, 1, "path");
+    const char* path = lua_tostring(lua, -1);
+    bool boo = lua_toboolean(lua, 2);
+    StAudio_pause(path, boo);
+    return 1;
+}
+
+static int32 starry_audio_stop(lua_State* lua)
+{
+    lua_getfield(lua, 1, "path");
+    const char* path = lua_tostring(lua, -1);
+    StAudio_stop(path);
+    return 1;
+}
+
+static int32 starry_audio_set_pan(lua_State* lua)
+{
+    lua_getfield(lua, 1, "path");
+    const char* path = lua_tostring(lua, -1);
+    float64 pan = luaL_checknumber(lua, 2);
+    StAudio_set_pan(path, pan);
+    return 1;
+}
+
+static int32 starry_audio_set_vol(lua_State* lua)
+{
+    lua_getfield(lua, 1, "path");
+    const char* path = lua_tostring(lua, -1);
+    float64 vol = luaL_checknumber(lua, 2);
+    StAudio_set_volume(path, vol);
+    return 1;
+}
+
+static int32 starry_audio_set_position(lua_State* lua)
+{
+    lua_getfield(lua, 1, "path");
+    const char* path = lua_tostring(lua, -1);
+
+    lua_getfield(lua, 2, "x");
+    float64 x = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "z");
+    float64 z = lua_tonumber(lua, -1);
+    StAudio_set_position(path, (stvec3){x, y, z});
+    return 1;
+}
+
+static int32 starry_audio_set_listener(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "z");
+    float64 z = lua_tonumber(lua, -1);
+    StAudio_set_listener((stvec3){x, y, z});
+    return 1;
+}
+
 /// binds every function ever
 static void bind()
 {
@@ -1188,6 +1334,110 @@ static void bind()
     // vec3i constructor
     lua_pushcfunction(lua, starry_vec3i_new);
     lua_setglobal(lua, "vec3i");
+
+    // color metatable
+    luaL_newmetatable(lua, "color");
+    
+    lua_pushnumber(lua, 0);
+    lua_setfield(lua, -2, "r");
+
+    lua_pushnumber(lua, 0);
+    lua_setfield(lua, -2, "g");
+
+    lua_pushnumber(lua, 0);
+    lua_setfield(lua, -2, "b");
+
+    lua_pushnumber(lua, 0);
+    lua_setfield(lua, -2, "a");
+
+    lua_pushcfunction(lua, starry_color_str);
+    lua_setfield(lua, -2, "__tostring");
+
+    lua_pop(lua, 1);
+
+    // color constructors
+    lua_pushcfunction(lua, starry_color_rgba);
+    lua_setglobal(lua, "rgba");
+
+    lua_pushcfunction(lua, starry_color_rgb);
+    lua_setglobal(lua, "rgb");
+
+    // color constants
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "color");
+    lua_setmetatable(lua, -2);
+    lua_pushinteger(lua, 255);
+    lua_setfield(lua, -2, "r");
+    lua_pushinteger(lua, 255);
+    lua_setfield(lua, -2, "g");
+    lua_pushinteger(lua, 255);
+    lua_setfield(lua, -2, "b");
+    lua_pushinteger(lua, 255);
+    lua_setfield(lua, -2, "a");
+    lua_setglobal(lua, "COLOR_WHITE");
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "color");
+    lua_setmetatable(lua, -2);
+    lua_pushinteger(lua, 0);
+    lua_setfield(lua, -2, "r");
+    lua_pushinteger(lua, 0);
+    lua_setfield(lua, -2, "g");
+    lua_pushinteger(lua, 0);
+    lua_setfield(lua, -2, "b");
+    lua_pushinteger(lua, 255);
+    lua_setfield(lua, -2, "a");
+    lua_setglobal(lua, "COLOR_BLACK");
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "color");
+    lua_setmetatable(lua, -2);
+    lua_pushinteger(lua, 0);
+    lua_setfield(lua, -2, "r");
+    lua_pushinteger(lua, 0);
+    lua_setfield(lua, -2, "g");
+    lua_pushinteger(lua, 0);
+    lua_setfield(lua, -2, "b");
+    lua_pushinteger(lua, 0);
+    lua_setfield(lua, -2, "a");
+    lua_setglobal(lua, "COLOR_TRANSPARENT");
+
+    // audio metatable
+    luaL_newmetatable(lua, "Audio");
+    
+    lua_pushstring(lua, "");
+    lua_setfield(lua, -2, "path");
+
+    lua_pushcfunction(lua, starry_audio_pause);
+    lua_setfield(lua, -2, "pause");
+
+    lua_pushcfunction(lua, starry_audio_play);
+    lua_setfield(lua, -2, "play");
+
+    lua_pushcfunction(lua, starry_audio_stop);
+    lua_setfield(lua, -2, "stop");
+
+    lua_pushcfunction(lua, starry_audio_set_pan);
+    lua_setfield(lua, -2, "set_pan");
+    
+    lua_pushcfunction(lua, starry_audio_set_vol);
+    lua_setfield(lua, -2, "set_volume");
+
+    lua_pushcfunction(lua, starry_audio_set_position);
+    lua_setfield(lua, -2, "set_position");
+
+    lua_pop(lua, 1);
+
+    // Audio static functions
+    lua_createtable(lua, 0, 4);
+
+    lua_pushcfunction(lua, starry_audio_new);
+    lua_setfield(lua, -2, "new");
+
+    lua_pushcfunction(lua, starry_audio_set_listener);
+    lua_setfield(lua, -2, "set_listener");
+
+    lua_setglobal(lua, "Audio");
 }
 
 void StExtensions_new()

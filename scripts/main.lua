@@ -55,6 +55,20 @@ function main()
     print(vec3i(1, 2, 3) <= vec3i(4, 5, 6))
     print(vec3i(1, 2, 3) > vec3i(4, 5, 6))
     print(vec3i(1, 2, 3) >= vec3i(4, 5, 6))
+
+    print(rgb(69, 69, 69))
+    print(rgba(69, 69, 69, 69))
+    print(COLOR_WHITE);
+    print(COLOR_BLACK);
+    print(COLOR_TRANSPARENT);
+
+    local audio = Audio.new("assets/ross_tibeeth_jr_hhhh.ogg")
+    audio.play(audio)
+    audio:stop()
+    audio:play()
+    audio:pause(false)
+    audio:set_volume(0.75)
+    audio:set_pan(-0.25)
 end
 
 -- just so we get a stack trace

@@ -80,6 +80,8 @@ int main(int argc, char const *argv[])
             (stvec2){0.5, 0.5}, rot, color
         );
 
+        StExtensions_run("scripts/update.lua");
+
         StDebugMode_update();
         StWorld_draw(StWorld_current());
         StGraphics_end_drawing();
