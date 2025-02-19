@@ -66,15 +66,180 @@ static int32 starry_vec2_new(lua_State* lua)
     return 1;
 }
 
-static int32 starry_vec2_add(lua_State* lua);
-static int32 starry_vec2_sub(lua_State* lua);
-static int32 starry_vec2_mul(lua_State* lua);
-static int32 starry_vec2_div(lua_State* lua);
-static int32 starry_vec2_mod(lua_State* lua);
-static int32 starry_vec2_unm(lua_State* lua);
-static int32 starry_vec2_eq(lua_State* lua);
-static int32 starry_vec2_lt(lua_State* lua);
-static int32 starry_vec2_lte(lua_State* lua);
+static int32 starry_vec2_add(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "x");
+    float64 x2 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y2 = lua_tonumber(lua, -1);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "vec2");
+    lua_setmetatable(lua, -2);
+
+    lua_pushnumber(lua, x1 + x2);
+    lua_setfield(lua, -2, "x");
+    lua_pushnumber(lua, y1 + y2);
+    lua_setfield(lua, -2, "y");
+
+    return 1;
+}
+
+static int32 starry_vec2_sub(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "x");
+    float64 x2 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y2 = lua_tonumber(lua, -1);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "vec2");
+    lua_setmetatable(lua, -2);
+
+    lua_pushnumber(lua, x1 - x2);
+    lua_setfield(lua, -2, "x");
+    lua_pushnumber(lua, y1 - y2);
+    lua_setfield(lua, -2, "y");
+
+    return 1;
+}
+
+static int32 starry_vec2_mul(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "x");
+    float64 x2 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y2 = lua_tonumber(lua, -1);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "vec2");
+    lua_setmetatable(lua, -2);
+
+    lua_pushnumber(lua, x1 * x2);
+    lua_setfield(lua, -2, "x");
+    lua_pushnumber(lua, y1 * y2);
+    lua_setfield(lua, -2, "y");
+
+    return 1;
+}
+
+static int32 starry_vec2_div(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "x");
+    float64 x2 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y2 = lua_tonumber(lua, -1);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "vec2");
+    lua_setmetatable(lua, -2);
+
+    lua_pushnumber(lua, x1 / x2);
+    lua_setfield(lua, -2, "x");
+    lua_pushnumber(lua, y1 / y2);
+    lua_setfield(lua, -2, "y");
+
+    return 1;
+}
+
+static int32 starry_vec2_mod(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "x");
+    float64 x2 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y2 = lua_tonumber(lua, -1);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "vec2");
+    lua_setmetatable(lua, -2);
+
+    lua_pushnumber(lua, fmod(x1, x2));
+    lua_setfield(lua, -2, "x");
+    lua_pushnumber(lua, fmod(y1, y2));
+    lua_setfield(lua, -2, "y");
+
+    return 1;
+}
+
+static int32 starry_vec2_unm(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y = lua_tonumber(lua, -1);
+
+    lua_newtable(lua);
+    luaL_getmetatable(lua, "vec2");
+    lua_setmetatable(lua, -2);
+
+    lua_pushnumber(lua, -x);
+    lua_setfield(lua, -2, "x");
+    lua_pushnumber(lua, -y);
+    lua_setfield(lua, -2, "y");
+
+    return 1;
+}
+
+static int32 starry_vec2_eq(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y = lua_tonumber(lua, -1);
+
+    lua_pushboolean(lua, x == y);
+    return 1;
+}
+
+static int32 starry_vec2_lt(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "x");
+    float64 x2 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y2 = lua_tonumber(lua, -1);
+
+    lua_pushboolean(lua, x1 < x2 && y1 < y2);
+    return 1;
+}
+
+static int32 starry_vec2_lte(lua_State* lua)
+{
+    lua_getfield(lua, 1, "x");
+    float64 x1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 1, "y");
+    float64 y1 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "x");
+    float64 x2 = lua_tonumber(lua, -1);
+    lua_getfield(lua, 2, "y");
+    float64 y2 = lua_tonumber(lua, -1);
+
+    lua_pushboolean(lua, x1 <= x2 && y1 <= y2);
+    return 1;
+}
 
 static int32 starry_vec2_str(lua_State* lua)
 {
@@ -119,6 +284,33 @@ static void bind()
 
     lua_pushcfunction(lua, starry_vec2_str);
     lua_setfield(lua, -2, "__tostring");
+
+    lua_pushcfunction(lua, starry_vec2_add);
+    lua_setfield(lua, -2, "__add");
+
+    lua_pushcfunction(lua, starry_vec2_sub);
+    lua_setfield(lua, -2, "__sub");
+    
+    lua_pushcfunction(lua, starry_vec2_mul);
+    lua_setfield(lua, -2, "__mul");
+    
+    lua_pushcfunction(lua, starry_vec2_div);
+    lua_setfield(lua, -2, "__div");
+
+    lua_pushcfunction(lua, starry_vec2_mod);
+    lua_setfield(lua, -2, "__mod");
+
+    lua_pushcfunction(lua, starry_vec2_unm);
+    lua_setfield(lua, -2, "__unm");
+
+    lua_pushcfunction(lua, starry_vec2_eq);
+    lua_setfield(lua, -2, "__eq");
+
+    lua_pushcfunction(lua, starry_vec2_lt);
+    lua_setfield(lua, -2, "__lt");
+
+    lua_pushcfunction(lua, starry_vec2_lte);
+    lua_setfield(lua, -2, "__le");
 
     lua_pop(lua, 1);
 

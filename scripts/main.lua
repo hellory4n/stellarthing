@@ -4,8 +4,18 @@ function main()
     print(starry.random_base64(10))
     print(starry.clamp(56934, 0, 10))
 
-    local mate = vec2.new(5, 6)
-    print(mate)
+    print(vec2.new(1, 2) + vec2.new(3, 4))
+    print(vec2.new(1, 2) - vec2.new(3, 4))
+    print(vec2.new(1, 2) * vec2.new(3, 4))
+    print(vec2.new(1, 2) / vec2.new(3, 4))
+    print(vec2.new(1, 2) % vec2.new(3, 4))
+    print(-vec2.new(1, 2))
+    print(vec2.new(1, 2) == vec2.new(3, 4))
+    print(vec2.new(1, 2) ~= vec2.new(3, 4))
+    print(vec2.new(1, 2) < vec2.new(3, 4))
+    print(vec2.new(1, 2) <= vec2.new(3, 4))
+    print(vec2.new(1, 2) > vec2.new(3, 4))
+    print(vec2.new(1, 2) >= vec2.new(3, 4))
 end
 
 -- just so we get a stack trace
