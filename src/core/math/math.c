@@ -31,17 +31,13 @@ float64 st_rad2deg(float64 rad)
     return rad * (180 / PI);
 }
 
+const char base64_chars[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+
 void st_rand_base64(uint8 len, char* out)
 {
     for (nint i = 0; i < len; i++) {
-        uint64 type = st_rand_uint(0, 5);
-        switch (type) {
-            case 0: out[i] = st_rand_char('a', 'z' + 1); break;
-            case 1: out[i] = st_rand_char('A', 'Z' + 1); break;
-            case 2: out[i] = st_rand_char('0', '9' + 1); break;
-            case 3: out[i] = '-'; break;
-            case 4: out[i] = '_'; break;
-        }
+        uint64 man = st_rand_uint(0, 63);
+        out[i] = base64_chars[man];
     }
     out[len] = '\0';
 }

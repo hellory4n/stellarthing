@@ -5,7 +5,7 @@ void __st_init_audio__();
 
 void __st_free_audio__();
 
-/// i can't include raylib in my header files so this is a disguised path that's referred in a hashmap
+/// i can't include raylib in my header files so this is a random id
 typedef const char* StAudio;
 
 /// loads audio from a path. supported formats are WAV, OGG, MP3, FLAC, XM, MOD, and QOA
