@@ -28,14 +28,14 @@ int main(int argc, char const *argv[])
     leliste->add(42069);
     leliste[3] = -5;
     for (nint i = 0; i < leliste->length; i++) {
-        printf("list: %lu\n", leliste[i]);
+        printf("list: %li\n", leliste[i]);
     }
 
-    auto lehashmape = new HashMap<const char*, const char*>();
+    auto lehashmape = new HashMap<const char, const char>();
     lehashmape->set("mate", "matemate");
     lehashmape->set("the sigma", "®®®®®®");
     lehashmape->set("mate", "BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH");
-    printf("Mate %s\m", lehashmape->get("mate"));
-    printf("Mate %s\m", lehashmape->get("the sigma"));
+    printf("Mate %s\n", lehashmape->get("mate"));
+    printf("Mate %s\n", lehashmape->get("the sigma"));
     return 0;
 }
