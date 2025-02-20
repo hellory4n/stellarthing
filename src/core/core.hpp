@@ -1,7 +1,10 @@
-#pragma once
+#ifndef ST_CORE_H
+#define ST_CORE_H
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+
+namespace starry {
 
 /// random "size"s everywhere would be weird. this is equivalent to an uint64 on most pcs i think
 typedef size_t nint;
@@ -50,3 +53,7 @@ typedef double float64;
 /// the game version
 #define ST_GAME_VERSION "v0.11.0"
 #endif
+
+}
+
+#endif // ST_CORE_H

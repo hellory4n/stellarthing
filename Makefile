@@ -12,16 +12,16 @@ PROJECT_BUILD_PATH    ?= .
 # i love make
 # youre just supposed to put every folder here
 PROJECT_SOURCE_FILES ?= \
-    $(wildcard src/**.c) \
-    $(wildcard src/lib/**.c) \
-    $(wildcard src/core/**.c) \
-    $(wildcard src/core/collections/**.c) \
-    $(wildcard src/core/math/**.c) \
-    $(wildcard src/modules/platform/**.c) \
-    $(wildcard src/modules/graphics/**.c) \
-    $(wildcard src/modules/audio/**.c) \
-    $(wildcard src/modules/util/**.c) \
-    $(wildcard src/modules/extensions/**.c) \
+    $(wildcard src/**.cpp) \
+    $(wildcard src/lib/**.cpp) \
+    $(wildcard src/core/**.cpp) \
+    $(wildcard src/core/collections/**.cpp) \
+    $(wildcard src/core/math/**.cpp) \
+    $(wildcard src/modules/platform/**.cpp) \
+    $(wildcard src/modules/graphics/**.cpp) \
+    $(wildcard src/modules/audio/**.cpp) \
+    $(wildcard src/modules/util/**.cpp) \
+    $(wildcard src/modules/extensions/**.cpp) \
 
 INCLUDE_PATHS = -Isrc -Ilib
 
@@ -163,19 +163,8 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     endif
 endif
 
-# Define compiler flags: CFLAGS
-#------------------------------------------------------------------------------------------------
-#  -O1                  defines optimization level
-#  -g                   include debug information on compilation
-#  -s                   strip unnecessary data from build
-#  -Wall                turns on most, but not all, compiler warnings
-#  -std=c99             defines C language mode (standard C from 1999 revision)
-#  -std=gnu99           defines C language mode (GNU C from 1999 revision)
-#  -Wno-missing-braces  ignore invalid warning (GCC bug 53119)
-#  -Wno-unused-value    ignore unused return values of some functions (i.e. fread())
-#  -D_DEFAULT_SOURCE    use with -std=c99 on Linux and PLATFORM_WEB, required for timespec
-CFLAGS = -std=c99 -Wall -Wno-missing-braces -Wno-unused-value -Wno-pointer-sign -D_DEFAULT_SOURCE $(PROJECT_CUSTOM_FLAGS)
-#CFLAGS += -Wextra -Wmissing-prototypes -Wstrict-prototypes
+CFLAGS = -std=c++03 -Wall -Wno-missing-braces -Wno-unused-value -Wno-pointer-sign -D_DEFAULT_SOURCE $(PROJECT_CUSTOM_FLAGS)
+CFLAGS += -Wextra -Wmissing-prototypes -Wstrict-prototypes
 
 ifeq ($(BUILD_MODE),DEBUG)
     CFLAGS += -g -D_DEBUG
@@ -195,7 +184,7 @@ else
     endif
 endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
-    CFLAGS += -std=gnu99 -DEGL_NO_X11
+    CFLAGS += -std=c++03 -DEGL_NO_X11
 endif
 
 # Define include paths for required headers: INCLUDE_PATHS
@@ -333,7 +322,7 @@ endif
 
 # Define all object files from source files
 #------------------------------------------------------------------------------------------------
-OBJS = $(patsubst %.c, %.o, $(PROJECT_SOURCE_FILES))
+OBJS = $(patsubst %.cpp, %.o, $(PROJECT_SOURCE_FILES))
 
 # Define processes to execute
 #------------------------------------------------------------------------------------------------

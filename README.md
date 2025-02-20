@@ -1,6 +1,8 @@
-# Starry C
+# Stellarthing
 
-Got a random segfault in C#, C is great because all of your segfaults are your own skill issue
+Space game.
+
+Featuring a game engine in C++ (no STL)
 
 ## Building
 
