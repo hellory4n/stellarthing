@@ -36,7 +36,7 @@ template<typename T>
 bool List<T>::add(T item)
 {
     if (this->length >= this->capacity) {
-        nint new_cap = l->capacity * 2 + 1;
+        nint new_cap = this->capacity * 2 + 1;
         if (!this->resize(new_cap)) {
             return false;
         }

@@ -46,7 +46,7 @@ typedef double float64;
 // versions
 #ifndef ST_STARRY_VERSION
 /// the engine version
-#define ST_STARRY_VERSION "v3.1.0"
+#define ST_STARRY_VERSION "v3.2.0"
 #endif
 
 #ifndef ST_GAME_VERSION

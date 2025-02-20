@@ -9,19 +9,7 @@ PLATFORM              ?= PLATFORM_DESKTOP
 PROJECT_NAME          ?= stellarthing
 PROJECT_VERSION       ?= 0.11.0
 PROJECT_BUILD_PATH    ?= .
-# i love make
-# youre just supposed to put every folder here
-PROJECT_SOURCE_FILES ?= \
-    $(wildcard src/**.cpp) \
-    $(wildcard src/lib/**.cpp) \
-    $(wildcard src/core/**.cpp) \
-    $(wildcard src/core/collections/**.cpp) \
-    $(wildcard src/core/math/**.cpp) \
-    $(wildcard src/modules/platform/**.cpp) \
-    $(wildcard src/modules/graphics/**.cpp) \
-    $(wildcard src/modules/audio/**.cpp) \
-    $(wildcard src/modules/util/**.cpp) \
-    $(wildcard src/modules/extensions/**.cpp) \
+PROJECT_SOURCE_FILES ?= $(shell find src -name "*.cpp")
 
 INCLUDE_PATHS = -Isrc -Ilib
 
@@ -126,16 +114,16 @@ endif
 
 # Define default C compiler: CC
 #------------------------------------------------------------------------------------------------
-CC = gcc
+CC = g++
 
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),OSX)
         # OSX default compiler
-        CC = clang
+        CC = clang++
     endif
     ifeq ($(PLATFORM_OS),BSD)
         # FreeBSD, OpenBSD, NetBSD, DragonFly default compiler
-        CC = clang
+        CC = clang++
     endif
 endif
 ifeq ($(PLATFORM),PLATFORM_WEB)
@@ -163,8 +151,8 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     endif
 endif
 
-CFLAGS = -std=c++03 -Wall -Wno-missing-braces -Wno-unused-value -Wno-pointer-sign -D_DEFAULT_SOURCE $(PROJECT_CUSTOM_FLAGS)
-CFLAGS += -Wextra -Wmissing-prototypes -Wstrict-prototypes
+CFLAGS = -std=c++17 -Wall -Wno-missing-braces -Wno-unused-value -D_DEFAULT_SOURCE $(PROJECT_CUSTOM_FLAGS)
+CFLAGS += -Wextra
 
 ifeq ($(BUILD_MODE),DEBUG)
     CFLAGS += -g -D_DEBUG
@@ -184,7 +172,7 @@ else
     endif
 endif
 ifeq ($(PLATFORM),PLATFORM_DRM)
-    CFLAGS += -std=c++03 -DEGL_NO_X11
+    CFLAGS += -std=c++17 -DEGL_NO_X11
 endif
 
 # Define include paths for required headers: INCLUDE_PATHS
@@ -346,7 +334,7 @@ $(PROJECT_NAME): $(OBJS)
 
 # Compile source files
 # NOTE: This pattern will compile every module defined on $(OBJS)
-%.o: %.c
+%.o: %.cpp
 	$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE_PATHS) -D$(PLATFORM)
 
 .PHONY: clean_shell_cmd clean_shell_sh

@@ -2,23 +2,17 @@
 
 ## Naming
 
-Types start with `St` and are in `PascalCase`, e.g. `StObject`
+Types are in `PascalCase`, e.g. `StObject`
 
-Please note acronyms and abbreviations are NOT capitalized, so for example it would be `StJson`, not `StJSON`
+Please note acronyms and abbreviations are NOT capitalized, so for example it would be `Id`, not `ID`
 
-Functions start with `st_` and are in `snake_case`, e.g. `st_log`
-
-Member functions start with the type name and then are in `snake_case`, e.g. `StObject_annihilate_all_that_has_ever_lived`
+Functions are in `snake_case`, e.g. `the_function`
 
 Macros start with `ST_` and are in `UPPER_CASE`, e.g. `ST_IDK_MAN`
 
-If you have something that's supposed to be private, put it between `__`, e.g. `__st_murder__`
+If you have something that's supposed to be private, put a `__` at the start, e.g. `__murder`
 
-Constructors are called `new` and destructors are called `free`, e.g. `StObject_new`, `StObject_free`
-
-For member functions, instead of something like `self` or `this`, have the first letter of the type instead, e.g. `StEntity_update(StEntity* e);`
-
-Arrays should have the actual array as `<name>v` along with the length as `<name>c`
+You should use `this`
 
 ## Spacing
 
@@ -26,7 +20,7 @@ Indentation is 4 spaces.
 
 Brackets are K&R style:
 
-```c
+```cpp
 int main(int argc, char *argv[])
 {
     while (x == y) {
@@ -41,7 +35,7 @@ You may think the functions being different is inconsistent, to which I say "wro
 
 If-else statements are a bit different:
 
-```c
+```cpp
 if (is_busted) {
     die();
 }
@@ -51,7 +45,7 @@ else {
 ```
 
 Don't do this though:
-```c
+```cpp
 if (is_busted)
     die();
 else
@@ -60,14 +54,14 @@ else
 
 You're only allowed to have blocks without braces if it's tiny and on one line:
 
-```c
+```cpp
 if (is_busted) die();
 else not_die();
 ```
 
 Otherwise just use braces
 
-```c
+```cpp
 if (very_long_variable_name_agsrjhyrshyiuuydjt) {
     very_long_function_name_ugugujgu();
 }
@@ -75,7 +69,7 @@ if (very_long_variable_name_agsrjhyrshyiuuydjt) {
 
 Switch statements are formatted like this:
 
-```c
+```cpp
 switch (something) {
 case 1:
     do_something();
@@ -89,7 +83,7 @@ case 2:
 
 This is also allowed:
 
-```c
+```cpp
 switch (something) {
     case 1: do_something(); break;
     case 2: do_something(); break;
@@ -98,7 +92,7 @@ switch (something) {
 
 Pointers are aligned with the types, as it changes the type
 
-```c
+```cpp
 // do this
 Mate* mate;
 // not this
@@ -106,7 +100,7 @@ Mate *mate;
 ```
 
 Documentation has 3 slashes:
-```c
+```cpp
 /// This does something.
 void man();
 ```
@@ -115,7 +109,7 @@ void man();
 
 Functions with error handling should return true if they succeeded, and false otherwise
 
-```c
+```cpp
 bool function_that_busts()
 {
     printf("Oh look, function's busted.\n");
@@ -134,12 +128,20 @@ But if the functions are supposed to return something, return null if it fails
 
 Use `const char*` for strings, conveniently UTF-8 supports comes (mostly) for free
 
-Use `core/core.h` numbers instead of `stdint.h`, they're mostly the same except without the `_t` and `size_t` is `nint` (native int) because having "size" everywhere would be weird
+Use `core/core.hpp` numbers instead of `stdint.h`, they're mostly the same except without the `_t` and `size_t` is `nint` (native int) because having "size" everywhere would be weird
 
-Use `#pragma once`.
+Use include guards instead of `#pragma once`. Why? Sometimes `#pragma once` busted with global variables in C so I think include guards are safer
 
 Includes should be in this order:
 - Standard library stuff
-- Other third party stuff (raylib, `src/lib`)
-- Starry stuff
-- Game stuff
+- Other third party stuff (`lib` folder)
+- `src/core` folder
+- `src/modules` folder
+- `src/game` folder
+- If it's a `.cpp` file, include the header file last
+
+Speaking of header files, use the `.hpp` extension, not `.h`. `.h` is for C.
+
+In my humble opinion, the STL is a piece of crap and you should avoid it at all costs.
+
+Use C libraries and the `core` folder instead.
