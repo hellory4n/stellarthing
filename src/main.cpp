@@ -26,9 +26,9 @@ int main(int argc, char const *argv[])
     leliste->add(420);
     leliste->add(69420);
     leliste->add(42069);
-    leliste[3] = -5;
+    leliste->set(3, -5);
     for (nint i = 0; i < leliste->length; i++) {
-        printf("list: %li\n", leliste[i]);
+        printf("list: %li\n", leliste->at(i));
     }
 
     auto lehashmape = new HashMap<const char, const char>();

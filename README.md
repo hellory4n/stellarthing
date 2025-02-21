@@ -8,6 +8,13 @@ Featuring a game engine in C++ (no STL)
 
 You need GCC and Meson
 
+First clone raylib:
+
+```sh
+cd subprojects
+git clone https://github.com/raysan5/raylib
+```
+
 Compile with:
 
 ```sh

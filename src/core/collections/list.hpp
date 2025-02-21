@@ -55,7 +55,8 @@ public:
         return true;
     }
 
-    T* operator [](nint idx)
+    /// returns the item at a certain index
+    T at(nint idx)
     {
         // not a huge fan of segfaults
         if (idx >= this->length) {
@@ -65,7 +66,20 @@ public:
             return NULL;
         }
         
-        return &(((T*)this->items)[idx]);
+        return ((T*)this->items)[idx];
+    }
+
+    void set(nint idx, T newval)
+    {
+        // not a huge fan of segfaults
+        if (idx >= this->length) {
+            fprintf(stderr, "[CORE] Index out of range\n");
+            // a segfault is about to happen!
+            fflush(stdout);
+            return;
+        }
+
+        ((T*)this->items)[idx] = newval;
     }
 };
 
