@@ -56,17 +56,17 @@ public:
     }
 
     /// returns the item at a certain index
-    T at(nint idx)
+    T* at(nint idx)
     {
         // not a huge fan of segfaults
         if (idx >= this->length) {
             fprintf(stderr, "[CORE] Index out of range\n");
             // a segfault is about to happen!
             fflush(stdout);
-            return NULL;
+            return nullptr;
         }
         
-        return ((T*)this->items)[idx];
+        return &(((T*)this->items)[idx]);
     }
 
     void set(nint idx, T newval)

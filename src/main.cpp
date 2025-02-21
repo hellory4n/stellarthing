@@ -28,8 +28,9 @@ int main(int argc, char const *argv[])
     leliste->add(42069);
     leliste->set(3, -5);
     for (nint i = 0; i < leliste->length; i++) {
-        printf("list: %li\n", leliste->at(i));
+        printf("list: %li\n", *(leliste->at(i)));
     }
+    delete leliste;
 
     auto lehashmape = new HashMap<const char, const char>();
     lehashmape->set("mate", "matemate");
@@ -37,5 +38,7 @@ int main(int argc, char const *argv[])
     lehashmape->set("mate", "BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH BLAH");
     printf("Mate %s\n", lehashmape->get("mate"));
     printf("Mate %s\n", lehashmape->get("the sigma"));
+    delete lehashmape;
+
     return 0;
 }
