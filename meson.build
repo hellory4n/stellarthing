@@ -3,8 +3,6 @@ project('stellarthing', 'c', 'cpp')
 sources = files(
   'src/main.cpp',
 
-  'lib/libmybrain/losingmymap.c',
-
   'src/core/math/math.cpp',
   'src/core/math/vec2.cpp',
   'src/core/math/vec2i.cpp',

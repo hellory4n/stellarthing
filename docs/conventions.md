@@ -145,3 +145,35 @@ Speaking of header files, use the `.hpp` extension, not `.h`. `.h` is for C.
 In my humble opinion, the STL is a piece of crap and you should avoid it at all costs.
 
 Use C libraries and the `core` folder instead.
+
+## More C++ insanity
+
+Don't initialize stuff like this:
+
+```cpp
+ObjectObject obj;
+```
+
+It looks weird.
+
+Do this instead:
+
+```cpp
+ObjectObject obj = ObjectObject();
+// or
+// auto is allowed here because you can see the type
+auto obj = ObjectObject();
+```
+
+Speaking of auto, you should only use it in variables when using a constructor:
+
+```cpp
+// allowed
+auto obj = ObjectObject();
+
+// not allowed
+auto obj = get_object();
+
+// dear god
+auto func(auto param);
+```
