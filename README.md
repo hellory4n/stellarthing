@@ -6,29 +6,14 @@ Featuring a game engine in C++ (no STL)
 
 ## Building
 
-You need GCC and Meson
+Install GCC and make and stuff
 
-First clone raylib:
+Run `make`
 
-```sh
-cd subprojects
-git clone https://github.com/raysan5/raylib
-```
+You can also compile from linux to windows if you're insane:
 
-Compile with:
-
-```sh
-meson setup build
-# actually compile
-meson compile -C build
-```
-
-Cross-compilation to Windows is also supported:
-
-```sh
-meson setup --cross-file win32-cross-compile.ini build/win32
-# actually compile
-meson compile -C build/win32
-```
-
-If you're using Windows then good luck
+1. step 1: install wine
+2. step 2: [install raylib on wine](https://raysan5.itch.io/raylib/purchase)
+3. step 3: run raylib installation/w64devkit/w64devkit.exe
+4. step 4: `make clean`
+5. step 5: `make`
