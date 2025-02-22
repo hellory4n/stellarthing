@@ -146,8 +146,6 @@ In my humble opinion, the STL is a piece of crap and you should avoid it at all 
 
 Use C libraries and the `core` folder instead.
 
-## More C++ insanity
-
 Don't initialize stuff like this:
 
 ```cpp
@@ -177,3 +175,36 @@ auto obj = get_object();
 // dear god
 auto func(auto param);
 ```
+
+Please don't overload `,` and then make 57 different overloads of the same function.
+
+If you're thinking of making a singleton, don't. And if you really want the `Module.do_thing` syntax, use a namespace:
+
+```cpp
+namespace module {
+    void do_thingy();
+}
+```
+
+The starry namespace doesn't have indentation because that's a bit much
+
+```cpp
+namespace starry {
+    template<typename II>
+    class SeeHowTheBrainPlaysAround {
+        void and_you_fall_inside_a_hole_you_couldnt_see() {
+            if (someone_help_me()) {
+                switch (doctor_i_cant_tell_if_im_not_me) {
+                    uhm();
+                }
+            }
+        }
+    }
+}
+```
+
+Speaking of indentation, if it's above 3 tabs then reconsider your life choices.
+
+For template classes it's fine to be at 4 tabs because you're forced to put the implementation there.
+
+Indentation should be 4 spaces. There's no reasoning behind that.

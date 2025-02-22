@@ -30,13 +30,13 @@ struct color {
 };
 
 /// white
-#define COLOR_WHITE color(255, 255, 255, 255)
+#define ST_COLOR_WHITE color(255, 255, 255, 255)
 
 /// black
-#define COLOR_BLACK color(0, 0, 0, 255)
+#define ST_COLOR_BLACK color(0, 0, 0, 255)
 
 /// transparent
-#define COLOR_TRANSPARENT color(0, 0, 0, 0)
+#define ST_COLOR_TRANSPARENT color(0, 0, 0, 0)
 
 }
 

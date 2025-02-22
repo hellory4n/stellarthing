@@ -1,9 +1,11 @@
 #ifndef ST_HASHMAP_H
 #define ST_HASHMAP_H
+#include <string.h>
 #define STB_DS_IMPLEMENTATION
 #include "stb_ds.h"
 #include "core/core.hpp"
-#include <string.h>
+#include "core/collections/list.hpp"
+#include "core/collections/tuple.hpp"
 
 namespace starry {
 
@@ -36,6 +38,23 @@ public:
     {
         hmfree(this->map);
         this->map = nullptr;
+    }
+
+    /// returns a list of items. remember to delete when you're done
+    List<Tuple2<K*, V*>>* items()
+    {
+        nint size = this->size();
+        auto* lmao = new List<Tuple2<K*, V*>>(size);
+        for (nint i = 0; i < size; i++) {
+            lmao->add(Tuple2<K*, V*>(&(this->map[i].key), &(this->map[i].value)));
+        }
+        return lmao;
+    }
+
+    /// if true, the key exists
+    bool contains(K key)
+    {
+        return this->get(key) == nullptr;
     }
 
     ~HashMap() 

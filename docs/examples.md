@@ -37,7 +37,7 @@ printf("%f\n", mate->at(0));
 
 Hashmaps exists too.
 
-Similar to `std::map`
+Similar to `std::unordered_map`
 
 ```cpp
 #include "core/collections/hashmap.hpp"
