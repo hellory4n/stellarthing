@@ -22,7 +22,9 @@ int main(int argc, char const *argv[])
         graphics::end_drawing();
         window::update();
     }
-    window::close();
 
+    oimate.free();
+
+    window::close();
     return 0;
 }

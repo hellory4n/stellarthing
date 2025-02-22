@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "raylib.hpp"
-#include "modules/graphics/texture.hpp"
 #include "window.hpp"
 
 namespace starry {
@@ -21,8 +20,6 @@ void window::open(const char* title, vec2i size)
     rl::InitWindow(size.x, size.y, title);
     rl::SetExitKey(rl::KEY_NULL);
     printf("[WINDOW] Window has been created\n");
-
-    Texture::__init_subsystem();
 
     __ready = true;
 }
@@ -57,8 +54,6 @@ void window::set_target_fps(uint32 fps)
 void window::close()
 {
     __ready = false;
-
-    Texture::__free_subsystem();
 
     rl::CloseWindow();
     printf("[WINDOW] Window closed\n");

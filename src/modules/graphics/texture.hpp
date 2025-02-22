@@ -1,23 +1,22 @@
 #ifndef ST_TEXTURE_H
 #define ST_TEXTURE_H
+#include "raylib.hpp"
 #include "core/core.hpp"
+#include "core/vectors.hpp"
 
 namespace starry {
 
 /// texture :)
 class Texture {
 public:
-    uint32 id;
-    int32 width;
-    int32 height;
-    int32 mipmaps;
-    int32 format;
+    rl::Texture2D __internal;
 
     Texture(const char* path);
-    ~Texture();
+    /// frees the stuff
+    void free();
 
-    static void __init_subsystem();
-    static void __free_subsystem();
+    /// returns the size of the texture
+    vec2i size();
 };
 
 }

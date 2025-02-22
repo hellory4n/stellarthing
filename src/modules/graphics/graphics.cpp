@@ -19,9 +19,9 @@ void graphics::draw_texture(Texture texture, vec2 pos, float32 angle)
     graphics::draw_texture_ext(
         texture,
         vec2(0, 0),
-        vec2(texture.width, texture.height),
+        vec2(texture.size().x, texture.size().y),
         pos,
-        vec2(texture.width, texture.height),
+        vec2(texture.size().x, texture.size().y),
         vec2(0.5, 0.5),
         angle,
         ST_COLOR_WHITE
@@ -33,13 +33,7 @@ void graphics::draw_texture_ext(Texture texture, vec2 src_pos, vec2 src_size, ve
 {
     // akson dendryt
     rl::DrawTexturePro(
-        (rl::Texture2D){
-            .id = texture.id,
-            .width = texture.width,
-            .height = texture.height,
-            .mipmaps = texture.mipmaps,
-            .format = texture.format,
-        },
+        texture.__internal,
         (rl::Rectangle){ src_pos.x, src_pos.y, src_size.x, src_size.y },
         (rl::Rectangle){ dst_pos.x, dst_pos.y, dst_size.x, dst_size.y },
         (rl::Vector2){ origin.x * dst_size.x, origin.y * dst_size.y },
