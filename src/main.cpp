@@ -1,10 +1,26 @@
 #include <stdio.h>
 #include "core/vectors.hpp"
+#include "core/ref.hpp"
 #include "modules/platform/window.hpp"
 #include "modules/graphics/graphics.hpp"
 
 // i'm sorry... i'm sorry... i'm sorry...
 using namespace starry;
+
+class ShittyClass {
+public:
+    int64 fuckoff = 69;
+
+    ShittyClass()
+    {
+        printf("hi mom\n");
+    }
+
+    ~ShittyClass()
+    {
+        printf("rip :(\n");
+    }
+};
 
 void __init_modules()
 {
@@ -13,7 +29,15 @@ void __init_modules()
     window::set_target_fps(144);
 
     // this will eventually not have tests
-    auto bob = Texture("assets/bob_guy.png");
+    //auto bob = Texture("assets/bob_guy.png");
+
+    auto ref = newref<ShittyClass>();
+    printf("refs %li\n", ref.get_ref_count());
+    printf("fuckoff %li\n", ref->fuckoff);
+
+    auto ref2 = newref<ShittyClass>(ref);
+    printf("refs %li\n", ref2.get_ref_count());
+    printf("fuckoff %li\n", ref2->fuckoff);
 }
 
 void __update_modules()
@@ -27,9 +51,6 @@ void __update_modules()
 
 void __free_modules()
 {
-    // cant be bothered
-    // im gonna add a ref counter soon
-    //oimate.free();
     window::close();
 }
 
