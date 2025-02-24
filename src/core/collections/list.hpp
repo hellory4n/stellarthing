@@ -60,29 +60,14 @@ public:
     {
         // not a huge fan of segfaults
         if (idx >= this->length) {
-            fprintf(stderr, "[CORE] Index out of range\n");
+            fprintf(stderr, "[CORE] Index out of range: index is %lu, length is %lu\n", idx, this->length);
             // a segfault is about to happen!
-            fflush(stdout);
+            fflush(stderr);
             return nullptr;
         }
         
         return &(((T*)this->items)[idx]);
     }
-
-    void set(nint idx, T newval)
-    {
-        // not a huge fan of segfaults
-        if (idx >= this->length) {
-            fprintf(stderr, "[CORE] Index out of range\n");
-            // a segfault is about to happen!
-            fflush(stdout);
-            return;
-        }
-
-        ((T*)this->items)[idx] = newval;
-    }
 };
-
-}
 
 #endif // ST_LIST_H

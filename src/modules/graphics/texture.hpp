@@ -12,6 +12,7 @@ public:
     rl::Texture2D __internal;
 
     Texture(const char* path);
+    
     /// frees the stuff
     void free();
 

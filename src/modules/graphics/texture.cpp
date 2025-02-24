@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "core/collections/hashmap.hpp"
 #include "texture.hpp"
 
 namespace starry {

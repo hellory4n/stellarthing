@@ -5,7 +5,7 @@
 
 namespace starry {
 
-/// Vector2 but with integers
+/// vector2 but with integers
 struct Vec2i {
     int64 x;
     int64 y;
@@ -29,6 +29,5 @@ struct Vec2i {
 };
 
 }
-
 
 #endif // ST_VEC2I_H

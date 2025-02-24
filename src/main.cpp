@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include "core/vectors.hpp"
 #include "core/ref.hpp"
-#include "modules/platform/window.hpp"
-#include "modules/graphics/graphics.hpp"
+#include "core/collections/array.hpp"
+//#include "modules/platform/window.hpp"
+//#include "modules/graphics/graphics.hpp"
 
 // i'm sorry... i'm sorry... i'm sorry...
 using namespace starry;
@@ -24,42 +25,43 @@ public:
 
 void __init_modules()
 {
-    window::open("Stellarthing", Vec2i(640, 480));
+    /*window::open("Stellarthing", Vec2i(640, 480));
     window::toggle_fullscreen();
     window::set_target_fps(144);
 
     // this will eventually not have tests
-    //auto bob = Texture("assets/bob_guy.png");
+    //auto bob = Texture("assets/bob_guy.png");*/
 
-    auto ref = newref<ShittyClass>();
-    printf("refs %li\n", ref.get_ref_count());
-    printf("fuckoff %li\n", ref->fuckoff);
-
-    auto ref2 = newref<ShittyClass>(ref);
-    printf("refs %li\n", ref2.get_ref_count());
-    printf("fuckoff %li\n", ref2->fuckoff);
+    auto man = Array<char>(6);
+    *man.at(0) = 'h';
+    *man.at(1) = 'e';
+    *man.at(2) = 'l';
+    *man.at(3) = 'l';
+    *man.at(4) = 'o';
+    *man.at(5) = '\0';
+    printf("%s\n", man.get_buffer());
 }
 
 void __update_modules()
 {
     // this will eventually not have tests
-    graphics::clear(ST_COLOR_WHITE);
+    /*graphics::clear(ST_COLOR_WHITE);
 
     graphics::end_drawing();
-    window::update();
+    window::update();*/
 }
 
 void __free_modules()
 {
-    window::close();
+    //window::close();
 }
 
 int main(int argc, char const *argv[])
 {
     __init_modules();
-    while (!window::closing()) {
+    //while (!window::closing()) {
         __update_modules();
-    }
+    //}
     __free_modules();
     return 0;
 }
