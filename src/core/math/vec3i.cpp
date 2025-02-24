@@ -80,4 +80,9 @@ bool vec3i::operator !=(vec3i b)
     return this->x != b.x && this->y != b.y && this->z != b.z;
 }
 
+vec3i::operator vec3()
+{
+    return vec3(x, y, z);
+}
+
 }

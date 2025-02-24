@@ -79,4 +79,9 @@ bool vec2i::operator !=(vec2i b)
     return this->x != b.x && this->y != b.y;
 }
 
+vec2i::operator vec2()
+{
+    return vec2(x, y);
+}
+
 }

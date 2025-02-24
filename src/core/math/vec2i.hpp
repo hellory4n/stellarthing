@@ -1,7 +1,7 @@
 #ifndef ST_VEC2I_H
 #define ST_VEC2I_H
-
 #include "core/core.hpp"
+#include "vec2.hpp"
 
 namespace starry {
 
@@ -25,6 +25,7 @@ struct vec2i {
     bool operator >=(vec2i b);
     bool operator ==(vec2i b);
     bool operator !=(vec2i b);
+    explicit operator vec2();
 };
 
 }

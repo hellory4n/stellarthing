@@ -1,7 +1,5 @@
 # Conventions
 
-## Naming
-
 Types are in `PascalCase`, e.g. `StObject`
 
 Please note acronyms and abbreviations are NOT capitalized, so for example it would be `Id`, not `ID`
@@ -13,8 +11,6 @@ Macros start with `ST_` and are in `UPPER_CASE`, e.g. `ST_IDK_MAN`
 If you have something that's supposed to be private, put a `__` at the start, e.g. `__murder`
 
 You should use `this`
-
-## Spacing
 
 Indentation is 4 spaces.
 
@@ -105,7 +101,7 @@ Documentation has 3 slashes:
 void man();
 ```
 
-## Misc
+Don't use exceptions.
 
 Functions with error handling should return true if they succeeded, and false otherwise
 
@@ -150,6 +146,8 @@ Don't initialize stuff like this:
 
 ```cpp
 ObjectObject obj;
+// or
+ObjectObject obj(params);
 ```
 
 It looks weird.
@@ -206,5 +204,3 @@ namespace starry {
 Speaking of indentation, if it's above 3 tabs then reconsider your life choices.
 
 For template classes it's fine to be at 4 tabs because you're forced to put the implementation there.
-
-Indentation should be 4 spaces. There's no reasoning behind that.
