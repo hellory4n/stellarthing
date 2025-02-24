@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "core/vectors.hpp"
 #include "core/ref.hpp"
-#include "core/collections/array.hpp"
+#include "core/string.hpp"
 //#include "modules/platform/window.hpp"
 //#include "modules/graphics/graphics.hpp"
 
@@ -32,14 +32,10 @@ void __init_modules()
     // this will eventually not have tests
     //auto bob = Texture("assets/bob_guy.png");*/
 
-    auto man = Array<char>(6);
-    *man.at(0) = 'h';
-    *man.at(1) = 'e';
-    *man.at(2) = 'l';
-    *man.at(3) = 'l';
-    *man.at(4) = 'o';
-    *man.at(5) = '\0';
-    printf("%s\n", man.get_buffer());
+    String hi = String("hello", 6);
+    printf("%s\n", hi.cstr());
+    String fmt = String::fmt(256, "Fuck %i off", 69);
+    printf("%s\n", fmt);
 }
 
 void __update_modules()

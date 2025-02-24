@@ -12,8 +12,8 @@ namespace starry {
 template<typename T>
 class Array {
 private:
-    T* heap_buf;
-    T stack_buf[ST_ARRAY_BUFFER_SIZE];
+    T* __heap_buf;
+    T __stack_buf[ST_ARRAY_BUFFER_SIZE];
 public:
     /// if true, the array is on the heap. else, it's on the stack
     bool on_heap;
@@ -25,14 +25,14 @@ public:
         this->length = size;
         this->on_heap = size >= ST_ARRAY_BUFFER_SIZE;
         if (this->on_heap) {
-            this->heap_buf = (T*)malloc(sizeof(T) * size);
+            this->__heap_buf = (T*)malloc(sizeof(T) * size);
         }
     }
 
     ~Array()
     {
         if (this->on_heap) {
-            free(this->heap_buf);
+            delete[] this->__heap_buf;
         }
     }
 
@@ -47,18 +47,18 @@ public:
         }
 
         if (this->on_heap) {
-            return &this->heap_buf[idx];
+            return &this->__heap_buf[idx];
         }
         else {
-            return &this->stack_buf[idx];
+            return &this->__stack_buf[idx];
         }
     }
 
     /// returns the internal array
     T* get_buffer()
     {
-        if (this->on_heap) return this->heap_buf;
-        else return this->stack_buf;
+        if (this->on_heap) return this->__heap_buf;
+        else return this->__stack_buf;
     }
 };
 
