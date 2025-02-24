@@ -15,7 +15,7 @@ TileWorld::~TileWorld()
     printf("[WORLD] I WANT TO BREAK FREE\n");
 }
 
-Tile* TileWorld::get_tile(vec3 pos, bool ground)
+Tile* TileWorld::get_tile(Vec3 pos, bool ground)
 {
     // :(
     Tile* lasigm;
@@ -35,23 +35,23 @@ Tile* TileWorld::get_tile(vec3 pos, bool ground)
     return lasigm;
 }
 
-void TileWorld::__draw_chunk(vec2i offset)
+void TileWorld::__draw_chunk(Vec2i offset)
 {
     for (int64 y = this->current_chunk.y + offset.y; y < this->current_chunk.y + offset.y + ST_CHUNK_SIZE; y++) {
         for (int64 x = this->current_chunk.x + offset.x; x < this->current_chunk.x + offset.x + ST_CHUNK_SIZE; x++) {
             Tile tile = this->ground[x][y][this->current_layer];
-            vec2 transformed_pos =
-                vec2(tile.position.x, tile.position.y) + this->camera_position
-                * (vec2)tile.textures[tile.side]->size()
+            Vec2 transformed_pos =
+                Vec2(tile.position.x, tile.position.y) + this->camera_position
+                * (Vec2)tile.textures[tile.side]->size()
                 * this->camera_scale;
             
             graphics::draw_texture_ext(
                 *tile.textures[tile.side],
-                vec2(0, 0),
-                (vec2)tile.textures[tile.side]->size(),
+                Vec2(0, 0),
+                (Vec2)tile.textures[tile.side]->size(),
                 transformed_pos,
-                (vec2)tile.textures[tile.side]->size() * this->camera_scale,
-                vec2(0, 0), 0, tile.tint
+                (Vec2)tile.textures[tile.side]->size() * this->camera_scale,
+                Vec2(0, 0), 0, tile.tint
             );
         }
     }
@@ -59,15 +59,15 @@ void TileWorld::__draw_chunk(vec2i offset)
 
 void TileWorld::draw()
 {
-    this->__draw_chunk(vec2i(-1, -1));
-    this->__draw_chunk(vec2i( 0, -1));
-    this->__draw_chunk(vec2i( 1, -1));
-    this->__draw_chunk(vec2i(-1,  0));
-    this->__draw_chunk(vec2i( 0,  0));
-    this->__draw_chunk(vec2i( 1,  0));
-    this->__draw_chunk(vec2i(-1,  1));
-    this->__draw_chunk(vec2i( 0,  1));
-    this->__draw_chunk(vec2i( 1,  1));
+    this->__draw_chunk(Vec2i(-1, -1));
+    this->__draw_chunk(Vec2i( 0, -1));
+    this->__draw_chunk(Vec2i( 1, -1));
+    this->__draw_chunk(Vec2i(-1,  0));
+    this->__draw_chunk(Vec2i( 0,  0));
+    this->__draw_chunk(Vec2i( 1,  0));
+    this->__draw_chunk(Vec2i(-1,  1));
+    this->__draw_chunk(Vec2i( 0,  1));
+    this->__draw_chunk(Vec2i( 1,  1));
 }
 
 }

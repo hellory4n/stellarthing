@@ -3,85 +3,85 @@
 
 namespace starry {
 
-vec2i::vec2i(int64 x, int64 y)
+Vec2i::Vec2i(int64 x, int64 y)
 {
     this->x = x;
     this->y = y;
 }
 
-vec2i vec2i::operator +(vec2i b)
+Vec2i Vec2i::operator +(Vec2i b)
 {
-    return vec2i(this->x + b.x, this->y + b.y);
+    return Vec2i(this->x + b.x, this->y + b.y);
 }
 
-vec2i vec2i::operator -(vec2i b)
+Vec2i Vec2i::operator -(Vec2i b)
 {
-    return vec2i(this->x - b.x, this->y - b.y);
+    return Vec2i(this->x - b.x, this->y - b.y);
 }
 
-vec2i vec2i::operator *(vec2i b)
+Vec2i Vec2i::operator *(Vec2i b)
 {
-    return vec2i(this->x * b.x, this->y * b.y);
+    return Vec2i(this->x * b.x, this->y * b.y);
 }
 
-vec2i vec2i::operator *(int64 b)
+Vec2i Vec2i::operator *(int64 b)
 {
-    return vec2i(this->x * b, this->y * b);
+    return Vec2i(this->x * b, this->y * b);
 }
 
-vec2i vec2i::operator /(vec2i b)
+Vec2i Vec2i::operator /(Vec2i b)
 {
-    return vec2i(this->x / b.x, this->y / b.y);
+    return Vec2i(this->x / b.x, this->y / b.y);
 }
 
-vec2i vec2i::operator /(int64 b)
+Vec2i Vec2i::operator /(int64 b)
 {
-    return vec2i(this->x / b, this->y / b);
+    return Vec2i(this->x / b, this->y / b);
 }
 
-vec2i vec2i::operator %(vec2i b)
+Vec2i Vec2i::operator %(Vec2i b)
 {
-    return vec2i(fmod(this->x, b.x), fmod(this->y, b.y));
+    return Vec2i(fmod(this->x, b.x), fmod(this->y, b.y));
 }
 
-vec2i vec2i::operator %(int64 b)
+Vec2i Vec2i::operator %(int64 b)
 {
-    return vec2i(this->x % b, this->y % b);
+    return Vec2i(this->x % b, this->y % b);
 }
 
-bool vec2i::operator <(vec2i b)
+bool Vec2i::operator <(Vec2i b)
 {
     return this->x < b.x && this->y < b.y;
 }
 
-bool vec2i::operator >(vec2i b)
+bool Vec2i::operator >(Vec2i b)
 {
     return this->x > b.x && this->y > b.y;
 }
 
-bool vec2i::operator <=(vec2i b)
+bool Vec2i::operator <=(Vec2i b)
 {
     return this->x <= b.x && this->y <= b.y;
 }
 
-bool vec2i::operator >=(vec2i b)
+bool Vec2i::operator >=(Vec2i b)
 {
     return this->x >= b.x && this->y >= b.y;
 }
 
-bool vec2i::operator ==(vec2i b)
+bool Vec2i::operator ==(Vec2i b)
 {
     return this->x == b.x && this->y == b.y;
 }
 
-bool vec2i::operator !=(vec2i b)
+bool Vec2i::operator !=(Vec2i b)
 {
     return this->x != b.x && this->y != b.y;
 }
 
-vec2i::operator vec2()
+Vec2i::operator Vec2()
 {
-    return vec2(x, y);
+    return Vec2(x, y);
 }
 
 }

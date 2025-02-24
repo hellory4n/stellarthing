@@ -7,7 +7,7 @@ namespace starry {
 /// window
 namespace window {
     /// makes a window
-    void open(const char* title, vec2i size);
+    void open(const char* title, Vec2i size);
 
     /// toggles fullscreen
     void toggle_fullscreen();

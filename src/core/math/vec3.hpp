@@ -4,27 +4,27 @@
 
 namespace starry {
 
-/// world's bestest vector3
-struct vec3 {
+/// world's bestest Vector3
+struct Vec3 {
     float64 x;
     float64 y;
     float64 z;
 
-    vec3(float64 x, float64 y, float64 z);
-    vec3 operator +(vec3 b);
-    vec3 operator -(vec3 b);
-    vec3 operator *(vec3 b);
-    vec3 operator *(float64 b);
-    vec3 operator /(vec3 b);
-    vec3 operator /(float64 b);
-    vec3 operator %(vec3 b);
-    vec3 operator %(float64 b);
-    bool operator <(vec3 b);
-    bool operator >(vec3 b);
-    bool operator <=(vec3 b);
-    bool operator >=(vec3 b);
-    bool operator ==(vec3 b);
-    bool operator !=(vec3 b);
+    Vec3(float64 x, float64 y, float64 z);
+    Vec3 operator +(Vec3 b);
+    Vec3 operator -(Vec3 b);
+    Vec3 operator *(Vec3 b);
+    Vec3 operator *(float64 b);
+    Vec3 operator /(Vec3 b);
+    Vec3 operator /(float64 b);
+    Vec3 operator %(Vec3 b);
+    Vec3 operator %(float64 b);
+    bool operator <(Vec3 b);
+    bool operator >(Vec3 b);
+    bool operator <=(Vec3 b);
+    bool operator >=(Vec3 b);
+    bool operator ==(Vec3 b);
+    bool operator !=(Vec3 b);
 };
 
 }

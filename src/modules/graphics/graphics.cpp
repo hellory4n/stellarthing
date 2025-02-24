@@ -3,10 +3,10 @@
 
 namespace starry {
 
-void graphics::clear(color color)
+void graphics::clear(Color Color)
 {
     rl::BeginDrawing();
-    rl::ClearBackground((rl::Color){ .r = color.r, .g = color.g, .b = color.b, .a = color.a });
+    rl::ClearBackground((rl::Color){ .r = Color.r, .g = Color.g, .b = Color.b, .a = Color.a });
 }
 
 void graphics::end_drawing()
@@ -14,22 +14,22 @@ void graphics::end_drawing()
     rl::EndDrawing();
 }
 
-void graphics::draw_texture(Texture texture, vec2 pos, float32 angle)
+void graphics::draw_texture(Texture texture, Vec2 pos, float32 angle)
 {
     graphics::draw_texture_ext(
         texture,
-        vec2(0, 0),
-        vec2(texture.size().x, texture.size().y),
+        Vec2(0, 0),
+        Vec2(texture.size().x, texture.size().y),
         pos,
-        vec2(texture.size().x, texture.size().y),
-        vec2(0.5, 0.5),
+        Vec2(texture.size().x, texture.size().y),
+        Vec2(0.5, 0.5),
         angle,
         ST_COLOR_WHITE
     );
 }
 
-void graphics::draw_texture_ext(Texture texture, vec2 src_pos, vec2 src_size, vec2 dst_pos,
-    vec2 dst_size, vec2 origin, float32 rotation, color tint)
+void graphics::draw_texture_ext(Texture texture, Vec2 src_pos, Vec2 src_size, Vec2 dst_pos,
+    Vec2 dst_size, Vec2 origin, float32 rotation, Color tint)
 {
     // akson dendryt
     rl::DrawTexturePro(

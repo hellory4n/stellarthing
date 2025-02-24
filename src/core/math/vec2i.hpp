@@ -5,27 +5,27 @@
 
 namespace starry {
 
-/// vector2 but with integers
-struct vec2i {
+/// Vector2 but with integers
+struct Vec2i {
     int64 x;
     int64 y;
 
-    vec2i(int64 x, int64 y);
-    vec2i operator +(vec2i b);
-    vec2i operator -(vec2i b);
-    vec2i operator *(vec2i b);
-    vec2i operator *(int64 b);
-    vec2i operator /(vec2i b);
-    vec2i operator /(int64 b);
-    vec2i operator %(vec2i b);
-    vec2i operator %(int64 b);
-    bool operator <(vec2i b);
-    bool operator >(vec2i b);
-    bool operator <=(vec2i b);
-    bool operator >=(vec2i b);
-    bool operator ==(vec2i b);
-    bool operator !=(vec2i b);
-    explicit operator vec2();
+    Vec2i(int64 x, int64 y);
+    Vec2i operator +(Vec2i b);
+    Vec2i operator -(Vec2i b);
+    Vec2i operator *(Vec2i b);
+    Vec2i operator *(int64 b);
+    Vec2i operator /(Vec2i b);
+    Vec2i operator /(int64 b);
+    Vec2i operator %(Vec2i b);
+    Vec2i operator %(int64 b);
+    bool operator <(Vec2i b);
+    bool operator >(Vec2i b);
+    bool operator <=(Vec2i b);
+    bool operator >=(Vec2i b);
+    bool operator ==(Vec2i b);
+    bool operator !=(Vec2i b);
+    explicit operator Vec2();
 };
 
 }

@@ -3,86 +3,86 @@
 
 namespace starry {
 
-vec3i::vec3i(int64 x, int64 y, int64 z)
+Vec3i::Vec3i(int64 x, int64 y, int64 z)
 {
     this->x = x;
     this->y = y;
     this->z = z;
 }
 
-vec3i vec3i::operator +(vec3i b)
+Vec3i Vec3i::operator +(Vec3i b)
 {
-    return vec3i(this->x + b.x, this->y + b.y, this->z + b.z);
+    return Vec3i(this->x + b.x, this->y + b.y, this->z + b.z);
 }
 
-vec3i vec3i::operator -(vec3i b)
+Vec3i Vec3i::operator -(Vec3i b)
 {
-    return vec3i(this->x - b.x, this->y - b.y, this->z - b.z);
+    return Vec3i(this->x - b.x, this->y - b.y, this->z - b.z);
 }
 
-vec3i vec3i::operator *(vec3i b)
+Vec3i Vec3i::operator *(Vec3i b)
 {
-    return vec3i(this->x * b.x, this->y * b.y, this->z * b.z);
+    return Vec3i(this->x * b.x, this->y * b.y, this->z * b.z);
 }
 
-vec3i vec3i::operator *(int64 b)
+Vec3i Vec3i::operator *(int64 b)
 {
-    return vec3i(this->x + b, this->y + b, this->z + b);
+    return Vec3i(this->x + b, this->y + b, this->z + b);
 }
 
-vec3i vec3i::operator /(vec3i b)
+Vec3i Vec3i::operator /(Vec3i b)
 {
-    return vec3i(this->x / b.x, this->y / b.y, this->z / b.z);
+    return Vec3i(this->x / b.x, this->y / b.y, this->z / b.z);
 }
 
-vec3i vec3i::operator /(int64 b)
+Vec3i Vec3i::operator /(int64 b)
 {
-    return vec3i(this->x / b, this->y / b, this->z / b);
+    return Vec3i(this->x / b, this->y / b, this->z / b);
 }
 
-vec3i vec3i::operator %(vec3i b)
+Vec3i Vec3i::operator %(Vec3i b)
 {
-    return vec3i(this->x % b.x, this->y % b.y, this->z % b.z);
+    return Vec3i(this->x % b.x, this->y % b.y, this->z % b.z);
 }
 
-vec3i vec3i::operator %(int64 b)
+Vec3i Vec3i::operator %(int64 b)
 {
-    return vec3i(this->x % b, this->y % b, this->z % b);
+    return Vec3i(this->x % b, this->y % b, this->z % b);
 }
 
-bool vec3i::operator <(vec3i b)
+bool Vec3i::operator <(Vec3i b)
 {
     return this->x < b.x && this->y < b.y && this->z < b.z;
 }
 
-bool vec3i::operator >(vec3i b)
+bool Vec3i::operator >(Vec3i b)
 {
     return this->x > b.x && this->y > b.y && this->z > b.z;
 }
 
-bool vec3i::operator <=(vec3i b)
+bool Vec3i::operator <=(Vec3i b)
 {
     return this->x <= b.x && this->y <= b.y && this->z <= b.z;
 }
 
-bool vec3i::operator >=(vec3i b)
+bool Vec3i::operator >=(Vec3i b)
 {
     return this->x >= b.x && this->y >= b.y && this->z >= b.z;
 }
 
-bool vec3i::operator ==(vec3i b)
+bool Vec3i::operator ==(Vec3i b)
 {
     return this->x == b.x && this->y == b.y && this->z == b.z;
 }
 
-bool vec3i::operator !=(vec3i b)
+bool Vec3i::operator !=(Vec3i b)
 {
     return this->x != b.x && this->y != b.y && this->z != b.z;
 }
 
-vec3i::operator vec3()
+Vec3i::operator Vec3()
 {
-    return vec3(x, y, z);
+    return Vec3(x, y, z);
 }
 
 }

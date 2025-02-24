@@ -4,26 +4,26 @@
 
 namespace starry {
 
-/// world's bestest vector2
-struct vec2 {
+/// world's bestest Vector2
+struct Vec2 {
     float64 x;
     float64 y;
 
-    vec2(float64 x, float64 y);
-    vec2 operator +(vec2 b);
-    vec2 operator -(vec2 b);
-    vec2 operator *(vec2 b);
-    vec2 operator *(float64 b);
-    vec2 operator /(vec2 b);
-    vec2 operator /(float64 b);
-    vec2 operator %(vec2 b);
-    vec2 operator %(float64 b);
-    bool operator <(vec2 b);
-    bool operator >(vec2 b);
-    bool operator <=(vec2 b);
-    bool operator >=(vec2 b);
-    bool operator ==(vec2 b);
-    bool operator !=(vec2 b);
+    Vec2(float64 x, float64 y);
+    Vec2 operator +(Vec2 b);
+    Vec2 operator -(Vec2 b);
+    Vec2 operator *(Vec2 b);
+    Vec2 operator *(float64 b);
+    Vec2 operator /(Vec2 b);
+    Vec2 operator /(float64 b);
+    Vec2 operator %(Vec2 b);
+    Vec2 operator %(float64 b);
+    bool operator <(Vec2 b);
+    bool operator >(Vec2 b);
+    bool operator <=(Vec2 b);
+    bool operator >=(Vec2 b);
+    bool operator ==(Vec2 b);
+    bool operator !=(Vec2 b);
 };
 
 }

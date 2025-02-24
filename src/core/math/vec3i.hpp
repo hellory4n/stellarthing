@@ -5,28 +5,28 @@
 
 namespace starry {
 
-/// vector3 but integer
-struct vec3i {
+/// Vector3 but integer
+struct Vec3i {
     int64 x;
     int64 y;
     int64 z;
 
-    vec3i(int64 x, int64 y, int64 z);
-    vec3i operator +(vec3i b);
-    vec3i operator -(vec3i b);
-    vec3i operator *(vec3i b);
-    vec3i operator *(int64 b);
-    vec3i operator /(vec3i b);
-    vec3i operator /(int64 b);
-    vec3i operator %(vec3i b);
-    vec3i operator %(int64 b);
-    bool operator <(vec3i b);
-    bool operator >(vec3i b);
-    bool operator <=(vec3i b);
-    bool operator >=(vec3i b);
-    bool operator ==(vec3i b);
-    bool operator !=(vec3i b);
-    explicit operator vec3();
+    Vec3i(int64 x, int64 y, int64 z);
+    Vec3i operator +(Vec3i b);
+    Vec3i operator -(Vec3i b);
+    Vec3i operator *(Vec3i b);
+    Vec3i operator *(int64 b);
+    Vec3i operator /(Vec3i b);
+    Vec3i operator /(int64 b);
+    Vec3i operator %(Vec3i b);
+    Vec3i operator %(int64 b);
+    bool operator <(Vec3i b);
+    bool operator >(Vec3i b);
+    bool operator <=(Vec3i b);
+    bool operator >=(Vec3i b);
+    bool operator ==(Vec3i b);
+    bool operator !=(Vec3i b);
+    explicit operator Vec3();
 };
 
 }

@@ -15,9 +15,9 @@ void Texture::free()
     rl::UnloadTexture(this->__internal);
 }
 
-vec2i Texture::size()
+Vec2i Texture::size()
 {
-    return vec2i(this->__internal.height, this->__internal.height);
+    return Vec2i(this->__internal.height, this->__internal.height);
 }
 
 }

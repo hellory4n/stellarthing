@@ -9,7 +9,7 @@ bool __fullscreen = false;
 bool __closing = false;
 bool __ready = false;
 
-void window::open(const char* title, vec2i size)
+void window::open(const char* title, Vec2i size)
 {
     printf("Stellarthing %s: running Starry %s\n", ST_GAME_VERSION, ST_STARRY_VERSION);
     

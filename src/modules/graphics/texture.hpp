@@ -16,7 +16,7 @@ public:
     void free();
 
     /// returns the size of the texture
-    vec2i size();
+    Vec2i size();
 };
 
 }
