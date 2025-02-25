@@ -1,13 +1,14 @@
 #ifndef ST_WINDOW_H
 #define ST_WINDOW_H
-#include "core/vectors.hpp"
+#include "core/math/vec2i.hpp"
+#include "core/string.hpp"
 
 namespace starry {
 
 /// window
 namespace window {
     /// makes a window
-    void open(const char* title, Vec2i size);
+    void open(String title, Vec2i size);
 
     /// toggles fullscreen
     void toggle_fullscreen();

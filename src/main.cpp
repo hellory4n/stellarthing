@@ -1,9 +1,13 @@
 #include <stdio.h>
+#include "core/string.hpp"
+#include "modules/graphics/texture.hpp"
 #include "modules/platform/window.hpp"
 #include "modules/graphics/graphics.hpp"
 
 // i'm sorry... i'm sorry... i'm sorry...
 using namespace starry;
+
+Texture* bob;
 
 void __init_modules()
 {
@@ -12,12 +16,12 @@ void __init_modules()
     window::set_target_fps(144);
 
     // this will eventually not have tests
-    //auto bob = Texture("assets/bob_guy.png");
+    bob = new Texture("assets/bob_guy.png");
 
-    /*String hi = String("hello", 6);
+    String hi = "hello";
     printf("%s\n", hi.cstr());
     String fmt = String::fmt(256, "Fuck %i off", 69);
-    printf("%s\n", fmt.cstr());*/
+    printf("%s\n", fmt.cstr());
 }
 
 void __update_modules()
@@ -25,12 +29,15 @@ void __update_modules()
     // this will eventually not have tests
     graphics::clear(ST_COLOR_WHITE);
 
+    graphics::draw_texture(*bob, Vec2(69, 420), 69);
+
     graphics::end_drawing();
     window::update();
 }
 
 void __free_modules()
 {
+    delete bob;
     window::close();
 }
 

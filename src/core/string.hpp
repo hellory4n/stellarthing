@@ -14,6 +14,9 @@ public:
     String(nint len);
     /// length doesn't include the null character
     String(const char* from, nint len);
+    String(const char* from);
+
+    operator char*();
 
     /// converts the string to a C string
     char* cstr();

@@ -1,7 +1,7 @@
 #ifndef ST_GRAPHICS_H
 #define ST_GRAPHICS_H
 #include "core/math/color.hpp"
-#include "core/vectors.hpp"
+#include "core/math/vec2.hpp"
 #include "texture.hpp"
 
 namespace starry {

@@ -1,3 +1,4 @@
+#include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include "string.hpp"
@@ -20,6 +21,16 @@ String::String(const char* from, nint len)
         *this->__internal.at(i) = from[i];
     }
     *this->__internal.at(len) = '\0';
+}
+
+String::String(const char* from)
+{
+    String(from, strlen(from));
+}
+
+String::operator char*()
+{
+    return this->cstr();
 }
 
 char* String::cstr()

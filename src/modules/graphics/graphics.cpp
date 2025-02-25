@@ -1,17 +1,17 @@
-#include "raylib.hpp"
+#include <raylib.h>
 #include "graphics.hpp"
 
 namespace starry {
 
-void graphics::clear(Color Color)
+void graphics::clear(Color color)
 {
-    rl::BeginDrawing();
-    rl::ClearBackground((rl::Color){ .r = Color.r, .g = Color.g, .b = Color.b, .a = Color.a });
+    BeginDrawing();
+    ClearBackground({ color.r, color.g, color.b, color.a });
 }
 
 void graphics::end_drawing()
 {
-    rl::EndDrawing();
+    EndDrawing();
 }
 
 void graphics::draw_texture(Texture texture, Vec2 pos, float32 angle)
@@ -32,13 +32,19 @@ void graphics::draw_texture_ext(Texture texture, Vec2 src_pos, Vec2 src_size, Ve
     Vec2 dst_size, Vec2 origin, float32 rotation, Color tint)
 {
     // akson dendryt
-    rl::DrawTexturePro(
-        texture.__internal,
-        (rl::Rectangle){(float)src_pos.x, (float)src_pos.y, (float)src_size.x, (float)src_size.y},
-        (rl::Rectangle){(float)dst_pos.x, (float)dst_pos.y, (float)dst_size.x, (float)dst_size.y},
-        (rl::Vector2){(float)origin.x * (float)dst_size.x, (float)origin.y * (float)dst_size.y},
+    DrawTexturePro(
+        {
+            texture.__internal.id,
+            texture.__internal.width,
+            texture.__internal.height,
+            texture.__internal.mipmaps,
+            texture.__internal.format,
+        },
+        {(float)src_pos.x, (float)src_pos.y, (float)src_size.x, (float)src_size.y},
+        {(float)dst_pos.x, (float)dst_pos.y, (float)dst_size.x, (float)dst_size.y},
+        {(float)origin.x * (float)dst_size.x, (float)origin.y * (float)dst_size.y},
         rotation,
-        (rl::Color){tint.r, tint.g, tint.b, tint.a}
+        {tint.r, tint.g, tint.b, tint.a}
     );
 }
 

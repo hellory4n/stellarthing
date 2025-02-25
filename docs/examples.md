@@ -41,6 +41,7 @@ Similar to `std::unordered_map`
 
 ```cpp
 #include "core/collections/hashmap.hpp"
+#include "core/string.hpp"
 using namespace starry;
 
 auto map = new HashMap<const char*, const char*>();

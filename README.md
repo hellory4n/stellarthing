@@ -36,6 +36,8 @@ Now setup CMake:
 
 ```sh
 cmake -B build
+# or setup for debug mode
+cmake -DCMAKE_BUILD_TYPE=Debug -B build
 ```
 
 And compile with:

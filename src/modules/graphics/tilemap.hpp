@@ -1,6 +1,6 @@
 #ifndef ST_TILEMAP_H
 #define ST_TILEMAP_H
-#include "core/vectors.hpp"
+#include "core/math/vec3.hpp"
 #include "core/math/color.hpp"
 #include "texture.hpp"
 

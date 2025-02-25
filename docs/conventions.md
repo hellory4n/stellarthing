@@ -122,8 +122,6 @@ else {
 
 But if the functions are supposed to return something, return null if it fails
 
-Use `const char*` for strings, conveniently UTF-8 supports comes (mostly) for free
-
 Use `core/core.hpp` numbers instead of `stdint.h`, they're mostly the same except without the `_t` and `size_t` is `nint` (native int) because having "size" everywhere would be weird
 
 Use include guards instead of `#pragma once`. Why? Sometimes `#pragma once` busted with global variables in C so I think include guards are safer

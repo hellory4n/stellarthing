@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-#include "raylib.hpp"
+#include <raylib.h>
 #include "window.hpp"
 
 namespace starry {
@@ -9,16 +9,16 @@ bool __fullscreen = false;
 bool __closing = false;
 bool __ready = false;
 
-void window::open(const char* title, Vec2i size)
+void window::open(String title, Vec2i size)
 {
     printf("Stellarthing %s: running Starry %s\n", ST_GAME_VERSION, ST_STARRY_VERSION);
     
     // man
     srand(time(NULL));
 
-    rl::SetConfigFlags(rl::FLAG_VSYNC_HINT | rl::FLAG_WINDOW_RESIZABLE);
-    rl::InitWindow(size.x, size.y, title);
-    rl::SetExitKey(rl::KEY_NULL);
+    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+    InitWindow(size.x, size.y, title);
+    SetExitKey(KEY_NULL);
     printf("[WINDOW] Window has been created\n");
 
     __ready = true;
@@ -26,13 +26,13 @@ void window::open(const char* title, Vec2i size)
 
 void window::toggle_fullscreen()
 {
-    rl::ToggleBorderlessWindowed();
+    ToggleBorderlessWindowed();
     printf("[WINDOW] Toggled fullscreen\n");
 }
 
 bool window::closing()
 {
-    return __closing || rl::WindowShouldClose();
+    return __closing || WindowShouldClose();
 }
 
 void window::request_close()
@@ -43,19 +43,19 @@ void window::request_close()
 
 void window::update()
 {
-    // put shit here
+    // TODO put shit here
 }
 
 void window::set_target_fps(uint32 fps)
 {
-    rl::SetTargetFPS(fps);
+    SetTargetFPS(fps);
 }
 
 void window::close()
 {
     __ready = false;
 
-    rl::CloseWindow();
+    CloseWindow();
     printf("[WINDOW] Window closed\n");
 }
 
@@ -66,17 +66,17 @@ bool window::is_ready()
 
 float64 window::get_time()
 {
-    return rl::GetTime();
+    return GetTime();
 }
 
 float64 window::get_delta_time()
 {
-    return rl::GetFrameTime();
+    return GetFrameTime();
 }
 
 int64 window::get_fps()
 {
-    return rl::GetFPS();
+    return GetFPS();
 }
 
 }

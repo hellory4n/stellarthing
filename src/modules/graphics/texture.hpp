@@ -1,20 +1,28 @@
 #ifndef ST_TEXTURE_H
 #define ST_TEXTURE_H
-#include "raylib.hpp"
-#include "core/core.hpp"
-#include "core/vectors.hpp"
+#include "core/math/vec2i.hpp"
+#include "core/string.hpp"
 
 namespace starry {
 
 /// texture :)
 class Texture {
+private:
 public:
-    rl::Texture2D __internal;
+    /// exact copy of the raylib texture struct. you probably shouldn't use this directly.
+    typedef struct __RlTexture {
+        unsigned int id;        // OpenGL texture id
+        int width;              // Texture base width
+        int height;             // Texture base height
+        int mipmaps;            // Mipmap levels, 1 by default
+        int format;             // Data format (PixelFormat type)
+    } __RlTexture;
 
-    Texture(const char* path);
-    
-    /// frees the stuff
-    void free();
+    __RlTexture __internal;
+
+    Texture(String path);
+    Texture();
+    ~Texture();
 
     /// returns the size of the texture
     Vec2i size();
