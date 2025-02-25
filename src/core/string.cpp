@@ -1,4 +1,3 @@
-#include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include "string.hpp"
@@ -17,15 +16,8 @@ String::String(const char* from, nint len)
     this->__len = len;
 
     // copy data
-    for (nint i = 0; i < len; i++) {
-        *this->__internal.at(i) = from[i];
-    }
+    memcpy(this->__internal.get_buffer(), from, len);
     *this->__internal.at(len) = '\0';
-}
-
-String::String(const char* from)
-{
-    String(from, strlen(from));
 }
 
 String::operator char*()

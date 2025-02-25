@@ -1,5 +1,6 @@
 #ifndef ST_STRING_H
 #define ST_STRING_H
+#include <string.h>
 #include "core/collections/array.hpp"
 
 namespace starry {
@@ -14,7 +15,7 @@ public:
     String(nint len);
     /// length doesn't include the null character
     String(const char* from, nint len);
-    String(const char* from);
+    String(const char* from) : String(from, strlen(from)) {}
 
     operator char*();
 

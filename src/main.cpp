@@ -18,7 +18,8 @@ void __init_modules()
     // this will eventually not have tests
     bob = new Texture("assets/bob_guy.png");
 
-    String hi = "hello";
+    String hi = "太陽が漏れている。";
+    // usually you can just pass the string but it's explicit in printf so clang is happy
     printf("%s\n", hi.cstr());
     String fmt = String::fmt(256, "Fuck %i off", 69);
     printf("%s\n", fmt.cstr());

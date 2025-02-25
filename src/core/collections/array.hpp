@@ -12,7 +12,7 @@ namespace starry {
 template<typename T>
 class Array {
 private:
-    T* __heap_buf;
+    T* __heap_buf = nullptr;
     T __stack_buf[ST_ARRAY_BUFFER_SIZE];
 public:
     /// if true, the array is on the heap. else, it's on the stack
@@ -26,14 +26,55 @@ public:
         this->on_heap = size >= ST_ARRAY_BUFFER_SIZE;
         if (this->on_heap) {
             this->__heap_buf = (T*)malloc(sizeof(T) * size);
+            if (this->__heap_buf == nullptr) {
+                fprintf(stderr, "[CORE] Memory allocation error; panicking\n");
+                // memory is busted, proceed to die
+                exit(1);
+            }
         }
     }
 
     ~Array()
     {
-        if (this->on_heap) {
-            delete[] this->__heap_buf;
+        if (this->on_heap && this->__heap_buf != nullptr) {
+            free(this->__heap_buf);
         }
+    }
+
+    Array(const Array& other)
+    {
+        if (this->on_heap) {
+            this->__heap_buf = (T*)malloc(sizeof(T) * length);
+            if (this->__heap_buf == nullptr) {
+                fprintf(stderr, "[CORE] Memory allocation error; panicking\n");
+                exit(1);
+            }
+            memcpy(this->__heap_buf, other.__heap_buf, sizeof(T) * this->length);
+        } else {
+            memcpy(this->__stack_buf, other.__stack_buf, sizeof(T) * this->length);
+        }
+    }
+
+    Array& operator=(const Array& other) {
+        if (this == &other) return *this;
+
+        if (this->on_heap) free(this->__heap_buf);
+
+        this->length = other.length;
+        this->on_heap = other.on_heap;
+
+        if (this->on_heap) {
+            this->__heap_buf = (T*)malloc(sizeof(T) * this->length);
+            if (!this->__heap_buf) {
+                fprintf(stderr, "[CORE] Memory allocation error; panicking\n");
+                exit(1);
+            }
+            memcpy(this->__heap_buf, other.__heap_buf, sizeof(T) * this->length);
+        } else {
+            memcpy(this->__stack_buf, other.__stack_buf, sizeof(T) * this->length);
+        }
+
+        return *this;
     }
 
     /// returns the item at the specified index
