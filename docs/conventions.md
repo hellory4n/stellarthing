@@ -202,3 +202,5 @@ namespace starry {
 Speaking of indentation, if it's above 3 tabs then reconsider your life choices.
 
 For template classes it's fine to be at 4 tabs because you're forced to put the implementation there.
+
+Use 64-bit numbers `int64, uint64, float64` whenever possible, it's 2025 of the common era

@@ -1,11 +1,11 @@
 #ifndef ST_HASHMAP_H
 #define ST_HASHMAP_H
-#include <string.h>
 #define STB_DS_IMPLEMENTATION
 #include "stb_ds.h"
 #include "core/core.hpp"
-#include "core/collections/list.hpp"
-#include "core/collections/tuple.hpp"
+#include "core/ref.hpp"
+#include "list.hpp"
+#include "tuple.hpp"
 
 namespace starry {
 
@@ -40,11 +40,11 @@ public:
         this->map = nullptr;
     }
 
-    /// returns a list of items. remember to delete when you're done
-    List<Tuple2<K*, V*>>* items()
+    /// returns a list of items
+    Ref<List<Tuple2<K*, V*>>> items()
     {
         nint size = this->size();
-        auto* lmao = new List<Tuple2<K*, V*>>(size);
+        auto* lmao = Ref<List<Tuple2<K*, V*>>>(new List<Tuple2<K*, V*>>(size));
         for (nint i = 0; i < size; i++) {
             lmao->add(Tuple2<K*, V*>(&(this->map[i].key), &(this->map[i].value)));
         }
@@ -59,7 +59,7 @@ public:
 
     ~HashMap() 
     {
-        clear();
+        this->clear();
     }
 };
 

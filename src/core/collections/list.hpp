@@ -1,5 +1,6 @@
 #ifndef ST_LIST_H
 #define ST_LIST_H
+#include <stdio.h>
 #include "core/core.hpp"
 
 namespace starry {
@@ -69,5 +70,7 @@ public:
         return &(((T*)this->items)[idx]);
     }
 };
+
+}
 
 #endif // ST_LIST_H
