@@ -1,6 +1,10 @@
-build*/
 .vscode
+
+# cmake stuff
+build*/
+
+# valgrind stuff
 vgcore*
-*.o
-stellarthing
-stellarthing.exe
+
+# clangd vscode extension
+.cache

@@ -6,14 +6,60 @@ Featuring a game engine in C++ (no STL)
 
 ## Building
 
-Install GCC and make and stuff
+Install clang and cmake and stuff (you can probably use gcc but clang is recommended)
 
-Run `make`
+You need some dependencies for raylib to work:
 
-You can also compile from linux to windows if you're insane:
+Ubuntu:
+```sh
+sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
+```
 
-1. step 1: install wine
-2. step 2: [install raylib on wine](https://raysan5.itch.io/raylib/purchase)
-3. step 3: run raylib installation/w64devkit/w64devkit.exe
-4. step 4: `make clean`
-5. step 5: `make`
+Fedora:
+```sh
+sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic
+```
+
+Arch Linux:
+```sh
+sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
+```
+
+Void Linux:
+```sh
+sudo xbps-install alsa-lib-devel libglvnd-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel mesa MesaLib-devel mesa-dri mesa-intel-dri
+```
+
+On Windows you can probably use [Raylib's Windows installer](https://raysan5.itch.io/raylib)
+
+Now setup CMake:
+
+```sh
+cmake -B build
+```
+
+And compile with:
+
+```sh
+cmake --build build
+```
+
+Also if you're using vscode, don't use the Microsoft C/C++ extension, use clangd instead (it's better)
+
+## Cross-compiling
+
+Compiling from Linux to Windows is supported too
+
+First install MinGW and MinGW GCC (look it up in your distro)
+
+Then setup with:
+
+```sh
+cmake -B build/windows -DCMAKE_TOOLCHAIN_FILE=cmake_win32.cmake
+```
+
+And compile with:
+
+```sh
+cmake --build build/windows
+```

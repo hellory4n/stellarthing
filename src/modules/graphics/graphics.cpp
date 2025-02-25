@@ -34,11 +34,11 @@ void graphics::draw_texture_ext(Texture texture, Vec2 src_pos, Vec2 src_size, Ve
     // akson dendryt
     rl::DrawTexturePro(
         texture.__internal,
-        (rl::Rectangle){ src_pos.x, src_pos.y, src_size.x, src_size.y },
-        (rl::Rectangle){ dst_pos.x, dst_pos.y, dst_size.x, dst_size.y },
-        (rl::Vector2){ origin.x * dst_size.x, origin.y * dst_size.y },
+        (rl::Rectangle){(float)src_pos.x, (float)src_pos.y, (float)src_size.x, (float)src_size.y},
+        (rl::Rectangle){(float)dst_pos.x, (float)dst_pos.y, (float)dst_size.x, (float)dst_size.y},
+        (rl::Vector2){(float)origin.x * (float)dst_size.x, (float)origin.y * (float)dst_size.y},
         rotation,
-        (rl::Color){ tint.r, tint.g, tint.b, tint.a }
+        (rl::Color){tint.r, tint.g, tint.b, tint.a}
     );
 }
 
