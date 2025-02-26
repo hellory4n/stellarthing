@@ -44,7 +44,7 @@ public:
     Ref<List<Tuple2<K*, V*>>> items()
     {
         nint size = this->size();
-        auto* lmao = Ref<List<Tuple2<K*, V*>>>(new List<Tuple2<K*, V*>>(size));
+        auto lmao = Ref<List<Tuple2<K*, V*>>>(new List<Tuple2<K*, V*>>(size));
         for (nint i = 0; i < size; i++) {
             lmao->add(Tuple2<K*, V*>(&(this->map[i].key), &(this->map[i].value)));
         }
@@ -55,6 +55,12 @@ public:
     bool contains(K key)
     {
         return this->get(key) == nullptr;
+    }
+
+    /// removes :)
+    void remove(K key)
+    {
+        hmdel(this->map, key);
     }
 
     ~HashMap() 

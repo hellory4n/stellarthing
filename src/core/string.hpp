@@ -16,6 +16,7 @@ public:
     /// length doesn't include the null character
     String(const char* from, nint len);
     String(const char* from) : String(from, strlen(from)) {}
+    String(const String& from) : __internal(from.__internal), __len(from.__len) {}
 
     operator char*();
 

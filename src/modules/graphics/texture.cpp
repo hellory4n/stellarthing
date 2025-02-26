@@ -1,48 +1,52 @@
-#include <stdio.h>
-#include <raylib.hpp>
+#include <raylib.h>
+#include "core/collections/hashmap.hpp"
+#include "core/collections/list.hpp"
+#include "core/collections/tuple.hpp"
+#include "core/math/vec2i.hpp"
+#include "core/ref.hpp"
+#include "core/string.hpp"
 #include "texture.hpp"
 
 namespace starry {
 
-Texture::Texture(String path)
+HashMap<String, Ref<Texture>>* __textures;
+
+void Texture::__init_subsystem()
 {
-    rl::Texture2D t = rl::LoadTexture(path);
-    this->__internal = {
-        .id = t.id,
-        .width = t.width,
-        .height = t.height,
-        .mipmaps = t.mipmaps,
-        .format = t.format,
-    };
-    printf("[ASSETS] Loaded texture at %s\n", (char*)path);
+    __textures = new HashMap<String, Ref<Texture>>();
 }
 
-Texture::Texture()
+void Texture::__free_subsystem()
 {
-    this->__internal = {
-        .id = 0,
-        .width = 0,
-        .height = 0,
-        .mipmaps = 0,
-        .format = 0,
-    };
+    Ref<List<Tuple2<String*, Ref<Texture>*>>> god = __textures->items();
+    for (nint i = 0; i < god->length; i++) {
+        Texture::force_free(*god->at(i)->item2);
+    }
+    delete __textures;
 }
 
-Texture::~Texture()
+Ref<Texture> Texture::load(String path)
 {
-    rl::Texture2D t = {
-        .id = this->__internal.id,
-        .width = this->__internal.width,
-        .height = this->__internal.height,
-        .mipmaps = this->__internal.mipmaps,
-        .format = this->__internal.format,
-    };
-    rl::UnloadTexture(t);
+    Texture2D die = LoadTexture(path);
+    Ref<Texture> mate = Ref<Texture>(new (Texture){
+        .__data = {die.id, die.width, die.height, die.mipmaps, die.format},
+        .path = String(path),
+        .size = Vec2i(die.width, die.height),
+    });
+    return newref<Texture>(mate);
 }
 
-Vec2i Texture::size()
+void Texture::force_free(Ref<Texture> texture)
 {
-    return Vec2i(this->__internal.width, this->__internal.height);
+    Texture2D die = {
+        .id = texture->__data.id,
+        .width = texture->__data.width,
+        .height = texture->__data.height,
+        .mipmaps = texture->__data.mipmaps,
+        .format = texture->__data.format,
+    };
+    UnloadTexture(die);
+    __textures->remove(texture->path);
 }
 
 }

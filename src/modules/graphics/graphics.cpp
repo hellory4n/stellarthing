@@ -19,9 +19,9 @@ void graphics::draw_texture(Texture texture, Vec2 pos, float32 angle)
     graphics::draw_texture_ext(
         texture,
         Vec2(0, 0),
-        Vec2(texture.size().x, texture.size().y),
+        Vec2(texture.size.x, texture.size.y),
         pos,
-        Vec2(texture.size().x, texture.size().y),
+        Vec2(texture.size.x, texture.size.y),
         Vec2(0.5, 0.5),
         angle,
         ST_COLOR_WHITE
@@ -34,11 +34,11 @@ void graphics::draw_texture_ext(Texture texture, Vec2 src_pos, Vec2 src_size, Ve
     // akson dendryt
     DrawTexturePro(
         {
-            texture.__internal.id,
-            texture.__internal.width,
-            texture.__internal.height,
-            texture.__internal.mipmaps,
-            texture.__internal.format,
+            texture.__data.id,
+            texture.__data.width,
+            texture.__data.height,
+            texture.__data.mipmaps,
+            texture.__data.format,
         },
         {(float)src_pos.x, (float)src_pos.y, (float)src_size.x, (float)src_size.y},
         {(float)dst_pos.x, (float)dst_pos.y, (float)dst_size.x, (float)dst_size.y},

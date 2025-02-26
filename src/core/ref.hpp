@@ -53,6 +53,7 @@ public:
 		if (obj.__val != nullptr) {
 			this->__refs->val++;
 		}
+		return *this;
 	}
 
     /// returns how many references the object has

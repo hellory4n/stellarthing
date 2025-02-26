@@ -27,7 +27,7 @@ Tile* TileWorld::get_tile(Vec3 pos, bool ground)
     }
 
     // if it's a new tile then make it not suck
-    if (lasigm->textures[0]->__internal.id == 0) {
+    if (lasigm->textures[0]->__data.id == 0) {
         lasigm->position = pos;
         lasigm->tint = ST_COLOR_WHITE;
     }
@@ -42,15 +42,15 @@ void TileWorld::__draw_chunk(Vec2i offset)
             Tile tile = this->ground[x][y][this->current_layer];
             Vec2 transformed_pos =
                 Vec2(tile.position.x, tile.position.y) + this->camera_position
-                * (Vec2)tile.textures[tile.side]->size()
+                * (Vec2)tile.textures[tile.side]->size
                 * this->camera_scale;
             
             graphics::draw_texture_ext(
                 *tile.textures[tile.side],
                 Vec2(0, 0),
-                (Vec2)tile.textures[tile.side]->size(),
+                (Vec2)tile.textures[tile.side]->size,
                 transformed_pos,
-                (Vec2)tile.textures[tile.side]->size() * this->camera_scale,
+                (Vec2)tile.textures[tile.side]->size * this->camera_scale,
                 Vec2(0, 0), 0, tile.tint
             );
         }
