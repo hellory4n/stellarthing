@@ -8,79 +8,85 @@ namespace starry {
 template <typename T>
 class Ref {
 private:
-	// man
-	struct Numptr {
-		nint val;
-	};
-	
-	T* __val = nullptr;
-	Numptr* __refs = nullptr;
+    // man
+    struct Numptr {
+        nint val = 1;
+    };
+    
+    T* __val = nullptr;
+    Numptr* __refs = nullptr;
 
     void __cleanup()
-	{
-		this->__refs->val--;
-		if (this->__refs->val <= 0) {
-			if (this->__val != nullptr) {
-				delete this->__val;
+    {
+        if (__refs) {
+            __refs->val--;
+            if (__refs->val == 0) {
+                delete __val;
+                delete __refs;
             }
-			delete this->__refs;
-		}
-	}
+        }
+    }
 
 public:
-	Ref(T* ptr)
+    Ref(T* ptr)
     {
+        if (ptr != nullptr) {
+            this->__refs = new Numptr();
+        }
         this->__val = ptr;
-		this->__refs = new Numptr();
-		this->__refs->val = 0;
-	}
+    }
 
-	Ref(const Ref& obj)
-	{
-		this->__val = obj.__val;
-		this->__refs = obj.__refs;
-		if (obj.__val != nullptr) {
-			this->__refs->val++;
-		}
-	}
+    Ref(const Ref& obj)
+    {
+        __val = obj.__val;
+        __refs = obj.__refs;
+        if (__refs != nullptr) {
+            __refs->val++;
+        }
+    }
 
-	Ref& operator =(const Ref& obj)
-	{
-		this->__cleanup();
-		
-		this->__val = obj.__val;
-		this->__refs = obj.__refs;
-		if (obj.__val != nullptr) {
-			this->__refs->val++;
-		}
-		return *this;
-	}
+    Ref& operator =(const Ref& obj)
+    {	
+        if (this == &obj) {
+            return *this;
+        }
+
+        this->__cleanup();
+
+        this->__val = obj.__val;
+        this->__refs = obj.__refs;
+        if (this->__refs != nullptr) {
+            this->__refs->val++;
+        }
+
+        return *this;
+    }
 
     /// returns how many references the object has
     nint get_ref_count()
     {
-		return this->__refs->val;
-	}
+        return this->__refs != nullptr ? this->__refs->val : 0;
+    }
 
-	T* get()
+    T* get()
     {
-		return this->__val;
-	}
+        return this->__val;
+    }
 
-	T* operator ->()
+    T* operator ->()
     {
-		return this->__val;
-	}
+        return this->__val;
+    }
 
-	T* operator *()
+    T* operator *()
     {
-		return this->__val;
-	}
+        return this->__val;
+    }
 
-	~Ref()
+    ~Ref()
     {
-	    __cleanup();
-	}
+        this->__cleanup();
+    }
 };
 
 /// makes a brand new reference. the class used must have a constructor with no parameters

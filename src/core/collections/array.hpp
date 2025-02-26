@@ -1,7 +1,6 @@
 #ifndef ST_ARRAY_H
 #define ST_ARRAY_H
 #include <stdio.h>
-#include <string.h>
 #include "core/core.hpp"
 
 namespace starry {
@@ -12,13 +11,14 @@ namespace starry {
 /// statically sized list. for efficiency it uses the stack until it's bigger than 256, then it uses the heap.
 template<typename T>
 class Array {
+private:
+    T* __heap_buf = nullptr;
+    T __stack_buf[ST_ARRAY_BUFFER_SIZE];
 public:
     /// if true, the array is on the heap. else, it's on the stack
     bool on_heap;
     /// how many items the array has.
     nint length;
-    T* __heap_buf = nullptr;
-    T __stack_buf[ST_ARRAY_BUFFER_SIZE];
 
     Array(nint size)
     {
@@ -43,6 +43,8 @@ public:
 
     Array(const Array& other)
     {
+        this->length = other.length;
+        this->on_heap = other.on_heap;
         if (this->on_heap) {
             this->__heap_buf = (T*)malloc(sizeof(T) * length);
             if (this->__heap_buf == nullptr) {
@@ -104,6 +106,5 @@ public:
 };
 
 }
-
 
 #endif // ST_ARRAY_H
