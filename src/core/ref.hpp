@@ -18,11 +18,11 @@ private:
 
     void __cleanup()
     {
-        if (__refs) {
-            __refs->val--;
-            if (__refs->val == 0) {
-                delete __val;
-                delete __refs;
+        if (this->__refs != nullptr) {
+            this->__refs->val--;
+            if (this->__refs->val == 0) {
+                delete this->__val;
+                delete this->__refs;
             }
         }
     }

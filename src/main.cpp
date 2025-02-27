@@ -3,6 +3,7 @@
 #include "modules/graphics/texture.hpp"
 #include "modules/platform/window.hpp"
 #include "modules/graphics/graphics.hpp"
+#include <cstdio>
 
 // i'm sorry... i'm sorry... i'm sorry...
 using namespace starry;
@@ -11,6 +12,12 @@ Ref<Texture> bob = {0};
 
 void __init_modules()
 {
+    // help me (axon dendrite)
+    Ref<int64> refma1 = Ref<int64>(new int64(69));
+    Ref<int64> refma2 = refma1;
+    Ref<int64> refma3 = refma2;
+    printf("man %lu, %li\n", refma3.get_ref_count(), *refma3.get());
+
     window::open("Stellarthing", Vec2i(640, 480));
     window::toggle_fullscreen();
     window::set_target_fps(144);

@@ -20,7 +20,7 @@ public:
     __RlTexture __data;
 
     /// the path to the texture
-    //String path;
+    String path;
     /// the size of the texture
     Vec2i size;
 

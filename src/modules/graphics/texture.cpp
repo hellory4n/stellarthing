@@ -28,8 +28,9 @@ void Texture::__free_subsystem()
 Ref<Texture> Texture::load(String path)
 {
     Texture2D die = LoadTexture(path);
-    Ref<Texture> mate = Ref<Texture>(new (Texture){
+    Ref<Texture> mate = Ref<Texture>(new Texture {
         .__data = {die.id, die.width, die.height, die.mipmaps, die.format},
+        .path = path,
         .size = Vec2i(die.width, die.height),
     });
 
@@ -47,7 +48,7 @@ void Texture::force_free(Ref<Texture> texture)
         .format = texture->__data.format,
     };
     UnloadTexture(die);
-    //__textures->remove(texture->path);
+    __textures->remove(texture->path);
 }
 
 }
