@@ -35,7 +35,7 @@ Ref<Texture> Texture::load(String path)
     });
 
     __textures->set(path, mate);
-    return newref<Texture>(mate);
+    return mate;
 }
 
 void Texture::force_free(Ref<Texture> texture)

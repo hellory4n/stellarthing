@@ -89,20 +89,6 @@ public:
     }
 };
 
-/// makes a brand new reference. the class used must have a constructor with no parameters
-template<typename T>
-Ref<T> newref()
-{
-    return Ref<T>(new T());
-}
-
-/// makes a reference from another reference.
-template<typename T>
-Ref<T> newref(const Ref<T>& ref)
-{
-    return Ref<T>(ref);
-}
-
 }
 
 #endif // ST_REF_H

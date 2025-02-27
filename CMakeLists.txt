@@ -38,14 +38,14 @@ include_directories(
 )
 
 file(GLOB_RECURSE PROJECT_SOURCES
-    "${PROJECT_SOURCE_DIR}/src/*.h"
-    "${PROJECT_SOURCE_DIR}/src/*.hpp"
-    "${PROJECT_SOURCE_DIR}/src/*.cpp"
-    "${PROJECT_SOURCE_DIR}/src/*.c"
     "${PROJECT_SOURCE_DIR}/lib/*.h"
     "${PROJECT_SOURCE_DIR}/lib/*.hpp"
     "${PROJECT_SOURCE_DIR}/lib/*.cpp"
     "${PROJECT_SOURCE_DIR}/lib/*.c"
+    "${PROJECT_SOURCE_DIR}/src/*.h"
+    "${PROJECT_SOURCE_DIR}/src/*.hpp"
+    "${PROJECT_SOURCE_DIR}/src/*.cpp"
+    "${PROJECT_SOURCE_DIR}/src/*.c"
 )
 
 # Our Project

@@ -1,6 +1,7 @@
 #ifndef ST_ARRAY_H
 #define ST_ARRAY_H
-#include <stdio.h>
+#include <cstdio>
+#include <cstring>
 #include "core/core.hpp"
 
 namespace starry {
@@ -95,6 +96,12 @@ public:
         else {
             return &this->__stack_buf[idx];
         }
+    }
+
+    /// similar to `at()`, but it works like regular 2D arrays. for setting the size just do X * Y
+    T* at2d(nint x, nint y, nint width)
+    {
+        return this->at((x * width) + y);
     }
 
     /// returns the internal array

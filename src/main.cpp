@@ -1,23 +1,18 @@
-#include "core/ref.hpp"
+#include <cstdio>
 #include "core/string.hpp"
 #include "modules/graphics/texture.hpp"
+#include "modules/graphics/tilemap.hpp"
 #include "modules/platform/window.hpp"
 #include "modules/graphics/graphics.hpp"
-#include <cstdio>
 
 // i'm sorry... i'm sorry... i'm sorry...
 using namespace starry;
 
 Ref<Texture> bob = {0};
+Ref<TileWorld> mate = {0};
 
 void __init_modules()
 {
-    // help me (axon dendrite)
-    Ref<int64> refma1 = Ref<int64>(new int64(69));
-    Ref<int64> refma2 = refma1;
-    Ref<int64> refma3 = refma2;
-    printf("man %lu, %li\n", refma3.get_ref_count(), *refma3.get());
-
     window::open("Stellarthing", Vec2i(640, 480));
     window::toggle_fullscreen();
     window::set_target_fps(144);
@@ -25,6 +20,12 @@ void __init_modules()
 
     // this will eventually not have tests
     bob = Texture::load("assets/bob_guy.png");
+
+    mate = Ref<TileWorld>(new TileWorld(Vec2i(-16, -16), Vec2i(16, 16)));
+    mate->add_tile(Vec3(3, 3, 0), false, bob, bob, bob, bob);
+    mate->add_tile(Vec3(4, 3, 0), false, bob, bob, bob, bob);
+    mate->add_tile(Vec3(5, 3, 0), false, bob, bob, bob, bob);
+    mate->add_tile(Vec3(6, 3, 0), false, bob, bob, bob, bob);
 }
 
 void __update_modules()
@@ -33,6 +34,8 @@ void __update_modules()
     graphics::clear(ST_COLOR_WHITE);
 
     graphics::draw_texture(**bob, Vec2(69, 420), 69);
+
+    mate->draw();
 
     graphics::end_drawing();
     window::update();

@@ -1,6 +1,5 @@
 #ifndef ST_HASHMAP_H
 #define ST_HASHMAP_H
-#define STB_DS_IMPLEMENTATION
 #include "stb_ds.h"
 #include "core/core.hpp"
 #include "core/ref.hpp"
