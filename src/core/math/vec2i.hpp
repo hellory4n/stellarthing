@@ -7,8 +7,8 @@ namespace starry {
 
 /// vector2 but with integers
 struct Vec2i {
-    int64 x;
-    int64 y;
+    int64 x = 0;
+    int64 y = 0;
 
     Vec2i(int64 x, int64 y);
     Vec2i operator +(Vec2i b);

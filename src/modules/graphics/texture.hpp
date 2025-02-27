@@ -11,18 +11,18 @@ class Texture {
 public:
     /// raylib texture thingy
     struct __RlTexture {
-        uint32 id;
-        int32 width;
-        int32 height;
-        int32 mipmaps;
-        int32 format;
+        uint32 id = 0;
+        int32 width = 0;
+        int32 height = 0;
+        int32 mipmaps = 0;
+        int32 format = 0;
     };
-    __RlTexture __data;
+    __RlTexture __data = {};
 
     /// the path to the texture
-    String path;
+    String path = "";
     /// the size of the texture
-    Vec2i size;
+    Vec2i size = Vec2i(0, 0);
 
     static void __init_subsystem();
 

@@ -6,8 +6,8 @@ namespace starry {
 
 /// world's bestest Vector2
 struct Vec2 {
-    float64 x;
-    float64 y;
+    float64 x = 0;
+    float64 y = 0;
 
     Vec2(float64 x, float64 y);
     Vec2 operator +(Vec2 b);

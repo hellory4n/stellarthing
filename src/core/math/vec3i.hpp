@@ -7,9 +7,9 @@ namespace starry {
 
 /// Vector3 but integer
 struct Vec3i {
-    int64 x;
-    int64 y;
-    int64 z;
+    int64 x = 0;
+    int64 y = 0;
+    int64 z = 0;
 
     Vec3i(int64 x, int64 y, int64 z);
     Vec3i operator +(Vec3i b);

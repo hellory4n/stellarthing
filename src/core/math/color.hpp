@@ -6,13 +6,13 @@ namespace starry {
 
 struct Color {
     /// red
-    uint8 r;
+    uint8 r = 0;
     /// green
-    uint8 g;
+    uint8 g = 0;
     /// blue
-    uint8 b;
+    uint8 b = 0;
     /// alpha
-    uint8 a;
+    uint8 a = 0;
 
     Color(uint8 r, uint8 g, uint8 b) {
         this->r = r;

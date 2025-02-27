@@ -9,11 +9,11 @@ template<typename T>
 class List {
 public:
     /// internal array of items
-    T* items;
+    T* items = nullptr;
     /// how many items the internal array can hold
-    nint capacity;
+    nint capacity = 0;
     /// how many items the array already has
-    nint length;
+    nint length = 0;
 
     List(nint capacity)
     {

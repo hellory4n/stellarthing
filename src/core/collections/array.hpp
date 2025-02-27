@@ -16,9 +16,9 @@ private:
     T __stack_buf[ST_ARRAY_BUFFER_SIZE];
 public:
     /// if true, the array is on the heap. else, it's on the stack
-    bool on_heap;
+    bool on_heap = false;
     /// how many items the array has.
-    nint length;
+    nint length = 0;
 
     Array(nint size)
     {

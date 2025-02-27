@@ -6,9 +6,9 @@ namespace starry {
 
 /// world's bestest Vector3
 struct Vec3 {
-    float64 x;
-    float64 y;
-    float64 z;
+    float64 x = 0;
+    float64 y = 0;
+    float64 z = 0;
 
     Vec3(float64 x, float64 y, float64 z);
     Vec3 operator +(Vec3 b);

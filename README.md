@@ -46,6 +46,8 @@ And compile with:
 cmake --build build
 ```
 
+The executable will be in `build/stellarthing/stellarthing`
+
 Also if you're using vscode, don't use the Microsoft C/C++ extension, use clangd instead (it's better)
 
 ## Cross-compiling
@@ -65,3 +67,5 @@ And compile with:
 ```sh
 cmake --build build/windows
 ```
+
+The executable will be in `build/windows/stellarthing/stellarthing.exe`
