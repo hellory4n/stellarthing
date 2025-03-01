@@ -29,7 +29,7 @@ const (
 	KeySemicolon = 59
 	//  = 
 	KeyEqual = 61
-	Keya = 65
+	KeyA = 65
 	KeyB = 66
 	KeyC = 67
 	KeyD = 68

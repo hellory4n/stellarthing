@@ -2,17 +2,6 @@ package platform
 
 import rl "github.com/gen2brain/raylib-go/raylib"
 
-/*bool StInput_is_keymap_just_pressed(const char* keymap)
-{
-    if (!StHashMap_contains(__st_keymaps__, keymap)) return false;
-
-    StList* keys = StHashMap_get(__st_keymaps__, keymap);
-    for (nint i = 0; i < keys->length; i++) {
-        if (StInput_is_key_just_pressed((StKey)keys->items[i])) return true;
-    }
-    return false;
-}*/
-
 var keymapma map[string][]Key
 
 func init() {
@@ -31,7 +20,7 @@ func IsKeyJustReleased(key Key) bool {
 	return rl.IsKeyReleased(int32(key))
 }
 
-func IsKeyJustHeld(key Key) bool {
+func IsKeyHeld(key Key) bool {
 	return rl.IsKeyDown(int32(key))
 }
 
@@ -47,7 +36,7 @@ func IsMouseButtonJustReleased(btn MouseButton) bool {
 	return rl.IsMouseButtonReleased(rl.MouseButton(btn))
 }
 
-func IsMouseButtonJustHeld(btn MouseButton) bool {
+func IsMouseButtonHeld(btn MouseButton) bool {
 	return rl.IsMouseButtonDown(rl.MouseButton(btn))
 }
 
@@ -87,7 +76,7 @@ func IsKeymapJustReleased(keymap string) bool {
 	return false
 }
 
-func IsKeymapJustHeld(keymap string) bool {
+func IsKeymapHeld(keymap string) bool {
 	keymapdeez, ok := keymapma[keymap]
 
 	// i'm not ok :(
@@ -96,7 +85,7 @@ func IsKeymapJustHeld(keymap string) bool {
 	}
 
 	for _, v := range keymapdeez {
-		if (IsKeyJustHeld(v)) {
+		if (IsKeyHeld(v)) {
 			return true
 		}
 	}
