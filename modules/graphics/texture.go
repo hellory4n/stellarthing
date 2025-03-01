@@ -38,7 +38,7 @@ func LoadTexture(path string) Texture {
 			path: path,
 		}
 		textureCache[path] = texture
-		fmt.Printf("[GRAPHICS] Loaded texture at %v", path)
+		fmt.Printf("[GRAPHICS] Loaded texture at %v\n", path)
 	}
 	return texture
 }
@@ -59,7 +59,7 @@ func (t Texture) Free() {
 	}
 	rl.UnloadTexture(rltltx)
 	delete(textureCache, t.path)
-	fmt.Printf("[GRAPHICS] Freed texture at %v", t.path)
+	fmt.Printf("[GRAPHICS] Freed texture at %v\n", t.path)
 }
 
 func FreeAllTextures() {
