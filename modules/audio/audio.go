@@ -16,7 +16,7 @@ type Audio struct {
 }
 
 var audioCache map[string]Audio
-var listener core.Vec3
+var listener core.Vec3 = core.NewVec3(0, 0, 0)
 
 // inits audio :)
 func Init() {
@@ -42,7 +42,12 @@ func LoadAudio(path string) Audio {
 		audioCache[path] = audio
 		fmt.Printf("[AUDIO] Loaded audio at %v\n", path)
 	}
-	return audio
+	// make a copy of the thingy
+	return Audio{
+		internal: audio.internal,
+		path: path,
+		vol: 1,
+	}
 }
 
 // unloads audio :)
@@ -73,12 +78,14 @@ func (a Audio) Pause(pause bool) {
 
 // sets the panning. -1 is on the left, 1 is on the right, and 0 is on the center.
 func (a Audio) SetPan(pan float64) {
-	rl.SetSoundPan(a.internal, float32(-pan));
+	rl.SetSoundPan(a.internal, float32(0.5 - 0.5 * pan));
 }
 
 // sets the volume for the audio. works like a percentage so 0.5 would be 50% of the original volume
 func (a Audio) SetVolume(vol float64) {
-	a.vol = vol
+	a2 := a
+	a2.vol = vol
+	a = a2
 	rl.SetSoundVolume(a.internal, float32(vol))
 }
 
