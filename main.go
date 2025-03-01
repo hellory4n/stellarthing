@@ -1,28 +1,25 @@
 package main
 
 import (
+	"fmt"
+
+	"github.com/hellory4n/stellarthing/core"
+	"github.com/hellory4n/stellarthing/modules/platform"
 	rl "github.com/gen2brain/raylib-go/raylib"
-	lua "github.com/yuin/gopher-lua"
 )
 
 func main() {
-	rl.InitWindow(800, 450, "raylib [core] example - basic window")
-	defer rl.CloseWindow()
+	platform.OpenWindow("Stellarthing", core.NewVec2i(800, 600))
+	platform.ToggleFullscreen()
 
-	rl.SetTargetFPS(60)
-
-	L := lua.NewState()
-	defer L.Close()
-	if err := L.DoString(`print("hello")`); err != nil {
-		panic(err)
-	}
-
-	for !rl.WindowShouldClose() {
+	for !platform.Closing() {
 		rl.BeginDrawing()
-
-		rl.ClearBackground(rl.RayWhite)
-		rl.DrawText("Congrats! You created your first window!", 190, 200, 20, rl.LightGray)
-
+		rl.ClearBackground(rl.White)
+		if platform.IsKeyJustPressed(platform.KeySpace) {
+			fmt.Println("hi mom")
+		}
 		rl.EndDrawing()
 	}
+
+	platform.CloseWindow()
 }
