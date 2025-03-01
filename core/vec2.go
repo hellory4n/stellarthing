@@ -90,3 +90,8 @@ func (a Vec2) Neq(b Vec2) bool {
 func (a Vec2) Neg() Vec2 {
 	return Vec2{-a.X, -a.Y}
 }
+
+// converts the vector to a vec2i
+func (a Vec2) ToVec2i() Vec2i {
+	return Vec2i{X: int64(a.X), Y: int64(a.Y)}
+}
