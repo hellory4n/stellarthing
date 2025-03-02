@@ -10,8 +10,7 @@ import (
 )
 
 type Player struct {
-	pos core.Vec2
-	texture graphics.Texture
+	tile graphics.Tile
 }
 
 func (p *Player) EntityType() entities.EntityType {
@@ -20,7 +19,9 @@ func (p *Player) EntityType() entities.EntityType {
 
 func (p *Player) OnCreate() {
 	fmt.Println("Good morning.")
-	p.texture = graphics.LoadTexture("assets/bob_guy.png")
+
+	bob := graphics.LoadTexture("assets/bob_guy.png")
+
 	platform.AddKeymap("move_left", platform.KeyA)
 	platform.AddKeymap("move_left", platform.KeyLeft)
 	platform.AddKeymap("move_right", platform.KeyD)
@@ -30,28 +31,32 @@ func (p *Player) OnCreate() {
 	platform.AddKeymap("move_down", platform.KeyS)
 	platform.AddKeymap("move_down", platform.KeyDown)
 
+	world := graphics.NewTileWorld(core.NewVec2i(-10, -10), core.NewVec2i(10, 10))
+	graphics.CurrentWorld = world
+
+	p.tile = *graphics.CurrentWorld.AddTile(core.NewVec3(5, 5, 0), false, bob, bob, bob, bob)
 }
 
 func (p *Player) OnUpdate(delta float64) {
 	if (platform.IsKeymapHeld("move_left")) {
-		p.pos = p.pos.Add(core.NewVec2(-100 * delta, 0))
+		p.tile.Position = p.tile.Position.Add(core.NewVec3(-0.25 * delta, 0, 0))
 	}
 
 	if (platform.IsKeymapHeld("move_right")) {
-		p.pos = p.pos.Add(core.NewVec2(100 * delta, 0))
+		p.tile.Position = p.tile.Position.Add(core.NewVec3(0.25 * delta, 0, 0))
 	}
 
 	if (platform.IsKeymapHeld("move_up")) {
-		p.pos = p.pos.Add(core.NewVec2(0, -100 * delta))
+		p.tile.Position = p.tile.Position.Add(core.NewVec3(0, -0.25 * delta, 0))
 	}
 
 	if (platform.IsKeymapHeld("move_down")) {
-		p.pos = p.pos.Add(core.NewVec2(0, 100 * delta))
+		p.tile.Position = p.tile.Position.Add(core.NewVec3(0, 0.25 * delta, 0))
 	}
 }
 
 func (p *Player) OnDraw() {
-	graphics.DrawTexture(p.texture, p.pos, 0, core.ColorWhite)
+	graphics.CurrentWorld.Draw()
 }
 
 func (p *Player) OnFree() {
