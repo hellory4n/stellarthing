@@ -1,7 +1,6 @@
 package graphics
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/hellory4n/stellarthing/core"
@@ -27,142 +26,131 @@ type Tile struct {
 	Tint core.Color
 	// i have 3 sides... i'm a triangle
 	Side uint8
-	// if true, the tile is in fact no tile. default for tiles until you fill them with something
-	Empty bool
+	// if false, the tile is in fact no tile. useful for, for example, a space world, where it's mostly nothing
+	Exists bool
 	// textures. order doesn't really matter
 	Textures [4]Texture
 }
 
 // as the name implies, it's a world of tiles... truly gives a world of possibilities HAHAHBAHAHAHHAHAAHHAAHEHOEGOHHKHRTIJOHYJIORIOGREFYH;TPHOY;IFPPIKPGPJOILKṔ;Ó[;O]-;I90;[-P89P0689;0-P69]P´[9]0]
 type TileWorld struct {
-	// it's a hashmap of chunk positions and an array of their layers, each with a 2d array of tiles
-	ground map[core.Vec2i][TotalLayers][ChunkSize][ChunkSize]Tile
-	objects map[core.Vec2i][TotalLayers][ChunkSize][ChunkSize]Tile
-	currentChunk core.Vec2i
-	currentLayer int
-	cameraPosition core.Vec2
-	cameraScale core.Vec2
+	// the top left corner of the world
+	StartPos core.Vec2
+	// the bottom right corner of the world
+	EndPos core.Vec2
+	// camera position :)
+	CameraPos core.Vec3
+	// camera scale. it's a multiplier so 1, 1 is the original size
+	CameraScale core.Vec2
+	// indexed like [z][y][x] :)
+	ground [][][]Tile
+	// indexed like [z][y][x] :)
+	objects [][][]Tile
 }
 
 // current world
 var CurrentWorld *TileWorld
 
-// makes a new world :)
-func NewTileWorld(minChunk core.Vec2i, maxChunk core.Vec2i) *TileWorld {
+// makes a new world. the startPos and endPos are the top left and bottom right corners of the world, respectively
+func NewTileWorld(worldSize core.Vec2i) *TileWorld {
 	var world *TileWorld = new(TileWorld)
-
-	// this may be one of the worst things ive ever done
-	world.ground = make(map[core.Vec2i][320][16][16]Tile)
-	for y := minChunk.Y; y < maxChunk.Y; y++ {
-		for x := minChunk.X; x < maxChunk.X; x++ {
-			world.ground[core.NewVec2i(x, y)] = [TotalLayers][ChunkSize][ChunkSize]Tile{}
+	world.StartPos = worldSize.ToVec2().Sdiv(2).Neg()
+	world.EndPos = worldSize.ToVec2().Sdiv(2)
+	world.CameraPos = core.NewVec3(0, 0, 0)
+	world.CameraScale = core.NewVec2(1, 1)
+	
+	// i should
+	world.ground = make([][][]Tile, TotalLayers)
+	for z := range world.ground {
+		world.ground[z] = make([][]Tile, worldSize.Y)
+		for y := range world.ground[z] {
+			world.ground[z][y] = make([]Tile, worldSize.X)
 		}
 	}
 
-	world.objects = make(map[core.Vec2i][320][16][16]Tile)
-	for y := minChunk.Y; y < maxChunk.Y; y++ {
-		for x := minChunk.X; x < maxChunk.X; x++ {
-			world.objects[core.NewVec2i(x, y)] = [TotalLayers][ChunkSize][ChunkSize]Tile{}
+	world.objects = make([][][]Tile, TotalLayers)
+	for z := range world.objects {
+		world.objects[z] = make([][]Tile, worldSize.Y)
+		for y := range world.objects[z] {
+			world.objects[z][y] = make([]Tile, worldSize.X)
 		}
 	}
 
-	fmt.Println("[TILEMAP] World created")
 	return world
 }
 
-// adds a tile
-func (t *TileWorld) AddTile(pos core.Vec3, ground bool, side0 Texture, side1 Texture, side2 Texture, side3 Texture) *Tile {
-	var tile *Tile = t.GetTile(pos, ground)
-	core.Assert("tile != nil", tile != nil)
+// as the name implies it transforms from tile positions to global positions
+func (t *TileWorld) TransformToGlobal(tilePos core.Vec2, tileSize core.Vec2) core.Vec2 {
+	return tilePos.Add(core.NewVec2(t.CameraPos.X, t.CameraPos.Y)).Mul(t.CameraScale).Mul(tileSize)
+}
 
-	tile.Empty = false
+// gets a tile from a position
+func (t *TileWorld) GetTile(pos core.Vec3, ground bool) *Tile {
+	idx := core.NewVec3i(
+		// StartPos is supposed to be negative so 0, 0 is on the center :)
+		int64(math.Round(pos.X) + -t.StartPos.X),
+		int64(math.Round(pos.Y) + -t.StartPos.Y),
+		int64(math.Round(pos.Z)) + -int64(MinLayer),
+	)
+
+	var tile Tile
+	if ground {
+		tile = t.ground[idx.Z][idx.Y][idx.X]
+	} else {
+		tile = t.objects[idx.Z][idx.Y][idx.X]
+	}
+
+	return &tile
+}
+
+// makes a new tile with sensible settings :)
+func (t *TileWorld) NewTile(pos core.Vec3, ground bool, side0 Texture, side1 Texture, side2 Texture, side3 Texture) *Tile {
+	tile := t.GetTile(pos, ground)
+	tile.Exists = true
 	tile.Position = pos
 	tile.Tint = core.ColorWhite
 	tile.Textures[0] = side0
 	tile.Textures[1] = side1
 	tile.Textures[2] = side2
 	tile.Textures[3] = side3
-    return tile
+	return tile
 }
 
-// gets a tile
-func (t *TileWorld) GetTile(pos core.Vec3, ground bool) *Tile {
-	var chunk [TotalLayers][ChunkSize][ChunkSize]Tile
-	if ground {
-		chunk = t.ground[
-			core.NewVec2i(int64(math.Floor(pos.X / float64(ChunkSize))), int64(math.Floor(pos.Y / float64(ChunkSize))))]
-	} else {
-		chunk = t.objects[
-			core.NewVec2i(int64(math.Floor(pos.X / float64(ChunkSize))), int64(math.Floor(pos.Y / float64(ChunkSize))))]
-	}
+// renders the world. usually quite useful unless you're blind
+func (t *TileWorld) Draw() {
+	for y := t.StartPos.Y; y < t.EndPos.Y; y++ {
+		for x := t.StartPos.X; x < t.EndPos.X; x++ {
+			// ground tiles
+			var tile *Tile = t.GetTile(core.NewVec3(x, y, t.CameraPos.Z), false)
 
-	var offsettedLayer int = int(core.Clamp(math.Round(pos.Z) + -float64(MinLayer),
-		float64(MinLayer), float64(MaxLayer)))
-	var layer [ChunkSize][ChunkSize]Tile = chunk[offsettedLayer]
-
-	return &layer[int(math.Floor(pos.X))][int(math.Floor(pos.Y))]
-}
-
-// sets the camera position as well as the current chunk and layer
-func (t *TileWorld) SetCameraPos(pos core.Vec3) {
-	t.cameraPosition = core.NewVec2(pos.X, pos.Y)
-	t.currentChunk = core.NewVec2(pos.X, pos.Y).Sdiv(float64(ChunkSize)).ToVec2i()
-	t.currentLayer = int(math.Round(pos.Z))
-}
-
-// sets the camera scale. it's a multiplier so 1, 1 is the original scale
-func (t *TileWorld) SetCameraScale(scale core.Vec2) {
-	t.cameraScale = scale
-}
-
-func (t *TileWorld) drawChunk(offset core.Vec2i) {
-	// here at shell we are sad
-	for y := t.currentChunk.Y + offset.Y; y < t.currentChunk.Y + offset.Y + int64(ChunkSize); y++ {
-		for x := t.currentChunk.X + offset.X; x < t.currentChunk.X + offset.X + int64(ChunkSize); x++ {
-			// render ground tiles
-			var tile *Tile = t.GetTile(core.NewVec3(float64(x), float64(y), float64(t.currentLayer)), true)
-			var transformed core.Vec2 = core.NewVec2(tile.Position.X, tile.Position.Y).
-				Add(t.cameraPosition).
-				Mul(tile.Textures[tile.Side].Size().ToVec2()).
-				Mul(t.cameraScale)
-			
 			DrawTextureExt(
 				tile.Textures[tile.Side],
 				core.NewVec2(0, 0),
 				tile.Textures[tile.Side].Size().ToVec2(),
-				transformed,
-				tile.Textures[tile.Side].Size().ToVec2().Mul(t.cameraScale),
-				core.NewVec2(0, 0), 0, tile.Tint,
+				t.TransformToGlobal(
+					core.NewVec2(tile.Position.X, tile.Position.Y), tile.Textures[tile.Side].Size().ToVec2(),
+				),
+				tile.Textures[tile.Side].Size().ToVec2().Mul(t.CameraScale),
+				core.NewVec2(0, 0),
+				0,
+				core.ColorWhite,
 			)
 
-			// render object tiles
-			var til *Tile = t.GetTile(core.NewVec3(float64(x), float64(y), float64(t.currentLayer)), true)
-			var transforme core.Vec2 = core.NewVec2(til.Position.X, til.Position.Y).
-				Add(t.cameraPosition).
-				Mul(til.Textures[til.Side].Size().ToVec2()).
-				Mul(t.cameraScale)
-			
+			// object tiles
+			var til *Tile = t.GetTile(core.NewVec3(x, y, t.CameraPos.Z), true)
+
 			DrawTextureExt(
 				til.Textures[til.Side],
 				core.NewVec2(0, 0),
 				til.Textures[til.Side].Size().ToVec2(),
-				transforme,
-				til.Textures[til.Side].Size().ToVec2().Mul(t.cameraScale),
-				core.NewVec2(0, 0), 0, til.Tint,
+				t.TransformToGlobal(
+					core.NewVec2(til.Position.X, til.Position.Y), til.Textures[til.Side].Size().ToVec2(),
+				),
+				til.Textures[til.Side].Size().ToVec2().Mul(t.CameraScale),
+				core.NewVec2(0, 0),
+				0,
+				core.ColorWhite,
 			)
 		}
 	}
-}
-
-// seeing is a core mechanic of Stellarballs
-func (t *TileWorld) Draw() {
-	t.drawChunk(core.NewVec2i(-1, -1))
-	t.drawChunk(core.NewVec2i( 0, -1))
-	t.drawChunk(core.NewVec2i( 1, -1))
-	t.drawChunk(core.NewVec2i(-1,  0))
-	t.drawChunk(core.NewVec2i( 0,  0))
-	t.drawChunk(core.NewVec2i( 1,  0))
-	t.drawChunk(core.NewVec2i(-1,  1))
-	t.drawChunk(core.NewVec2i( 0,  1))
-	t.drawChunk(core.NewVec2i( 1,  1))
 }

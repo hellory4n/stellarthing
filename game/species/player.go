@@ -31,10 +31,10 @@ func (p *Player) OnCreate() {
 	platform.AddKeymap("move_down", platform.KeyS)
 	platform.AddKeymap("move_down", platform.KeyDown)
 
-	world := graphics.NewTileWorld(core.NewVec2i(-10, -10), core.NewVec2i(10, 10))
+	world := graphics.NewTileWorld(core.NewVec2i(250, 250))
 	graphics.CurrentWorld = world
 
-	p.tile = *graphics.CurrentWorld.AddTile(core.NewVec3(5, 5, 0), false, bob, bob, bob, bob)
+	p.tile = *graphics.CurrentWorld.NewTile(core.NewVec3(5, 5, 0), false, bob, bob, bob, bob)
 }
 
 func (p *Player) OnUpdate(delta float64) {
