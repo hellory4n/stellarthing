@@ -1,3 +1,4 @@
+// great for when you're not deaf
 package audio
 
 import (

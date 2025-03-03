@@ -1,3 +1,4 @@
+// platform :)
 package platform
 
 import (

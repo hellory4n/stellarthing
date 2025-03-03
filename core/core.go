@@ -10,11 +10,17 @@ import (
 // enables/disables some features such as assert
 const Debug = true
 
+// engine version string
+const StarryVersionStr = "v4.0.0"
+
 // engine version
-const StarryVersion = "v4.0.0"
+var StarryVersion Vec3i = NewVec3i(4, 0, 0)
+
+// game version string
+const GameVersionStr = "v0.11.0"
 
 // game version
-const GameVersion = "v0.11.0"
+var GameVersion Vec3i = NewVec3i(0, 11, 0)
 
 // yeah
 const GameName = "stellarthing"
@@ -30,14 +36,18 @@ func Assert(msg string, condition bool) {
 func GetUserDir() string {
 	switch runtime.GOOS {
 	case "windows":
-		return filepath.Join(os.Getenv("APPDATA"), GameName)
-	case "linux", "freebsd", "openbsd", "netbsd":
+		path := filepath.Join(os.Getenv("APPDATA"), GameName)
+		os.MkdirAll(path, os.ModePerm)
+		return path
+	case "linux", "freebsd", "openbsd", "netbsd", "dragonfly":
 		home, err := os.UserHomeDir()
 		if err != nil {
 			panic("your OS has a skill issue and couldn't find your home folder")
 		}
 
-		return filepath.Join(home, ".local", "share", GameName)
+		path := filepath.Join(home, ".local", "share", GameName)
+		os.MkdirAll(path, os.ModePerm)
+		return path
 	default:
 		panic(fmt.Sprintf("unsupported OS: %v\n", runtime.GOOS))
 	}

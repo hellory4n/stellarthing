@@ -1,117 +1,104 @@
 package bobx
 
 import (
-	"archive/zip"
-	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
-	"io"
+	"io/fs"
 	"os"
+	"strings"
+
+	"github.com/hellory4n/stellarthing/core"
+	"github.com/mholt/archives"
 )
 
 // bestest format ever. pretty much just disguised zip + json
 type Bobx struct {
-	buffer *bytes.Buffer
-	writer *zip.Writer
-	reader *zip.Reader
-	path string
+	// where the bobx archive is
+	Path string
+	// internal virtual filesystem
+	Fs fs.FS
 }
 
-// opens or creates a bobx file
+// type included in every bobx file. used to check for compatibility
+type BobxManifest struct {
+	// the engine version
+	StarryVersion core.Vec3i `json:"StarryVersion"`
+	// the game version, used for checking compatibility
+	GameVersion core.Vec3i `json:"GameVersion"`
+	// mods can use this to check compability. keys should be the mod's name, e.g. `john:epic_mod`, and the value can be whatever version you want (ideally [semantic versioning](https://semver.org) so it fits in a vec3i)
+	PluginVersions map[string]core.Vec3i `json:"PluginVersions"`
+}
+
+// opens or creates a bobx archive. path is recommended to be .bobx.zip but most archive formats are supported, and regular directories are supported too if you want (end the path with /)
 func Open(path string) (*Bobx, error) {
-	bobessence := &Bobx{
-		buffer: new(bytes.Buffer),
-		path: path,
-	}
-
-	// check if it exists
+	// bobx doesnt exist
 	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		bobessence.writer = zip.NewWriter(bobessence.buffer)
-		return bobessence, nil
+		return newBobxArchive(path)
+	} else {
+		// open existing bobx archive
+		bobx := &Bobx{Path: path}
+		ctx := context.TODO()
+		fs, err := archives.FileSystem(ctx, path, nil)
+		if err != nil {
+			return nil, err
+		}
+		bobx.Fs = fs
+		return bobx, nil
 	}
-
-	bytesma, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	reader, err := zip.NewReader(bytes.NewReader(bytesma), int64(len(bytesma)))
-	if err != nil {
-		return nil, err
-	}
-	bobessence.reader = reader
-
-	return bobessence, nil
 }
 
-// saves the bobx data to a file
-func (b *Bobx) Save() error {
-	if b.writer != nil {
-		_ = b.writer.Close()
-		b.writer = nil
-	}
+func newBobxArchive(path string) (*Bobx, error) {
+	ctx := context.TODO()
 
-	return os.WriteFile(b.path, b.buffer.Bytes(), 0644) // read/write
-}
+	if strings.HasSuffix(path, "/") {
+		os.MkdirAll(path, os.ModePerm)
+	} else {
+		file, err := os.Open(path)
+		if err != nil {
+			return nil, err
+		}
+		defer file.Close()
 
-// writes data to bobx
-func (b *Bobx) Write(filename string, data any) error {
-	if b.writer == nil {
-		b.buffer = new(bytes.Buffer)
-		b.writer = zip.NewWriter(b.buffer)
-	}
-
-	file, err := b.writer.Create(filename)
-	if err != nil {
-		return err
-	}
-
-	jsonBytes, err := json.MarshalIndent(data, "", "\t")
-	if err != nil {
-		return err
-	}
-
-	_, err = file.Write(jsonBytes)
-	if err != nil {
-		return err
-	}
-
-	if err := b.writer.Close(); err != nil {
-		return err
-	}
-	b.writer = nil
-
-	zipBytes := b.buffer.Bytes()
-	b.reader, err = zip.NewReader(bytes.NewReader(zipBytes), int64(len(zipBytes)))
-	return err
-}
-
-// reads data from bobx and deserializes it into out. if it doesn't exist, it writes using defaultVal
-func (b *Bobx) Read(filename string, defaultVal any) (any, error) {
-	if b.reader == nil {
-		return nil, errors.New("bobx file is not readable")
-	}
-
-	for _, file := range b.reader.File {
-		if file.Name == filename {
-			rc, err := file.Open()
-			if err != nil {
-				return nil, err
-			}
-			defer rc.Close()
-
-			jsonData, err := io.ReadAll(rc)
-			if err != nil {
-				return nil, err
-			}
-
-			var rr any
-			json.Unmarshal(jsonData, rr)
-			return rr, nil
+		// make an archive
+		format := archives.CompressedArchive{
+			Compression: archives.Zlib{},
+			Archival: archives.Zip{},
+		}
+		err = format.Archive(ctx, file, []archives.FileInfo{})
+		if err != nil {
+			return nil, err
 		}
 	}
 
-	// doesn't exist :(
-	b.Write(filename, defaultVal)
-	return b.Read(filename, defaultVal)
+	// now open and make a manifest file
+	bobx := &Bobx{Path: path}
+	fs, err := archives.FileSystem(ctx, path, nil)
+	if err != nil {
+		return nil, err
+	}
+	bobx.Fs = fs
+
+	ccbbga
+
+	return bobx, nil
+}
+
+// writes data to the bobx archive
+func (b *Bobx) Write(path string, data any) error {
+	file, err := b.Fs.Open(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	bytes, err := json.MarshalIndent(data, "", "\t")
+	if err != nil {
+		return err
+	}
+	
+}
+
+// reads data from bobx and returns the deserialized data. if it doesn't exist, it writes using defaultVal
+func (b *Bobx) Read(path string, defaultVal any) (any, error) {
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/hellory4n/stellarthing/modules/entities"
 	"github.com/hellory4n/stellarthing/modules/graphics"
 	"github.com/hellory4n/stellarthing/modules/platform"
+	"github.com/hellory4n/stellarthing/modules/util"
 )
 
 func main() {
@@ -27,6 +28,8 @@ func main() {
 		graphics.Clear(core.ColorBlack)
 		entities.UpdateAllEntities()
 		graphics.EndDrawing()
+
+		util.UpdateAllTimers()
 	}
 
 	graphics.FreeAllTextures()

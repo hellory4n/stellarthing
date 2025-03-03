@@ -1,3 +1,4 @@
+// useful for when you're not blind
 package graphics
 
 import (

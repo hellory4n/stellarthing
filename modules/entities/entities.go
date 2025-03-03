@@ -1,3 +1,4 @@
+// entity
 package entities
 
 import (

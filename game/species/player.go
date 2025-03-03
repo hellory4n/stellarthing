@@ -7,12 +7,12 @@ import (
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/modules/bobx"
 	"github.com/hellory4n/stellarthing/modules/entities"
-	"github.com/hellory4n/stellarthing/modules/graphics"
+	// "github.com/hellory4n/stellarthing/modules/graphics"
 	"github.com/hellory4n/stellarthing/modules/platform"
 )
 
 type Player struct {
-	tile graphics.Tile
+	// tile graphics.Tile
 }
 
 type LaData struct {
@@ -45,33 +45,31 @@ func (p *Player) OnCreate() {
 	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test.bobx"))
 	fmt.Println(filepath.Join(core.GetUserDir(), "test.bobx"))
 	uuuuuy.Save()
-	uuuuuy.Write("mate.json", LaData{Thingy: "TTTTTTTT"})
-	uuuuuy.Save()
 	SOFGMA, _ := uuuuuy.Read("mate.json", LaData{Thingy: "Oi mate"})
 	fmt.Println(SOFGMA.(string))
 	uuuuuy.Save()
 }
 
 func (p *Player) OnUpdate(delta float64) {
-	if platform.IsKeymapHeld("move_left") {
-		p.tile.Position = p.tile.Position.Add(core.NewVec3(-0.25 * delta, 0, 0))
-	}
+	// if platform.IsKeymapHeld("move_left") {
+	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(-0.25 * delta, 0, 0))
+	// }
 
-	if platform.IsKeymapHeld("move_right") {
-		p.tile.Position = p.tile.Position.Add(core.NewVec3(0.25 * delta, 0, 0))
-	}
+	// if platform.IsKeymapHeld("move_right") {
+	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(0.25 * delta, 0, 0))
+	// }
 
-	if platform.IsKeymapHeld("move_up") {
-		p.tile.Position = p.tile.Position.Add(core.NewVec3(0, -0.25 * delta, 0))
-	}
+	// if platform.IsKeymapHeld("move_up") {
+	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(0, -0.25 * delta, 0))
+	// }
 
-	if platform.IsKeymapHeld("move_down") {
-		p.tile.Position = p.tile.Position.Add(core.NewVec3(0, 0.25 * delta, 0))
-	}
+	// if platform.IsKeymapHeld("move_down") {
+	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(0, 0.25 * delta, 0))
+	// }
 }
 
 func (p *Player) OnDraw() {
-	graphics.CurrentWorld.Draw()
+	// graphics.CurrentWorld.Draw()
 }
 
 func (p *Player) OnFree() {

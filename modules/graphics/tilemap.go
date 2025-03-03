@@ -1,25 +1,28 @@
 package graphics
 
-import (
-	"math"
-
-	"github.com/hellory4n/stellarthing/core"
-)
-
 // how down can you go
-const MinLayer int = -64
+const MinLayer int = -16
 
 // how up can you go
-const MaxLayer int = 256
+const MaxLayer int = 48
 
 // mate
-const TotalLayers int = 320
+const TotalLayers int = 64
 
 // chunk size (they're square)
 const ChunkSize int = 16
 
-// it's a tile. use with TileWorld
 type Tile struct {
+	TileId uint32
+	EntityId uint32
+}
+
+type TileWorld struct {
+	Mate [9][64][16][16]Tile
+}
+
+// it's a tile. use with TileWorld
+/*type Tile struct {
 	// z is the layer
 	Position core.Vec3
 	// el scorcho! AY CABRÓN
@@ -153,4 +156,4 @@ func (t *TileWorld) Draw() {
 			)
 		}
 	}
-}
+}*/
