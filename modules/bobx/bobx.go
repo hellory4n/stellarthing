@@ -1,15 +1,12 @@
 package bobx
 
 import (
-	"context"
 	"encoding/json"
-	"errors"
-	"io/fs"
 	"os"
-	"strings"
+	"path/filepath"
 
 	"github.com/hellory4n/stellarthing/core"
-	"github.com/mholt/archives"
+	"github.com/spf13/afero"
 )
 
 // bestest format ever. pretty much just disguised zip + json
@@ -17,7 +14,7 @@ type Bobx struct {
 	// where the bobx archive is
 	Path string
 	// internal virtual filesystem
-	Fs fs.FS
+	Fs afero.Fs
 }
 
 // type included in every bobx file. used to check for compatibility
@@ -30,75 +27,67 @@ type BobxManifest struct {
 	PluginVersions map[string]core.Vec3i `json:"PluginVersions"`
 }
 
-// opens or creates a bobx archive. path is recommended to be .bobx.zip but most archive formats are supported, and regular directories are supported too if you want (end the path with /)
-func Open(path string) (*Bobx, error) {
-	// bobx doesnt exist
-	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
-		return newBobxArchive(path)
-	} else {
-		// open existing bobx archive
-		bobx := &Bobx{Path: path}
-		ctx := context.TODO()
-		fs, err := archives.FileSystem(ctx, path, nil)
-		if err != nil {
-			return nil, err
-		}
-		bobx.Fs = fs
-		return bobx, nil
-	}
+// returns a default bobx manifest using whatever the current version is
+func DefaultBobxManifest() BobxManifest {
+	thebobmanifesto := BobxManifest{}
+	thebobmanifesto.GameVersion = core.GameVersion
+	thebobmanifesto.StarryVersion = core.StarryVersion
+	thebobmanifesto.PluginVersions = make(map[string]core.Vec3i)
+	return thebobmanifesto
 }
 
-func newBobxArchive(path string) (*Bobx, error) {
-	ctx := context.TODO()
+// opens or creates a bobx archive. it's recommended to end the path with .bobx (it doesnt really change anything but its cooler)
+func Open(path string) (*Bobx, error) {
+	heybob := &Bobx{Path: path}
+	heybob.Fs = afero.NewBasePathFs(afero.NewOsFs(), path)
 
-	if strings.HasSuffix(path, "/") {
-		os.MkdirAll(path, os.ModePerm)
-	} else {
-		file, err := os.Open(path)
-		if err != nil {
-			return nil, err
-		}
-		defer file.Close()
+	heybob.Write("manifest.json", DefaultBobxManifest())
 
-		// make an archive
-		format := archives.CompressedArchive{
-			Compression: archives.Zlib{},
-			Archival: archives.Zip{},
-		}
-		err = format.Archive(ctx, file, []archives.FileInfo{})
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	// now open and make a manifest file
-	bobx := &Bobx{Path: path}
-	fs, err := archives.FileSystem(ctx, path, nil)
-	if err != nil {
-		return nil, err
-	}
-	bobx.Fs = fs
-
-	ccbbga
-
-	return bobx, nil
+	// :)
+	return heybob, nil
 }
 
 // writes data to the bobx archive
 func (b *Bobx) Write(path string, data any) error {
-	file, err := b.Fs.Open(path)
+	bytes, err := json.MarshalIndent(data, "", "\t")
+	if err != nil {
+		return err
+	}
+
+	// makee directoriedjkkdkj
+	b.Fs.MkdirAll(filepath.Dir(path), os.ModePerm)
+
+	// ay cabron
+	file, err := b.Fs.Create(path)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	bytes, err := json.MarshalIndent(data, "", "\t")
-	if err != nil {
-		return err
-	}
-	
+	file.Write(bytes)
+	return nil
+}
+
+// if true, the bobx archive contains the specified path. note that this returns false with other errors such as a permission error. that's because i'm lazy
+func (b *Bobx) Exists(path string) bool {
+	_, err := b.Fs.Stat(path)
+	return err == nil
 }
 
 // reads data from bobx and returns the deserialized data. if it doesn't exist, it writes using defaultVal
 func (b *Bobx) Read(path string, defaultVal any) (any, error) {
+	// ay cabron
+	if !b.Exists(path) {
+		err := b.Write(path, defaultVal)
+		return defaultVal, err
+	}
+
+	content, err := afero.ReadFile(b.Fs, path)
+	if err == nil {
+		return nil, err
+	}
+
+	var out any
+	err = json.Unmarshal(content, &out)
+	return out, err
 }

@@ -44,10 +44,9 @@ func (p *Player) OnCreate() {
 
 	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test.bobx"))
 	fmt.Println(filepath.Join(core.GetUserDir(), "test.bobx"))
-	uuuuuy.Save()
 	SOFGMA, _ := uuuuuy.Read("mate.json", LaData{Thingy: "Oi mate"})
-	fmt.Println(SOFGMA.(string))
-	uuuuuy.Save()
+	sogmaballs := SOFGMA.(LaData)
+	fmt.Println(sogmaballs.Thingy)
 }
 
 func (p *Player) OnUpdate(delta float64) {
