@@ -3,16 +3,18 @@ package species
 import (
 	"fmt"
 	"path/filepath"
+	"time"
 
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/modules/bobx"
 	"github.com/hellory4n/stellarthing/modules/entities"
-	// "github.com/hellory4n/stellarthing/modules/graphics"
+	"github.com/hellory4n/stellarthing/modules/graphics"
 	"github.com/hellory4n/stellarthing/modules/platform"
 )
 
 type Player struct {
-	// tile graphics.Tile
+	tile *graphics.Tile
+	tileData *graphics.TileData
 }
 
 type LaData struct {
@@ -23,10 +25,8 @@ func (p *Player) EntityType() entities.EntityType {
 	return entities.EntityTypeGameWorld
 }
 
-func (p *Player) OnCreate() {
+func (p *Player) OnCreate(entity entities.EntityRef) {
 	fmt.Println("Good morning.")
-
-	// bob := graphics.LoadTexture("assets/bob_guy.png")
 
 	platform.AddKeymap("move_left", platform.KeyA)
 	platform.AddKeymap("move_left", platform.KeyLeft)
@@ -37,10 +37,15 @@ func (p *Player) OnCreate() {
 	platform.AddKeymap("move_down", platform.KeyS)
 	platform.AddKeymap("move_down", platform.KeyDown)
 
-	// world := graphics.NewTileWorld(core.NewVec2i(250, 250))
-	// graphics.CurrentWorld = world
+	world := graphics.NewTileWorld(core.NewVec2i(-250, -250), core.NewVec2i(250, 250), time.Now().UnixNano())
+	graphics.CurrentWorld = world
 
-	// p.tile = *graphics.CurrentWorld.NewTile(core.NewVec3(5, 5, 0), false, bob, bob, bob, bob)
+	p.tile = graphics.CurrentWorld.GetTile(core.NewVec3i(0, 0, 0), false)
+	p.tile.TileId = graphics.TileBobGuy
+	p.tile.EntityRef = entity
+	// the variation is Me.
+	p.tile.Variation = graphics.VariationId(entity)
+	p.tileData = p.tile.GetData()
 
 	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test"))
 	var sogmaballs LaData
@@ -48,28 +53,28 @@ func (p *Player) OnCreate() {
 	fmt.Println(sogmaballs.Thingy)
 }
 
-func (p *Player) OnUpdate(delta float64) {
-	// if platform.IsKeymapHeld("move_left") {
-	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(-0.25 * delta, 0, 0))
-	// }
+func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
+	if platform.IsKeymapHeld("move_left") {
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(-0.25 * delta, 0, 0))
+	}
 
-	// if platform.IsKeymapHeld("move_right") {
-	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(0.25 * delta, 0, 0))
-	// }
+	if platform.IsKeymapHeld("move_right") {
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0.25 * delta, 0, 0))
+	}
 
-	// if platform.IsKeymapHeld("move_up") {
-	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(0, -0.25 * delta, 0))
-	// }
+	if platform.IsKeymapHeld("move_up") {
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, -0.25 * delta, 0))
+	}
 
-	// if platform.IsKeymapHeld("move_down") {
-	// 	p.tile.Position = p.tile.Position.Add(core.NewVec3(0, 0.25 * delta, 0))
-	// }
+	if platform.IsKeymapHeld("move_down") {
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, 0.25 * delta, 0))
+	}
 }
 
-func (p *Player) OnDraw() {
-	// graphics.CurrentWorld.Draw()
+func (p *Player) OnDraw(entity entities.EntityRef) {
+	graphics.CurrentWorld.Draw()
 }
 
-func (p *Player) OnFree() {
+func (p *Player) OnFree(entity entities.EntityRef) {
 	fmt.Println("rip")
 }

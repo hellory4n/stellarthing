@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+const Int32Min int32 = -2147483648
+const Int32Max int32 = 2147483647
+const Uint32Min uint32 = 0
+const Uint32Max uint32 = 4294967295
+
 var randGen *rand.Rand
 
 func init() {
@@ -35,6 +40,10 @@ func RandInt(min int, max int) int {
 
 func RandFloat(min float64, max float64) float64 {
 	return (randGen.Float64() * max) + min
+}
+
+func RandUint32(min uint32, max uint32) uint32 {
+	return (randGen.Uint32() % (max - min)) + min
 }
 
 // makes a random base64 string (similar to youtube IDs)

@@ -25,10 +25,10 @@ const (
 // it's an entity
 type Entity interface {
 	EntityType() EntityType
-	OnCreate()
-	OnUpdate(delta float64)
-	OnDraw()
-	OnFree()
+	OnCreate(entity EntityRef)
+	OnUpdate(entity EntityRef, delta float64)
+	OnDraw(entity EntityRef)
+	OnFree(entity EntityRef)
 }
 
 type Component interface {
@@ -55,8 +55,8 @@ const (
 // if true, the game is paused. not all entities get paused, see EntityType
 var Paused bool = false
 
-// random string used to reference entities
-type EntityRef string
+// random number used to reference entities
+type EntityRef uint32
 
 // entity group
 type Group string
@@ -88,7 +88,7 @@ func Free() {
 
 // adds an entity and returns its ID
 func AddEntity(entity Entity) EntityRef {
-	var ref EntityRef = EntityRef(core.RandBase64(10))
+	var ref EntityRef = EntityRef(core.RandUint32(0, core.Uint32Max))
 	entities[ref] = entity
 	meta[ref] = make(map[string]any)
 	entgroups[ref] = make(map[Group]byte)
@@ -105,7 +105,7 @@ func AddEntity(entity Entity) EntityRef {
 	}
 	AddToGroup(group, ref)
 
-	entity.OnCreate()
+	entity.OnCreate(ref)
 	return ref
 }
 
@@ -183,7 +183,7 @@ func GetMeta(entity EntityRef, key string, defaultVal any) any {
 
 // as the name implies, it removes an entity
 func RemoveEntity(entity EntityRef) {
-	entities[entity].OnFree()
+	entities[entity].OnFree(entity)
 	delete(meta, entity)
 	delete(components, entity)
 	for group := range entgroups[entity] {
@@ -194,8 +194,8 @@ func RemoveEntity(entity EntityRef) {
 }
 
 func updateEntity(entity Entity, ref EntityRef) {
-	entity.OnUpdate(platform.DeltaTime())
-	entity.OnDraw()
+	entity.OnUpdate(ref, platform.DeltaTime())
+	entity.OnDraw(ref)
 	for _, v := range components[ref] {
 		v.OnUpdate(ref, platform.DeltaTime())
 		v.OnDraw(ref)

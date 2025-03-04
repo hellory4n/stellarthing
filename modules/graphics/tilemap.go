@@ -1,159 +1,150 @@
 package graphics
 
+import (
+	"math"
+	"math/rand"
+	"maps"
+
+	"github.com/hellory4n/stellarthing/core"
+	"github.com/hellory4n/stellarthing/modules/entities"
+)
+
 // how down can you go
-const MinLayer int = -16
+const MinLayer int64 = -16
 
 // how up can you go
-const MaxLayer int = 48
+const MaxLayer int64 = 48
 
 // mate
-const TotalLayers int = 64
+const TotalLayers int64 = 64
 
 // chunk size (they're square)
-const ChunkSize int = 16
+const ChunkSize int64 = 16
 
+// optimized tile. for actual data use TileData
 type Tile struct {
-	TileId uint32
-	EntityId uint32
+	TileId TileId
+	EntityRef entities.EntityRef
+	Variation VariationId
 }
 
+// as the name implies, it gets the data
+func (t *Tile) GetData() *TileData {
+	lol := Tiles[t.TileId][t.Variation]
+	return &lol
+}
+
+// world of tiles :D
 type TileWorld struct {
-	Mate [9][64][16][16]Tile
+	Seed int64
+	randGen *rand.Rand
+	// set with SetCameraPosition :)
+	CameraPosition core.Vec3
+	// the top left corner
+	StartPos core.Vec2i
+	// the bottom right corner
+	EndPos core.Vec2i
+	LoadedGroundTiles map[core.Vec3i]Tile
+	LoadedObjectTiles map[core.Vec3i]Tile
+	LoadedChunks []core.Vec3i
 }
 
-// it's a tile. use with TileWorld
-/*type Tile struct {
-	// z is the layer
-	Position core.Vec3
-	// el scorcho! AY CABRÓN
-	Tint core.Color
-	// i have 3 sides... i'm a triangle
-	Side uint8
-	// if false, the tile is in fact no tile. useful for, for example, a space world, where it's mostly nothing
-	Exists bool
-	// textures. order doesn't really matter
-	Textures [4]Texture
-}
-
-// as the name implies, it's a world of tiles... truly gives a world of possibilities HAHAHBAHAHAHHAHAAHHAAHEHOEGOHHKHRTIJOHYJIORIOGREFYH;TPHOY;IFPPIKPGPJOILKṔ;Ó[;O]-;I90;[-P89P0689;0-P69]P´[9]0]
-type TileWorld struct {
-	// the top left corner of the world
-	StartPos core.Vec2
-	// the bottom right corner of the world
-	EndPos core.Vec2
-	// camera position :)
-	CameraPos core.Vec3
-	// camera scale. it's a multiplier so 1, 1 is the original size
-	CameraScale core.Vec2
-	// indexed like [z][y][x] :)
-	ground [][][]Tile
-	// indexed like [z][y][x] :)
-	objects [][][]Tile
-}
-
-// current world
+// current world.
 var CurrentWorld *TileWorld
 
-// makes a new world. the startPos and endPos are the top left and bottom right corners of the world, respectively
-func NewTileWorld(worldSize core.Vec2i) *TileWorld {
-	var world *TileWorld = new(TileWorld)
-	world.StartPos = worldSize.ToVec2().Sdiv(2).Neg()
-	world.EndPos = worldSize.ToVec2().Sdiv(2)
-	world.CameraPos = core.NewVec3(0, 0, 0)
-	world.CameraScale = core.NewVec2(1, 1)
-	
-	// i should
-	world.ground = make([][][]Tile, TotalLayers)
-	for z := range world.ground {
-		world.ground[z] = make([][]Tile, worldSize.Y)
-		for y := range world.ground[z] {
-			world.ground[z][y] = make([]Tile, worldSize.X)
-		}
-	}
+// makes a new world. the startPos is the top left corner and the endPos is the bottom right corner.
+func NewTileWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *TileWorld {
+	tilhjjh := &TileWorld{}
+	tilhjjh.StartPos = startPos
+	tilhjjh.EndPos = endPos
+	tilhjjh.Seed = seed
+	tilhjjh.randGen = rand.New(rand.NewSource(tilhjjh.Seed))
+	tilhjjh.LoadedGroundTiles = make(map[core.Vec3i]Tile)
+	tilhjjh.LoadedObjectTiles = make(map[core.Vec3i]Tile)
 
-	world.objects = make([][][]Tile, TotalLayers)
-	for z := range world.objects {
-		world.objects[z] = make([][]Tile, worldSize.Y)
-		for y := range world.objects[z] {
-			world.objects[z][y] = make([]Tile, worldSize.X)
-		}
-	}
+	// load some chunks :)
+	tilhjjh.SetCameraPosition(core.NewVec3(0, 0, 0))
 
-	return world
+	return tilhjjh
 }
 
-// as the name implies it transforms from tile positions to global positions
-func (t *TileWorld) TransformToGlobal(tilePos core.Vec2, tileSize core.Vec2) core.Vec2 {
-	return tilePos.Add(core.NewVec2(t.CameraPos.X, t.CameraPos.Y)).Mul(t.CameraScale).Mul(tileSize)
+// sets the camera position and loads chunks
+func (t *TileWorld) SetCameraPosition(pos core.Vec3) {
+	// so i can use early returns :)
+	defer func() { t.CameraPosition = pos }()
+
+	chunkX := int64(math.Floor(pos.X)) / ChunkSize
+	chunkY := int64(math.Floor(pos.Y)) / ChunkSize
+	chunkPos := core.NewVec3i(chunkX, chunkY, int64(pos.Z)).Sdiv(ChunkSize)
+
+	// do we even have to load it at all?
+	_, hasChunk := t.LoadedGroundTiles[chunkPos.Smul(ChunkSize)]
+	if hasChunk {
+		return
+	}
+
+	// TODO check if it's on the save
+
+	// if it's not on the save we generate it
+	newGround, newObjects := GenerateChunk(t.randGen, chunkPos)
+	maps.Copy(t.LoadedGroundTiles, newGround)
+	maps.Copy(t.LoadedObjectTiles, newObjects)
+	t.LoadedChunks = append(t.LoadedChunks, chunkPos)
 }
 
-// gets a tile from a position
-func (t *TileWorld) GetTile(pos core.Vec3, ground bool) *Tile {
-	idx := core.NewVec3i(
-		// StartPos is supposed to be negative so 0, 0 is on the center :)
-		int64(math.Round(pos.X) + -t.StartPos.X),
-		int64(math.Round(pos.Y) + -t.StartPos.Y),
-		int64(math.Round(pos.Z)) + -int64(MinLayer),
-	)
-
-	var tile Tile
+// as the name implies, it gets a tile
+func (t *TileWorld) GetTile(pos core.Vec3i, ground bool) *Tile {
+	var letile Tile
 	if ground {
-		tile = t.ground[idx.Z][idx.Y][idx.X]
+		letile = t.LoadedGroundTiles[pos]
 	} else {
-		tile = t.objects[idx.Z][idx.Y][idx.X]
+		letile = t.LoadedObjectTiles[pos]
 	}
-
-	return &tile
+	return &letile
 }
 
-// makes a new tile with sensible settings :)
-func (t *TileWorld) NewTile(pos core.Vec3, ground bool, side0 Texture, side1 Texture, side2 Texture, side3 Texture) *Tile {
-	tile := t.GetTile(pos, ground)
-	tile.Exists = true
-	tile.Position = pos
-	tile.Tint = core.ColorWhite
-	tile.Textures[0] = side0
-	tile.Textures[1] = side1
-	tile.Textures[2] = side2
-	tile.Textures[3] = side3
-	return tile
-}
-
-// renders the world. usually quite useful unless you're blind
+// it draws the world. no shit.
 func (t *TileWorld) Draw() {
-	for y := t.StartPos.Y; y < t.EndPos.Y; y++ {
-		for x := t.StartPos.X; x < t.EndPos.X; x++ {
-			// ground tiles
-			var tile *Tile = t.GetTile(core.NewVec3(x, y, t.CameraPos.Z), false)
+	// we draw the neighbors of the current chunk so it doesn't look funny
+	// when crossing chunk borders
+	renderAreaStartX := int64(math.Floor(t.CameraPosition.X - float64(ChunkSize))) / ChunkSize
+	renderAreaStartY := int64(math.Floor(t.CameraPosition.Y - float64(ChunkSize))) / ChunkSize
+	renderAreaEndX := int64(math.Floor(t.CameraPosition.X + float64(ChunkSize))) / ChunkSize
+	renderAreaEndY := int64(math.Floor(t.CameraPosition.Y + float64(ChunkSize))) / ChunkSize
 
-			DrawTextureExt(
-				tile.Textures[tile.Side],
-				core.NewVec2(0, 0),
-				tile.Textures[tile.Side].Size().ToVec2(),
-				t.TransformToGlobal(
-					core.NewVec2(tile.Position.X, tile.Position.Y), tile.Textures[tile.Side].Size().ToVec2(),
-				),
-				tile.Textures[tile.Side].Size().ToVec2().Mul(t.CameraScale),
-				core.NewVec2(0, 0),
-				0,
-				core.ColorWhite,
-			)
+	for x := renderAreaStartX; x < renderAreaEndX; x++ {
+		for y := renderAreaStartY; y < renderAreaEndY; y++ {
+			// do you think the human mind was a mistake
+			tile := t.LoadedObjectTiles[core.NewVec3i(x, y, int64(t.CameraPosition.Z))]
+			data := Tiles[tile.TileId][tile.Variation]
+			// YOU SEE TEXTURES ARE CACHED SO ITS NOT TOO OUTRAGEOUS TO PUT SOMETHING IN A FUNCTION
+			// RAN EVERY FRAME
+			texture := LoadTexture(data.Texture)
 
-			// object tiles
-			var til *Tile = t.GetTile(core.NewVec3(x, y, t.CameraPos.Z), true)
+			var pos core.Vec2
+			if data.UsingCustomPos {
+				pos = core.NewVec2(data.Position.X, data.Position.Y).Mul(texture.Size().ToVec2())
+			} else {
+				pos = core.NewVec2(float64(x), float64(y)).Mul(texture.Size().ToVec2())
+			}
 
-			DrawTextureExt(
-				til.Textures[til.Side],
-				core.NewVec2(0, 0),
-				til.Textures[til.Side].Size().ToVec2(),
-				t.TransformToGlobal(
-					core.NewVec2(til.Position.X, til.Position.Y), til.Textures[til.Side].Size().ToVec2(),
-				),
-				til.Textures[til.Side].Size().ToVec2().Mul(t.CameraScale),
-				core.NewVec2(0, 0),
-				0,
-				core.ColorWhite,
-			)
+			DrawTexture(texture, pos, 0, data.Tint)
+
+			// do you think the human mind was a mistake
+			til := t.LoadedObjectTiles[core.NewVec3i(x, y, int64(t.CameraPosition.Z))]
+			dat := Tiles[til.TileId][til.Variation]
+			// YOU SEE TEXTURES ARE CACHED SO ITS NOT TOO OUTRAGEOUS TO PUT SOMETHING IN A FUNCTION
+			// RAN EVERY FRAME
+			textur := LoadTexture(dat.Texture)
+
+			var po core.Vec2
+			if dat.UsingCustomPos {
+				po = core.NewVec2(dat.Position.X, dat.Position.Y).Mul(textur.Size().ToVec2())
+			} else {
+				po = core.NewVec2(float64(x), float64(y)).Mul(textur.Size().ToVec2())
+			}
+
+			DrawTexture(textur, po, 0, dat.Tint)
 		}
 	}
-}*/
+}
