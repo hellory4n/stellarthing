@@ -34,7 +34,7 @@ func RequestClose() {
 
 // as the name implies, it toggles fullscreen
 func ToggleFullscreen() {
-	rl.ToggleFullscreen()
+	rl.ToggleBorderlessWindowed()
 	fmt.Println("[WINDOW] Toggled fullscreen")
 }
 
