@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
 
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/spf13/afero"
@@ -18,7 +19,7 @@ type Bobx struct {
 }
 
 // type included in every bobx file. used to check for compatibility
-type BobxManifest struct {
+type Manifest struct {
 	// the engine version
 	StarryVersion core.Vec3i `json:"StarryVersion"`
 	// the game version, used for checking compatibility
@@ -27,21 +28,24 @@ type BobxManifest struct {
 	PluginVersions map[string]core.Vec3i `json:"PluginVersions"`
 }
 
+// where the bobx manifest goes
+const ManifestPath = "manifest.json"
+
 // returns a default bobx manifest using whatever the current version is
-func DefaultBobxManifest() BobxManifest {
-	thebobmanifesto := BobxManifest{}
+func DefaultManifest() Manifest {
+	thebobmanifesto := Manifest{}
 	thebobmanifesto.GameVersion = core.GameVersion
 	thebobmanifesto.StarryVersion = core.StarryVersion
 	thebobmanifesto.PluginVersions = make(map[string]core.Vec3i)
 	return thebobmanifesto
 }
 
-// opens or creates a bobx archive. it's recommended to end the path with .bobx (it doesnt really change anything but its cooler)
+// opens or creates a bobx archive
 func Open(path string) (*Bobx, error) {
 	heybob := &Bobx{Path: path}
 	heybob.Fs = afero.NewBasePathFs(afero.NewOsFs(), path)
 
-	heybob.Write("manifest.json", DefaultBobxManifest())
+	heybob.Write(ManifestPath, DefaultManifest())
 
 	// :)
 	return heybob, nil
@@ -74,20 +78,23 @@ func (b *Bobx) Exists(path string) bool {
 	return err == nil
 }
 
-// reads data from bobx and returns the deserialized data. if it doesn't exist, it writes using defaultVal
-func (b *Bobx) Read(path string, defaultVal any) (any, error) {
+// reads data from bobx and puts the deserialized data into `out`. if it doesn't exist, it writes using defaultVal.
+func (b *Bobx) Read(path string, defaultVal any, out any) error {
+	if reflect.TypeOf(out).Kind() != reflect.Ptr {
+		panic("you legumes out must be a pointer\n")
+	}
+
 	// ay cabron
 	if !b.Exists(path) {
 		err := b.Write(path, defaultVal)
-		return defaultVal, err
+		out = defaultVal
+		return err
 	}
 
 	content, err := afero.ReadFile(b.Fs, path)
-	if err == nil {
-		return nil, err
+	if err != nil {
+		return err
 	}
 
-	var out any
-	err = json.Unmarshal(content, &out)
-	return out, err
+	return json.Unmarshal(content, out)
 }

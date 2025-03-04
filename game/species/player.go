@@ -16,7 +16,7 @@ type Player struct {
 }
 
 type LaData struct {
-	Thingy string `json:"thingy"`
+	Thingy string
 }
 
 func (p *Player) EntityType() entities.EntityType {
@@ -42,10 +42,9 @@ func (p *Player) OnCreate() {
 
 	// p.tile = *graphics.CurrentWorld.NewTile(core.NewVec3(5, 5, 0), false, bob, bob, bob, bob)
 
-	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test.bobx"))
-	fmt.Println(filepath.Join(core.GetUserDir(), "test.bobx"))
-	SOFGMA, _ := uuuuuy.Read("mate.json", LaData{Thingy: "Oi mate"})
-	sogmaballs := SOFGMA.(LaData)
+	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test"))
+	var sogmaballs LaData
+	uuuuuy.Read("mate.json", LaData{Thingy: "Oi mate"}, &sogmaballs)
 	fmt.Println(sogmaballs.Thingy)
 }
 

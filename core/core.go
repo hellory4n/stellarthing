@@ -27,12 +27,16 @@ const GameName = "stellarthing"
 
 // panics if a condition isn't met but only in debug. useful for not making dumb mistakes
 func Assert(msg string, condition bool) {
+	if !Debug {
+		return
+	}
+	
 	if !condition {
 		panic(fmt.Sprintf("assert failed: %v\n", msg))
 	}
 }
 
-// gets the directory where saves go. %APPDATA% on windows, ~/.local/share
+// gets the directory where saves go. %APPDATA% on windows, ~/.local/share on linux
 func GetUserDir() string {
 	switch runtime.GOOS {
 	case "windows":
