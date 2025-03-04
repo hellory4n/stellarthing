@@ -2,6 +2,8 @@
 *.exe
 *.exe~
 *.dll
+# i love windows
+!vendor/raylib.dll
 *.so
 *.dylib
 
