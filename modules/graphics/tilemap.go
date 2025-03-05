@@ -1,9 +1,10 @@
 package graphics
 
 import (
+	// "fmt"
+	"maps"
 	"math"
 	"math/rand"
-	"maps"
 
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/modules/entities"
@@ -107,10 +108,15 @@ func (t *TileWorld) GetTile(pos core.Vec3i, ground bool) *Tile {
 func (t *TileWorld) Draw() {
 	// we draw the neighbors of the current chunk so it doesn't look funny
 	// when crossing chunk borders
-	renderAreaStartX := int64(math.Floor(t.CameraPosition.X - float64(ChunkSize))) / ChunkSize
-	renderAreaStartY := int64(math.Floor(t.CameraPosition.Y - float64(ChunkSize))) / ChunkSize
-	renderAreaEndX := int64(math.Floor(t.CameraPosition.X + float64(ChunkSize))) / ChunkSize
-	renderAreaEndY := int64(math.Floor(t.CameraPosition.Y + float64(ChunkSize))) / ChunkSize
+	// fmt.Println("MATE")
+	renderAreaStartX := int64(math.Floor(t.CameraPosition.X - float64(ChunkSize)))
+	// fmt.Println(renderAreaStartX)
+	renderAreaStartY := int64(math.Floor(t.CameraPosition.Y - float64(ChunkSize)))
+	// fmt.Println(renderAreaStartY)
+	renderAreaEndX := int64(math.Floor(t.CameraPosition.X + float64(ChunkSize)))
+	// fmt.Println(renderAreaEndX)
+	renderAreaEndY := int64(math.Floor(t.CameraPosition.Y + float64(ChunkSize)))
+	// fmt.Println(renderAreaEndY)
 
 	for x := renderAreaStartX; x < renderAreaEndX; x++ {
 		for y := renderAreaStartY; y < renderAreaEndY; y++ {
