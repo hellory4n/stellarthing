@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	platform.OpenWindow("Stellarthing", core.NewVec2i(800, 600))
+	platform.OpenWindow("Stellarthing", core.NewVec2i(1920, 1080))
 	defer platform.CloseWindow()
 	platform.ToggleFullscreen()
 

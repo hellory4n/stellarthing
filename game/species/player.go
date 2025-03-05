@@ -40,10 +40,10 @@ func (p *Player) OnCreate(entity entities.EntityRef) {
 	world := graphics.NewTileWorld(core.NewVec2i(-250, -250), core.NewVec2i(250, 250), time.Now().UnixNano())
 	graphics.CurrentWorld = world
 
-	p.tile = graphics.CurrentWorld.GetTile(core.NewVec3i(0, 0, 0), false)
-	p.tile.TileId = graphics.TileBobGuy
-	p.tile.EntityRef = entity
+	p.tile = graphics.CurrentWorld.NewTile(core.NewVec3i(15, 0, 0), false, graphics.TileBobGuy,
+		entity, graphics.VariationId(entity))
 	p.tileData = p.tile.GetData()
+	p.tileData.UsingCustomPos = true
 
 	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test"))
 	var sogmaballs LaData

@@ -25,7 +25,7 @@ func Rgba(r uint8, g uint8, b uint8, a uint8) Color {
 }
 
 func (c Color) String() string {
-	return fmt.Sprintf("#%X%X%X%X", c.R, c.G, c.B, c.A)
+	return fmt.Sprintf("#%.2X%.2X%.2X%.2X", c.R, c.G, c.B, c.A)
 }
 
 // the whitest white that has ever whited

@@ -24,21 +24,21 @@ const TileBobGuy TileId = 370779849
 const TileMarsRock TileId = 2370611866
 
 // tile data from IDs and variations
-var Tiles map[TileId]map[VariationId]TileData = map[TileId]map[VariationId]TileData{
+var Tiles map[TileId]map[VariationId]*TileData = map[TileId]map[VariationId]*TileData{
 	TileAir: {
-		0: TileData{
+		0: &TileData{
 			Texture: "assets/air.png",
 			Tint: core.ColorWhite,
 		},
 	},
 	TileBobGuy: {
-		0: TileData{
+		0: &TileData{
 			Texture: "assets/bob_guy.png",
 			Tint: core.ColorWhite,
 		},
 	},
 	TileMarsRock: {
-		0: TileData{
+		0: &TileData{
 			Texture: "assets/mars_rock.png",
 			Tint: core.ColorWhite,
 		},

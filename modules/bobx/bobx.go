@@ -80,8 +80,10 @@ func (b *Bobx) Exists(path string) bool {
 
 // reads data from bobx and puts the deserialized data into `out`. if it doesn't exist, it writes using defaultVal.
 func (b *Bobx) Read(path string, defaultVal any, out any) error {
-	if reflect.TypeOf(out).Kind() != reflect.Ptr {
-		panic("you legumes out must be a pointer\n")
+	if core.Debug {
+		if reflect.TypeOf(out).Kind() != reflect.Ptr {
+			panic("you legumes out must be a pointer\n")
+		}
 	}
 
 	// ay cabron
