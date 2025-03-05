@@ -17,7 +17,7 @@ func NewVec2(x float64, y float64) Vec2 {
 }
 
 func (v Vec2) String() string {
-	return fmt.Sprintf("%f, %f", v.X, v.Y)
+	return fmt.Sprintf("vec2(%f, %f)", v.X, v.Y)
 }
 
 // adds

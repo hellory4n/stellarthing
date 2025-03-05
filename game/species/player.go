@@ -43,8 +43,6 @@ func (p *Player) OnCreate(entity entities.EntityRef) {
 	p.tile = graphics.CurrentWorld.GetTile(core.NewVec3i(0, 0, 0), false)
 	p.tile.TileId = graphics.TileBobGuy
 	p.tile.EntityRef = entity
-	// the variation is Me.
-	p.tile.Variation = graphics.VariationId(entity)
 	p.tileData = p.tile.GetData()
 
 	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test"))
@@ -69,6 +67,7 @@ func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
 	if platform.IsKeymapHeld("move_down") {
 		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, 0.25 * delta, 0))
 	}
+	graphics.CurrentWorld.SetCameraPosition(p.tileData.Position)
 }
 
 func (p *Player) OnDraw(entity entities.EntityRef) {

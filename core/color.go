@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 // its a color
 type Color struct {
 	// red
@@ -20,6 +22,10 @@ func Rgb(r uint8, g uint8, b uint8) Color {
 // makes a new color with transparency
 func Rgba(r uint8, g uint8, b uint8, a uint8) Color {
 	return Color{R: r, G: g, B: b, A: a}
+}
+
+func (c Color) String() string {
+	return fmt.Sprintf("#%X%X%X%X", c.R, c.G, c.B, c.A)
 }
 
 // the whitest white that has ever whited

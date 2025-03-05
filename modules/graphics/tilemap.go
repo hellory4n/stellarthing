@@ -1,8 +1,7 @@
 package graphics
 
 import (
-	// "fmt"
-	"maps"
+	"fmt"
 	"math"
 	"math/rand"
 
@@ -35,6 +34,10 @@ func (t *Tile) GetData() *TileData {
 	return &lol
 }
 
+func (t *Tile) String() string {
+	return fmt.Sprintf("%v (variation %v, owned by %v)", TileNames[t.TileId], t.Variation, t.EntityRef)
+}
+
 // world of tiles :D
 type TileWorld struct {
 	Seed int64
@@ -64,6 +67,7 @@ func NewTileWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *TileWorld
 	tilhjjh.LoadedObjectTiles = make(map[core.Vec3i]Tile)
 
 	// load some chunks :)
+	tilhjjh.SetCameraPosition(core.NewVec3(32, 32, 0))
 	tilhjjh.SetCameraPosition(core.NewVec3(0, 0, 0))
 
 	return tilhjjh
@@ -88,8 +92,14 @@ func (t *TileWorld) SetCameraPosition(pos core.Vec3) {
 
 	// if it's not on the save we generate it
 	newGround, newObjects := GenerateChunk(t.randGen, chunkPos)
-	maps.Copy(t.LoadedGroundTiles, newGround)
-	maps.Copy(t.LoadedObjectTiles, newObjects)
+
+	// copy crap
+	for k, v := range newGround {
+		t.LoadedGroundTiles[k] = v
+	}
+	for k, v := range newObjects {
+		t.LoadedObjectTiles[k] = v
+	}
 	t.LoadedChunks = append(t.LoadedChunks, chunkPos)
 }
 
@@ -120,9 +130,10 @@ func (t *TileWorld) Draw() {
 
 	for x := renderAreaStartX; x < renderAreaEndX; x++ {
 		for y := renderAreaStartY; y < renderAreaEndY; y++ {
-			// do you think the human mind was a mistake
+			// grod ng tiles
 			tile := t.LoadedObjectTiles[core.NewVec3i(x, y, int64(t.CameraPosition.Z))]
-			data := Tiles[tile.TileId][tile.Variation]
+			data := tile.GetData()
+			fmt.Println(tile.String())
 			// YOU SEE TEXTURES ARE CACHED SO ITS NOT TOO OUTRAGEOUS TO PUT SOMETHING IN A FUNCTION
 			// RAN EVERY FRAME
 			texture := LoadTexture(data.Texture)

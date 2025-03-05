@@ -14,7 +14,7 @@ func NewVec3i(x int64, y int64, z int64) Vec3i {
 }
 
 func (v Vec3i) String() string {
-	return fmt.Sprintf("%d, %d, %d", v.X, v.Y, v.Z)
+	return fmt.Sprintf("vec3i(%d, %d, %d)", v.X, v.Y, v.Z)
 }
 
 // adds

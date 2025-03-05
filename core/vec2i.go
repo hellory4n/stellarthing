@@ -13,7 +13,7 @@ func NewVec2i(x int64, y int64) Vec2i {
 }
 
 func (v Vec2i) String() string {
-	return fmt.Sprintf("%d, %d", v.X, v.Y)
+	return fmt.Sprintf("vec2i(%d, %d)", v.X, v.Y)
 }
 
 // adds
