@@ -41,6 +41,6 @@ func DrawTextureExt(texture Texture, srcPos core.Vec2, srcSize core.Vec2, dstPos
 func DrawTexture(texture Texture, pos core.Vec2, angle float64, color core.Color) {
 	DrawTextureExt(
 		texture, core.NewVec2(0, 0), texture.Size().ToVec2(), pos, texture.Size().ToVec2(),
-		core.NewVec2(0.5, 0.5), angle, color,
+		core.NewVec2(0, 0), angle, color,
 	)
 }

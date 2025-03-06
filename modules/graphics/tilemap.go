@@ -43,6 +43,8 @@ type TileWorld struct {
 	randGen *rand.Rand
 	// set with SetCameraPosition :)
 	CameraPosition core.Vec3
+	// mate
+	CameraOffset core.Vec2
 	// the top left corner
 	StartPos core.Vec2i
 	// the bottom right corner
@@ -64,6 +66,8 @@ func NewTileWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *TileWorld
 	tilhjjh.randGen = rand.New(rand.NewSource(tilhjjh.Seed))
 	tilhjjh.LoadedGroundTiles = make(map[core.Vec3i]*Tile)
 	tilhjjh.LoadedObjectTiles = make(map[core.Vec3i]*Tile)
+	// TODO make shit render at a specific resolution then scale it to fit the actual resolution
+	tilhjjh.CameraOffset = core.NewVec2(1366, 768).Sdiv(2)
 
 	fmt.Println("[TILEMAP] Created new world")
 
@@ -113,8 +117,8 @@ func (t *TileWorld) GetTile(pos core.Vec3i, ground bool) *Tile {
 	}
 }
 
-// as the name implies, it makes a new tile. if variation isn't 0, it's gonna copy the default
-// variation too
+// as the name implies, it makes a new tile. if the variation doesn't exist, it's gonna copy the
+// default variation too
 func (t *TileWorld) NewTile(pos core.Vec3i, ground bool, tileId TileId, entity entities.EntityRef,
 variation VariationId) *Tile {
 	var letile *Tile = &Tile{
@@ -123,7 +127,8 @@ variation VariationId) *Tile {
 		Variation: variation,
 	}
 
-	if variation != 0 {
+	_, variationExists := Tiles[tileId][variation]
+	if !variationExists {
 		Tiles[tileId][variation] = Tiles[tileId][0]
 	}
 
@@ -149,13 +154,19 @@ func (t *TileWorld) drawTile(pos core.Vec2i, ground bool) {
 
 	var pospos core.Vec2
 	if data.UsingCustomPos {
-		pospos = core.NewVec2(data.Position.X, data.Position.Y).
-			Add(core.NewVec2(t.CameraPosition.X, t.CameraPosition.Y)).
-			Mul(texture.Size().ToVec2())
+		//((tile.position.as2d.sub(camPosition)).mul(Starry.settings.tileSize)).add(camOffset)
+		// im losing my mind
+		// im going insane
+		// im watching my life go down the drain
+		pospos = core.NewVec2(
+			((data.Position.X - t.CameraPosition.X) * texture.Size().ToVec2().X) + t.CameraOffset.X,
+			((data.Position.Y - t.CameraPosition.Y) * texture.Size().ToVec2().Y) + t.CameraOffset.Y,
+		)
 	} else {
-		pospos = core.NewVec2(float64(pos.X), float64(pos.Y)).
-			Add(core.NewVec2(t.CameraPosition.X, t.CameraPosition.Y)).
-			Mul(texture.Size().ToVec2())
+		pospos = core.NewVec2(
+			((float64(pos.X) - t.CameraPosition.X) * texture.Size().ToVec2().X) + t.CameraOffset.X,
+			((float64(pos.Y) - t.CameraPosition.Y) * texture.Size().ToVec2().Y) + t.CameraOffset.Y,
+		)
 	}
 
 	DrawTexture(texture, pospos, 0, data.Tint)
@@ -173,6 +184,10 @@ func (t *TileWorld) Draw() {
 	for x := renderAreaStartX; x < renderAreaEndX; x++ {
 		for y := renderAreaStartY; y < renderAreaEndY; y++ {
 			t.drawTile(core.NewVec2i(x, y), true)
+		}
+	}
+	for x := renderAreaStartX; x < renderAreaEndX; x++ {
+		for y := renderAreaStartY; y < renderAreaEndY; y++ {
 			t.drawTile(core.NewVec2i(x, y), false)
 		}
 	}

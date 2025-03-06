@@ -12,6 +12,9 @@ import (
 	"github.com/hellory4n/stellarthing/modules/platform"
 )
 
+// thats how fast the average person walks per second
+const speed float64 = 1.42
+
 type Player struct {
 	tile *graphics.Tile
 	tileData *graphics.TileData
@@ -40,9 +43,11 @@ func (p *Player) OnCreate(entity entities.EntityRef) {
 	world := graphics.NewTileWorld(core.NewVec2i(-250, -250), core.NewVec2i(250, 250), time.Now().UnixNano())
 	graphics.CurrentWorld = world
 
-	p.tile = graphics.CurrentWorld.NewTile(core.NewVec3i(15, 0, 0), false, graphics.TileBobGuy,
+	p.tile = graphics.CurrentWorld.NewTile(core.NewVec3i(0, 0, 0), false, graphics.TileBobGuy,
 		entity, graphics.VariationId(entity))
 	p.tileData = p.tile.GetData()
+	p.tileData.Position = core.NewVec3(15, 0, 0)
+	graphics.CurrentWorld.SetCameraPosition(p.tileData.Position)
 	p.tileData.UsingCustomPos = true
 
 	uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test"))
@@ -53,19 +58,19 @@ func (p *Player) OnCreate(entity entities.EntityRef) {
 
 func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
 	if platform.IsKeymapHeld("move_left") {
-		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(-0.25 * delta, 0, 0))
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(-speed * delta, 0, 0))
 	}
 
 	if platform.IsKeymapHeld("move_right") {
-		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0.25 * delta, 0, 0))
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(speed * delta, 0, 0))
 	}
 
 	if platform.IsKeymapHeld("move_up") {
-		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, -0.25 * delta, 0))
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, -speed * delta, 0))
 	}
 
 	if platform.IsKeymapHeld("move_down") {
-		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, 0.25 * delta, 0))
+		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, speed * delta, 0))
 	}
 	graphics.CurrentWorld.SetCameraPosition(p.tileData.Position)
 }
