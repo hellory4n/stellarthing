@@ -3,19 +3,17 @@ package graphics
 
 import (
 	"image/color"
+	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/hellory4n/stellarthing/core"
 )
 
-// the resolution the game uses. the game isn't actually rendered at this size, it's scaled
-// with high DPI support
-var RenderSize core.Vec2i
 var renderTexture rl.RenderTexture2D
 
 // called when the window is created
 func Init() {
-	renderTexture = rl.LoadRenderTexture(int32(RenderSize.X), int32(RenderSize.Y))
+	renderTexture = rl.LoadRenderTexture(int32(core.RenderSize.X), int32(core.RenderSize.Y))
 }
 
 // mate
@@ -33,6 +31,25 @@ func Clear(color core.Color) {
 // as the name implies, it ends drawing
 func EndDrawing() {
 	rl.EndTextureMode()
+
+	// man
+	scale := math.Min(
+		float64(rl.GetRenderWidth()) / float64(core.RenderSize.X),
+		float64(rl.GetRenderHeight()) / float64(core.RenderSize.Y),
+	)
+	rl.DrawTexturePro(
+		renderTexture.Texture,
+		rl.Rectangle{X: 0, Y: 0, Width: float32(core.RenderSize.X), Height: -float32(core.RenderSize.Y)},
+		rl.Rectangle{
+			X: (float32(rl.GetRenderWidth()) - float32(core.RenderSize.X) * float32(scale)) * 0.5,
+			Y: (float32(rl.GetRenderHeight()) - float32(core.RenderSize.Y) * float32(scale)) * 0.5,
+			Width: float32(core.RenderSize.X) * float32(scale),
+			Height: float32(core.RenderSize.Y) * float32(scale),
+		},
+		rl.Vector2{X: 0, Y: 0},
+		0, rl.White,
+	)
+
 	rl.EndDrawing()
 }
 

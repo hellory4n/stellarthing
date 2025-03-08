@@ -1,6 +1,11 @@
 package platform
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"math"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/hellory4n/stellarthing/core"
+)
 
 var keymapma map[string][]Key
 
@@ -106,4 +111,20 @@ func IsKeymapNotPressed(keymap string) bool {
 		}
 	}
 	return false
+}
+
+// returns the mouse position in the fake resolution thingy
+func MousePosition() core.Vec2 {
+	var realMouse rl.Vector2 = rl.GetMousePosition()
+	var virtMouse core.Vec2 = core.NewVec2(0, 0)
+
+	scale := math.Min(
+		float64(rl.GetRenderWidth()) / float64(core.RenderSize.X),
+		float64(rl.GetRenderHeight()) / float64(core.RenderSize.Y),
+	)
+	// :(
+	virtMouse.X = core.Clamp((float64(realMouse.X) - (float64(rl.GetRenderWidth()) - (float64(core.RenderSize.X) * scale)) * 0.5) / scale, 0, core.RenderSize.ToVec2().X)
+	virtMouse.Y = core.Clamp((float64(realMouse.Y) - (float64(rl.GetRenderHeight()) - (float64(core.RenderSize.Y) * scale)) * 0.5) / scale, 0, core.RenderSize.ToVec2().Y)
+
+	return virtMouse
 }

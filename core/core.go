@@ -25,6 +25,10 @@ var GameVersion Vec3i = NewVec3i(1, 0, 0)
 // yeah
 const GameName = "stellarthing"
 
+// the resolution the game uses. the game isn't actually rendered at this size, it's scaled
+// with high DPI support
+var RenderSize Vec2i
+
 // panics if a condition isn't met but only in debug. useful for not making dumb mistakes
 func Assert(msg string, condition bool) {
 	if !Debug {
