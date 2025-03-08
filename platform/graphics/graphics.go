@@ -14,6 +14,7 @@ var renderTexture rl.RenderTexture2D
 // called when the window is created
 func Init() {
 	renderTexture = rl.LoadRenderTexture(int32(core.RenderSize.X), int32(core.RenderSize.Y))
+	rl.SetTextureFilter(renderTexture.Texture, rl.FilterBilinear)
 }
 
 // mate

@@ -80,7 +80,14 @@ func (p *Player) OnDraw(entity entities.EntityRef) {
 	graphics.CurrentWorld.Draw()
 
 	// haha
-	ui.DrawText("¡Hola! ¿Cómo estás?", core.NewVec2(8, 8), 32, core.ColorWhite)
+	ui.DrawPrimaryButton(core.NewVec2(16, 16), core.NewVec2(200, 40))
+	ui.DrawHoverOutline(core.NewVec2(16, 16), core.NewVec2(200, 40))
+	ui.DrawSecondaryButton(core.NewVec2(16, 16+40+8), core.NewVec2(200, 40))
+	ui.DrawDangerButton(core.NewVec2(16, 16+40+8+40+8), core.NewVec2(200, 40))
+	ui.DrawTextInput(core.NewVec2(16, 16+40+8+40+8+40+8), core.NewVec2(200, 40))
+	ui.DrawSlider(core.NewVec2(16, 16+40+8+40+8+40+8+40+8+40+8), core.NewVec2(200, 40), 0)
+	ui.DrawSlider(core.NewVec2(16, 16+40+8+40+8+40+8+40+8+40+8+40+8), core.NewVec2(200, 40), 0.5)
+	ui.DrawSlider(core.NewVec2(16, 16+40+8+40+8+40+8+40+8+40+8+40+8+40+8), core.NewVec2(200, 40), 1)
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {

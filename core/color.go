@@ -14,6 +14,9 @@ type Color struct {
 	A uint8
 }
 
+// why.
+type Colour = Color
+
 // makes a new color without transparency
 func Rgb(r uint8, g uint8, b uint8) Color {
 	return Rgba(r, g, b, 255)
