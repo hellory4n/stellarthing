@@ -13,7 +13,7 @@ var ready bool = false
 
 // opens a window
 func OpenWindow(title string, size core.Vec2i) {
-	rl.SetConfigFlags(rl.FlagVsyncHint | rl.FlagWindowResizable)
+	rl.SetConfigFlags(rl.FlagVsyncHint | rl.FlagWindowResizable | rl.FlagWindowHighdpi)
 	rl.InitWindow(int32(size.X), int32(size.Y), title)
 	rl.SetExitKey(rl.KeyNull)
 	fmt.Println("[WINDOW] Window has been created")

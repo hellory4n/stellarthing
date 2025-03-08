@@ -77,6 +77,12 @@ func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
 
 func (p *Player) OnDraw(entity entities.EntityRef) {
 	graphics.CurrentWorld.Draw()
+
+	// haha
+	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(0, 0), 0, core.ColorWhite)
+	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(1216, 0), 0, core.ColorWhite)
+	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(0, 656), 0, core.ColorWhite)
+	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(1216, 656), 0, core.ColorWhite)
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {

@@ -11,9 +11,10 @@ import (
 )
 
 func main() {
-	platform.OpenWindow("Stellarthing", core.NewVec2i(1920, 1080))
+	platform.OpenWindow("Stellarthing", core.NewVec2i(1280, 720))
 	defer platform.CloseWindow()
-	platform.ToggleFullscreen()
+	// the game's actual resolution is scaled with high dpi so it doesnt matter :)
+	graphics.RenderSize = core.NewVec2i(1280, 720)
 
 	audio.Init()
 	defer audio.FreeAllAudio()
@@ -25,11 +26,15 @@ func main() {
 	entities.AddEntity(player)
 
 	for !platform.Closing() {
+		// ha
+		util.UpdateAllTimers()
+		if platform.IsKeyJustPressed(platform.KeyF11) {
+			platform.ToggleFullscreen()
+		}
+
 		graphics.Clear(core.ColorBlack)
 		entities.UpdateAllEntities()
 		graphics.EndDrawing()
-
-		util.UpdateAllTimers()
 	}
 
 	graphics.FreeAllTextures()
