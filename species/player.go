@@ -8,8 +8,9 @@ import (
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/core/bobx"
 	"github.com/hellory4n/stellarthing/entities"
-	"github.com/hellory4n/stellarthing/platform/graphics"
 	"github.com/hellory4n/stellarthing/platform"
+	"github.com/hellory4n/stellarthing/platform/graphics"
+	"github.com/hellory4n/stellarthing/ui"
 )
 
 // thats how fast the average person walks per second
@@ -79,10 +80,7 @@ func (p *Player) OnDraw(entity entities.EntityRef) {
 	graphics.CurrentWorld.Draw()
 
 	// haha
-	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(0, 0), 0, core.ColorWhite)
-	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(1216, 0), 0, core.ColorWhite)
-	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(0, 656), 0, core.ColorWhite)
-	graphics.DrawTexture(graphics.LoadTexture("assets/bob_guy.png"), core.NewVec2(1216, 656), 0, core.ColorWhite)
+	ui.DrawText("¡Hola! ¿Cómo estás?", core.NewVec2(8, 8), 32, core.ColorWhite)
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {
