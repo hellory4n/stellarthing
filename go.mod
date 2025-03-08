@@ -2,6 +2,9 @@ module github.com/hellory4n/stellarthing
 
 go 1.23.6
 
+// accidentally put it on pkg.go.dev
+retract v0.0.0-20250308030251-f0b63329c720
+
 require (
 	github.com/gen2brain/raylib-go/raylib v0.0.0-20250215042252-db8e47f0e5c5
 	// shut up lsp

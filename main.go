@@ -15,6 +15,9 @@ func main() {
 	defer platform.CloseWindow()
 	// the game's actual resolution is scaled with high dpi so it doesnt matter :)
 	graphics.RenderSize = core.NewVec2i(1280, 720)
+	graphics.Init()
+	defer graphics.Free()
+	defer graphics.FreeAllTextures()
 
 	audio.Init()
 	defer audio.FreeAllAudio()
@@ -36,6 +39,4 @@ func main() {
 		entities.UpdateAllEntities()
 		graphics.EndDrawing()
 	}
-
-	graphics.FreeAllTextures()
 }

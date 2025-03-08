@@ -2,9 +2,7 @@
 package graphics
 
 import (
-	"fmt"
 	"image/color"
-	"math"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/hellory4n/stellarthing/core"
@@ -13,56 +11,28 @@ import (
 // the resolution the game uses. the game isn't actually rendered at this size, it's scaled
 // with high DPI support
 var RenderSize core.Vec2i
+var renderTexture rl.RenderTexture2D
 
-// scale for stuff
-var scale float64 = 1
-// not everything scales perfectly
-var offset core.Vec2 = core.NewVec2(0, 0)
-var windowSize core.Vec2i = core.NewVec2i(0, 0)
+// called when the window is created
+func Init() {
+	renderTexture = rl.LoadRenderTexture(int32(RenderSize.X), int32(RenderSize.Y))
+}
+
+// mate
+func Free() {
+	rl.UnloadRenderTexture(renderTexture)
+}
 
 // clears the screen
-func Clear(color core.Color) {
-	// calculate scale
-	width := rl.GetRenderWidth()
-	height := rl.GetRenderHeight()
-	windowSize = core.NewVec2i(int64(width), int64(height))
-
-	scale = math.Min(
-		float64(windowSize.X / RenderSize.X),
-		float64(windowSize.Y / RenderSize.Y),
-	)
-	offset = core.NewVec2(
-		// idfk anymore
-		-((float64(windowSize.X) - (float64(RenderSize.X) * scale) * 0.5) / 2),
-		-((float64(windowSize.Y) - (float64(RenderSize.Y) * scale) * 0.5) / 2),
-	)
-	fmt.Println("hehe")
-	fmt.Println(windowSize)
-	fmt.Println(scale)
-	fmt.Println(offset)
-	
+func Clear(color core.Color) {	
 	rl.BeginDrawing()
+	rl.BeginTextureMode(renderTexture)
 	rl.ClearBackground(rl.NewColor(color.R, color.G, color.B, color.A))
-}
-
-// transforms a position to fit the fake resolution
-func TransformPos(pos core.Vec2) core.Vec2 {
-	return core.NewVec2(
-		(pos.X * scale) + offset.X,
-		(pos.Y * scale) + offset.Y,
-	)
-}
-
-// transforms a size to fit the fake resolution
-func TransformSize(size core.Vec2) core.Vec2 {
-	return core.NewVec2(
-		size.X * scale,
-		size.Y * scale,
-	)
 }
 
 // as the name implies, it ends drawing
 func EndDrawing() {
+	rl.EndTextureMode()
 	rl.EndDrawing()
 }
 
@@ -71,10 +41,6 @@ func EndDrawing() {
 // is the center, and (1, 1) is the bottom right. everything else is self-explanatory
 func DrawTextureExt(texture Texture, srcPos core.Vec2, srcSize core.Vec2, dstPos core.Vec2,
 dstSize core.Vec2, origin core.Vec2, angle float64, tint core.Color) {
-	// scale :)
-	dstPos = TransformPos(dstPos)
-	dstSize = TransformSize(dstSize)
-
 	rl.DrawTexturePro(
 		rl.Texture2D{
 			ID: texture.id,
