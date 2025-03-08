@@ -72,6 +72,12 @@ func NewTileWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *TileWorld
 	fmt.Println("[TILEMAP] Created new world")
 
 	// load some chunks :)
+	tilhjjh.SetCameraPosition(core.NewVec3(-1, 0, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(1, 0, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(0, 1, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(0, -1, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(1, 1, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(-1, -1, 0))
 	tilhjjh.SetCameraPosition(core.NewVec3(0, 0, 0))
 
 	return tilhjjh
