@@ -6,7 +6,7 @@ import (
 	"math/rand"
 
 	"github.com/hellory4n/stellarthing/core"
-	"github.com/hellory4n/stellarthing/modules/entities"
+	"github.com/hellory4n/stellarthing/entities"
 )
 
 // how down can you go

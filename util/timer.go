@@ -1,7 +1,7 @@
 // utilities :D
 package util
 
-import "github.com/hellory4n/stellarthing/modules/platform"
+import "github.com/hellory4n/stellarthing/platform"
 
 // timer. useful for when you want to wait for something
 type Timer struct {

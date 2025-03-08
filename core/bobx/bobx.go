@@ -24,7 +24,9 @@ type Manifest struct {
 	StarryVersion core.Vec3i `json:"StarryVersion"`
 	// the game version, used for checking compatibility
 	GameVersion core.Vec3i `json:"GameVersion"`
-	// mods can use this to check compability. keys should be the mod's name, e.g. `john:epic_mod`, and the value can be whatever version you want (ideally [semantic versioning](https://semver.org) so it fits in a vec3i)
+	// mods can use this to check compability. keys should be the mod's name, e.g. `john:epic_mod`,
+	// and the value can be whatever version you want (ideally [semantic versioning](https://semver.org)
+	// so it fits in a vec3i)
 	PluginVersions map[string]core.Vec3i `json:"PluginVersions"`
 }
 
@@ -72,13 +74,15 @@ func (b *Bobx) Write(path string, data any) error {
 	return nil
 }
 
-// if true, the bobx archive contains the specified path. note that this returns false with other errors such as a permission error. that's because i'm lazy
+// if true, the bobx archive contains the specified path. note that this returns false with other
+// errors such as a permission error. that's because i'm lazy
 func (b *Bobx) Exists(path string) bool {
 	_, err := b.Fs.Stat(path)
 	return err == nil
 }
 
-// reads data from bobx and puts the deserialized data into `out`. if it doesn't exist, it writes using defaultVal.
+// reads data from bobx and puts the deserialized data into `out`. if it doesn't exist, it writes
+// using defaultVal.
 func (b *Bobx) Read(path string, defaultVal any, out any) error {
 	if core.Debug {
 		if reflect.TypeOf(out).Kind() != reflect.Ptr {

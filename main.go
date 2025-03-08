@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/hellory4n/stellarthing/core"
-	"github.com/hellory4n/stellarthing/game/species"
-	"github.com/hellory4n/stellarthing/modules/audio"
-	"github.com/hellory4n/stellarthing/modules/entities"
-	"github.com/hellory4n/stellarthing/modules/graphics"
-	"github.com/hellory4n/stellarthing/modules/platform"
-	"github.com/hellory4n/stellarthing/modules/util"
+	"github.com/hellory4n/stellarthing/species"
+	"github.com/hellory4n/stellarthing/platform/audio"
+	"github.com/hellory4n/stellarthing/entities"
+	"github.com/hellory4n/stellarthing/platform/graphics"
+	"github.com/hellory4n/stellarthing/platform"
+	"github.com/hellory4n/stellarthing/util"
 )
 
 func main() {

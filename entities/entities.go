@@ -3,7 +3,7 @@ package entities
 
 import (
 	"github.com/hellory4n/stellarthing/core"
-	"github.com/hellory4n/stellarthing/modules/platform"
+	"github.com/hellory4n/stellarthing/platform"
 )
 
 // as the name implies, it's an entity type

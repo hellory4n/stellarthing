@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/hellory4n/stellarthing/core"
-	"github.com/hellory4n/stellarthing/modules/bobx"
-	"github.com/hellory4n/stellarthing/modules/entities"
-	"github.com/hellory4n/stellarthing/modules/graphics"
-	"github.com/hellory4n/stellarthing/modules/platform"
+	"github.com/hellory4n/stellarthing/core/bobx"
+	"github.com/hellory4n/stellarthing/entities"
+	"github.com/hellory4n/stellarthing/platform/graphics"
+	"github.com/hellory4n/stellarthing/platform"
 )
 
 // thats how fast the average person walks per second
