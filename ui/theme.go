@@ -164,3 +164,15 @@ func DrawSlider(pos core.Vec2, size core.Vec2, grabber float64) {
 		1, 12, 2, gocolor.RGBA{0x7b, 0x1f, 0xa2, 0xff},
 	)
 }
+
+// it's just a dark background
+func DrawDialog(pos core.Vec2, size core.Vec2) {
+	rl.DrawRectangleRounded(
+		rl.NewRectangle(float32(pos.X), float32(pos.Y), float32(size.X), float32(size.Y)),
+		0, 1, gocolor.RGBA{0x00, 0x00, 0x00, 0x77},
+	)
+	rl.DrawRectangleRoundedLinesEx(
+		rl.NewRectangle(float32(pos.X), float32(pos.Y), float32(size.X), float32(size.Y)),
+		0, 1, 2, gocolor.RGBA{0xff, 0xff, 0xff, 0x45},
+	)
+}

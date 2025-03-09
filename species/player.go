@@ -82,8 +82,9 @@ func (p *Player) OnDraw(entity entities.EntityRef) {
 	graphics.CurrentWorld.Draw()
 
 	// haha
-	ui.ToggleButton(core.NewVec2(16, 16), core.NewVec2(250, ui.ButtonHeight), "Thingamabob", &p.theButtonThatIsPress)
-	ui.CycleButton(core.NewVec2(16, 16+40+8), core.NewVec2(250, ui.ButtonHeight), &p.cycleState, "Option 1", "Option 2", "°ÁGKERYHKAEOHKERH", ".")
+	ui.DrawDialog(core.NewVec2(16, 16), core.NewVec2(250+16+16, 32+40+16+40+16))
+	ui.ToggleButton(core.NewVec2(32, 32), core.NewVec2(250, ui.ButtonHeight), "Thingamabob", &p.theButtonThatIsPress)
+	ui.CycleButton(core.NewVec2(32, 32+40+8), core.NewVec2(250, ui.ButtonHeight), &p.cycleState, "Option 1", "Option 2", "°ÁGKERYHKAEOHKERH", ".")
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {
