@@ -137,7 +137,7 @@ func DrawHoverOutline(pos core.Vec2, size core.Vec2) {
 func DrawPressedButton(pos core.Vec2, size core.Vec2) {
 	rl.DrawRectangleRounded(
 		rl.NewRectangle(float32(pos.X), float32(pos.Y), float32(size.X), float32(size.Y)),
-		0.4, 4, gocolor.RGBA{0xff, 0xff, 0xff, 0xff},
+		0.4, 4, gocolor.RGBA{0xff, 0xff, 0xff, 0x55},
 	)
 }
 
