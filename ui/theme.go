@@ -15,6 +15,8 @@ import (
 const DefaultFontSize int = 26
 // yeah
 const Separation int = 8
+// yeah
+const ButtonHeight float64 = 40
 
 var regularFont rl.Font
 var boldFont rl.Font

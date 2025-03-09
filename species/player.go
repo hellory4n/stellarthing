@@ -19,6 +19,8 @@ const speed float64 = 1.42
 type Player struct {
 	tile *graphics.Tile
 	tileData *graphics.TileData
+	theButtonThatIsPress bool
+	cycleState int
 }
 
 type LaData struct {
@@ -80,9 +82,8 @@ func (p *Player) OnDraw(entity entities.EntityRef) {
 	graphics.CurrentWorld.Draw()
 
 	// haha
-	ui.Button(core.NewVec2(16, 16), core.NewVec2(200, 40), "hi :)", ui.ButtonStylePrimary, func() {
-		fmt.Println("hi mom")
-	})
+	ui.ToggleButton(core.NewVec2(16, 16), core.NewVec2(250, ui.ButtonHeight), "Thingamabob", &p.theButtonThatIsPress)
+	ui.CycleButton(core.NewVec2(16, 16+40+8), core.NewVec2(250, ui.ButtonHeight), &p.cycleState, "Option 1", "Option 2", "°ÁGKERYHKAEOHKERH", ".")
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {

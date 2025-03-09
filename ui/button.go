@@ -2,6 +2,8 @@
 package ui
 
 import (
+	"fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/platform"
@@ -50,4 +52,27 @@ func Button(pos core.Vec2, size core.Vec2, text string, style ButtonStyle, onPre
 
 	// finally draw text :)
 	DrawBoldText(text, textPos.Add(pos), DefaultFontSize, textColor)
+}
+
+// it's a button that toggles. writes the result into out
+func ToggleButton(pos core.Vec2, size core.Vec2, text string, out *bool) {	
+	if *out {
+		Button(pos, size, fmt.Sprintf("%s: on", text), ButtonStylePrimary, func() {
+			*out = false
+		})
+	} else {
+		Button(pos, size, fmt.Sprintf("%s: off", text), ButtonStyleSecondary, func() {
+			*out = true
+		})
+	}
+}
+
+// it's a button that cycles. writes the index into current
+func CycleButton(pos core.Vec2, size core.Vec2, current *int, options ...string) {
+	Button(pos, size, options[*current], ButtonStyleSecondary, func() {
+		*current++
+		if *current >= len(options) {
+			*current = 0
+		}
+	})
 }
