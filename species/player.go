@@ -22,6 +22,7 @@ type Player struct {
 	theButtonThatIsPress bool
 	cycleState int
 	ranje float64
+	input string
 }
 
 type LaData struct {
@@ -83,11 +84,12 @@ func (p *Player) OnDraw(entity entities.EntityRef) {
 	graphics.CurrentWorld.Draw()
 
 	// haha
-	ui.DrawDialog(core.NewVec2(16, 16), core.NewVec2(250+16+16, 32+40+16+40+16+16))
+	ui.DrawDialog(core.NewVec2(16, 16), core.NewVec2(250+16+16, 32+40+16+40+16+40+16+40+16+16))
 	ui.Button(core.NewVec2(32, 32), core.NewVec2(250, ui.ButtonHeight), "Button", ui.ButtonStylePrimary, func() {})
 	ui.ToggleButton(core.NewVec2(32, 32+40+8), core.NewVec2(250, ui.ButtonHeight), "Toggled", &p.theButtonThatIsPress)
 	ui.CycleButton(core.NewVec2(32, 32+40+8+40+8), core.NewVec2(250, ui.ButtonHeight), &p.cycleState, "Option 1", "Option 2", "°ÁGKERYHKAEOHKERH", ".")
 	ui.Slider(core.NewVec2(32, 32+40+8+40+8+40+8), core.NewVec2(250, ui.ButtonHeight), "Oi mate", 25, 50, &p.ranje)
+	ui.TextInput(core.NewVec2(32, 32+40+8+40+8+40+8+40+8), core.NewVec2(250, ui.ButtonHeight), "Write your fucking text.", &p.input)
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {
