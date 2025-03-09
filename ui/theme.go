@@ -11,6 +11,11 @@ import (
 // themes work as a bunch of callback things :)
 // if you want to change the look of the stuff, just change the functions
 
+// yeah
+const DefaultFontSize int = 26
+// yeah
+const Separation int = 8
+
 var regularFont rl.Font
 var boldFont rl.Font
 var italicFont rl.Font

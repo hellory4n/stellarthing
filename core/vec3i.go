@@ -2,11 +2,9 @@ package core
 
 import "fmt"
 
-// 3D point with floats
+// 3D point with integers
 type Vec3i struct {
-	X int64
-	Y int64
-	Z int64
+	X, Y, Z int64
 }
 
 func NewVec3i(x int64, y int64, z int64) Vec3i {

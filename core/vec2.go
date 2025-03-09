@@ -8,8 +8,7 @@ import (
 
 // 2D point with floats
 type Vec2 struct {
-	X float64
-	Y float64
+	X, Y float64
 }
 
 func NewVec2(x float64, y float64) Vec2 {

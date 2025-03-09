@@ -7,9 +7,7 @@ import (
 
 // 3D point with floats
 type Vec3 struct {
-	X float64
-	Y float64
-	Z float64
+	X, Y, Z float64
 }
 
 func NewVec3(x float64, y float64, z float64) Vec3 {

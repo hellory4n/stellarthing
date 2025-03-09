@@ -4,8 +4,7 @@ import "fmt"
 
 // 2D point with ints
 type Vec2i struct {
-	X int64
-	Y int64
+	X, Y int64
 }
 
 func NewVec2i(x int64, y int64) Vec2i {
