@@ -2,8 +2,6 @@
 *.exe
 *.exe~
 *.dll
-# i love windows
-!thirdparty/raylib.dll
 *.so
 *.dylib
 
@@ -12,7 +10,6 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-
 
 # Go workspace file
 go.work
@@ -24,8 +21,5 @@ go.work.sum
 # haha
 __debug*
 
-# idk why i made that script
-stellarthing-linux
-stellarthing-linux.tar.gz
-stellarthing-windows
-stellarthing-windows.zip
+# release.sh output
+build

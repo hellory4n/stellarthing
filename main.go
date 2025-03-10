@@ -43,6 +43,7 @@ func main() {
 		// man
 		entities.UpdateAllEntities()
 		core.InternalInputFieldFocus = false
+		util.UpdateDebugMode()
 		graphics.EndDrawing()
 	}
 }

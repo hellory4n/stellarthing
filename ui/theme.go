@@ -31,7 +31,7 @@ func LoadTheme() {
 	italicFont = rl.LoadFontEx("assets/Figtree/Figtree-Italic.ttf", 64, chars, 250)
 
 	// yeah
-	rl.SetTextLineSpacing(16)
+	rl.SetTextLineSpacing(1)
 }
 
 // similar to LoadTheme but in reverse
