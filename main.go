@@ -40,6 +40,9 @@ func main() {
 		}
 
 		graphics.Clear(core.ColorBlack)
+		if graphics.CurrentWorld != nil {
+			graphics.CurrentWorld.Draw()
+		}
 		// man
 		entities.UpdateAllEntities()
 		core.InternalInputFieldFocus = false

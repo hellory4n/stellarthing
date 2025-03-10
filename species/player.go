@@ -13,8 +13,7 @@ import (
 	"github.com/hellory4n/stellarthing/ui"
 )
 
-// thats how fast the average person walks per second
-const speed float64 = 1.42
+const speed float64 = 5
 
 type Player struct {
 	tile *graphics.Tile
@@ -91,7 +90,6 @@ func (p *Player) OnGui(entity entities.EntityRef) {
 }
 
 func (p *Player) OnDraw(entity entities.EntityRef) {
-	graphics.CurrentWorld.Draw()
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {

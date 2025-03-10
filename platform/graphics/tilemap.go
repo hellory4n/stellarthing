@@ -52,6 +52,8 @@ type TileWorld struct {
 	LoadedGroundTiles map[core.Vec3i]*Tile
 	LoadedObjectTiles map[core.Vec3i]*Tile
 	LoadedChunks []core.Vec3i
+	// this sucks
+	TheyMightBeMoving []*Tile
 }
 
 // current world.
@@ -72,12 +74,12 @@ func NewTileWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *TileWorld
 	fmt.Println("[TILEMAP] Created new world")
 
 	// load some chunks :)
-	tilhjjh.SetCameraPosition(core.NewVec3(-1, 0, 0))
-	tilhjjh.SetCameraPosition(core.NewVec3(1, 0, 0))
-	tilhjjh.SetCameraPosition(core.NewVec3(0, 1, 0))
-	tilhjjh.SetCameraPosition(core.NewVec3(0, -1, 0))
-	tilhjjh.SetCameraPosition(core.NewVec3(1, 1, 0))
-	tilhjjh.SetCameraPosition(core.NewVec3(-1, -1, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(-float64(ChunkSize), 0, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(float64(ChunkSize), 0, 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(0, float64(ChunkSize), 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(0, -float64(ChunkSize), 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(float64(ChunkSize), float64(ChunkSize), 0))
+	tilhjjh.SetCameraPosition(core.NewVec3(-float64(ChunkSize), -float64(ChunkSize), 0))
 	tilhjjh.SetCameraPosition(core.NewVec3(0, 0, 0))
 
 	return tilhjjh
@@ -88,12 +90,12 @@ func (t *TileWorld) SetCameraPosition(pos core.Vec3) {
 	// so i can use early returns :)
 	defer func() { t.CameraPosition = pos }()
 
-	chunkX := int64(math.Floor(pos.X)) / ChunkSize
-	chunkY := int64(math.Floor(pos.Y)) / ChunkSize
-	chunkPos := core.NewVec3i(chunkX, chunkY, int64(pos.Z)).Sdiv(ChunkSize)
+	chunkX := int64(pos.X / float64(ChunkSize))
+	chunkY := int64(pos.Y / float64(ChunkSize))
+	chunkPos := core.NewVec3i(chunkX, chunkY, int64(pos.Z))
 
 	// do we even have to load it at all?
-	_, hasChunk := t.LoadedGroundTiles[chunkPos.Smul(ChunkSize)]
+	_, hasChunk := t.LoadedGroundTiles[core.NewVec3i(int64(pos.X), int64(pos.Y), int64(pos.Z))]
 	if hasChunk {
 		return
 	}
@@ -101,17 +103,29 @@ func (t *TileWorld) SetCameraPosition(pos core.Vec3) {
 	// TODO check if it's on the save
 
 	// if it's not on the save we generate it
-	fmt.Printf("[TILEMAP] Generating chunk at %v\n", chunkPos)
-	newGround, newObjects := GenerateChunk(t.randGen, chunkPos)
+	// generate multiple chunks fuck it
+	man := func(offset core.Vec3i) {
+		fmt.Printf("[TILEMAP] Generating chunk at %v\n", chunkPos.Add(offset))
+		newGround, newObjects := GenerateChunk(t.randGen, chunkPos.Add(offset))
 
-	// copy crap
-	for k, v := range newGround {
-		t.LoadedGroundTiles[k] = v
+		// copy crap
+		for k, v := range newGround {
+			t.LoadedGroundTiles[k] = v
+		}
+		for k, v := range newObjects {
+			t.LoadedObjectTiles[k] = v
+		}
+		t.LoadedChunks = append(t.LoadedChunks, chunkPos.Add(offset))
 	}
-	for k, v := range newObjects {
-		t.LoadedObjectTiles[k] = v
-	}
-	t.LoadedChunks = append(t.LoadedChunks, chunkPos)
+	man(core.NewVec3i(0, 0, 0))
+	man(core.NewVec3i(-1, -1, 0))
+	man(core.NewVec3i(0, -1, 0))
+	man(core.NewVec3i(1, 0, 0))
+	man(core.NewVec3i(-1, 0, 0))
+	man(core.NewVec3i(0, 1, 0))
+	man(core.NewVec3i(-1, 1, 0))
+	man(core.NewVec3i(0, 1, 0))
+	man(core.NewVec3i(1, 1, 0))
 }
 
 // as the name implies, it gets a tile
@@ -144,6 +158,11 @@ variation VariationId) *Tile {
 		t.LoadedObjectTiles[pos] = letile
 	}
 
+	// man
+	if entity != 0 {
+		t.TheyMightBeMoving = append(t.TheyMightBeMoving, letile)
+	}
+
 	return letile
 }
 
@@ -160,7 +179,6 @@ func (t *TileWorld) drawTile(pos core.Vec2i, ground bool) {
 
 	var pospos core.Vec2
 	if data.UsingCustomPos {
-		//((tile.position.as2d.sub(camPosition)).mul(Starry.settings.tileSize)).add(camOffset)
 		// im losing my mind
 		// im going insane
 		// im watching my life go down the drain
@@ -192,9 +210,36 @@ func (t *TileWorld) Draw() {
 			t.drawTile(core.NewVec2i(x, y), true)
 		}
 	}
+
 	for x := renderAreaStartX; x < renderAreaEndX; x++ {
 		for y := renderAreaStartY; y < renderAreaEndY; y++ {
 			t.drawTile(core.NewVec2i(x, y), false)
 		}
+	}
+
+	for _, tile := range t.TheyMightBeMoving {
+		// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+		if tile == nil {
+			return
+		}
+		data := tile.GetData()
+		// YOU SEE TEXTURES ARE CACHED SO ITS NOT TOO OUTRAGEOUS TO PUT SOMETHING IN A FUNCTION
+		// RAN EVERY FRAME
+		texture := LoadTexture(data.Texture)
+
+		var pospos core.Vec2
+		if data.UsingCustomPos {
+			// im losing my mind
+			// im going insane
+			// im watching my life go down the drain
+			pospos = core.NewVec2(
+				((data.Position.X - t.CameraPosition.X) * texture.Size().ToVec2().X) + t.CameraOffset.X,
+				((data.Position.Y - t.CameraPosition.Y) * texture.Size().ToVec2().Y) + t.CameraOffset.Y,
+			)
+		} else {
+			continue
+		}
+
+		DrawTexture(texture, pospos, 0, data.Tint)
 	}
 }
