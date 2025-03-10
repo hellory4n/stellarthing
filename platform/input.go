@@ -50,6 +50,11 @@ func IsMouseButtonNotPressed(btn MouseButton) bool {
 }
 
 func IsKeymapJustPressed(keymap string) bool {
+	// input fields haha
+	if core.InternalInputFieldFocus {
+		return false
+	}
+
 	keymapdeez, ok := keymapma[keymap]
 
 	// i'm not ok :(
@@ -66,6 +71,11 @@ func IsKeymapJustPressed(keymap string) bool {
 }
 
 func IsKeymapJustReleased(keymap string) bool {
+	// input fields haha
+	if core.InternalInputFieldFocus {
+		return false
+	}
+
 	keymapdeez, ok := keymapma[keymap]
 
 	// i'm not ok :(
@@ -82,6 +92,11 @@ func IsKeymapJustReleased(keymap string) bool {
 }
 
 func IsKeymapHeld(keymap string) bool {
+	// input fields haha
+	if core.InternalInputFieldFocus {
+		return false
+	}
+
 	keymapdeez, ok := keymapma[keymap]
 
 	// i'm not ok :(
@@ -98,6 +113,11 @@ func IsKeymapHeld(keymap string) bool {
 }
 
 func IsKeymapNotPressed(keymap string) bool {
+	// input fields haha
+	if core.InternalInputFieldFocus {
+		return false
+	}
+
 	keymapdeez, ok := keymapma[keymap]
 
 	// i'm not ok :(

@@ -26,6 +26,7 @@ const (
 type Entity interface {
 	EntityType() EntityType
 	OnCreate(entity EntityRef)
+	OnGui(entity EntityRef)
 	OnUpdate(entity EntityRef, delta float64)
 	OnDraw(entity EntityRef)
 	OnFree(entity EntityRef)
@@ -34,6 +35,7 @@ type Entity interface {
 type Component interface {
 	ComponentType() ComponentType
 	OnCreate(entity EntityRef)
+	OnGui(entity EntityRef)
 	OnUpdate(entity EntityRef, delta float64)
 	OnDraw(entity EntityRef)
 	OnFree(entity EntityRef)
@@ -194,6 +196,9 @@ func RemoveEntity(entity EntityRef) {
 }
 
 func updateEntity(entity Entity, ref EntityRef) {
+	// :(
+	core.InternalInputFieldFocus = false
+	entity.OnGui(ref)
 	entity.OnUpdate(ref, platform.DeltaTime())
 	entity.OnDraw(ref)
 	for _, v := range components[ref] {

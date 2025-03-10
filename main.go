@@ -40,8 +40,9 @@ func main() {
 		}
 
 		graphics.Clear(core.ColorBlack)
-		ui.UpdateInputFieldsFrfrfrThisTime()
+		// man
 		entities.UpdateAllEntities()
+		core.InternalInputFieldFocus = false
 		graphics.EndDrawing()
 	}
 }

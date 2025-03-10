@@ -80,9 +80,7 @@ func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
 	graphics.CurrentWorld.SetCameraPosition(p.tileData.Position)
 }
 
-func (p *Player) OnDraw(entity entities.EntityRef) {
-	graphics.CurrentWorld.Draw()
-
+func (p *Player) OnGui(entity entities.EntityRef) {
 	// haha
 	ui.DrawDialog(core.NewVec2(16, 16), core.NewVec2(250+16+16, 32+40+16+40+16+40+16+40+16+16))
 	ui.Button(core.NewVec2(32, 32), core.NewVec2(250, ui.ButtonHeight), "Button", ui.ButtonStylePrimary, func() {})
@@ -90,6 +88,10 @@ func (p *Player) OnDraw(entity entities.EntityRef) {
 	ui.CycleButton(core.NewVec2(32, 32+40+8+40+8), core.NewVec2(250, ui.ButtonHeight), &p.cycleState, "Option 1", "Option 2", "°ÁGKERYHKAEOHKERH", ".")
 	ui.Slider(core.NewVec2(32, 32+40+8+40+8+40+8), core.NewVec2(250, ui.ButtonHeight), "Oi mate", 25, 50, &p.ranje)
 	ui.TextInput(core.NewVec2(32, 32+40+8+40+8+40+8+40+8), core.NewVec2(250, ui.ButtonHeight), "Write your fucking text.", &p.input)
+}
+
+func (p *Player) OnDraw(entity entities.EntityRef) {
+	graphics.CurrentWorld.Draw()
 }
 
 func (p *Player) OnFree(entity entities.EntityRef) {
