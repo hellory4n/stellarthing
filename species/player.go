@@ -18,7 +18,7 @@ type Player struct {
 	tile *graphics.Tile
 	tileData *graphics.TileData
 	currentHotbarIdx int
-	hotbarTiles [9]graphics.TileId
+	hotbar [9]graphics.Tile
 }
 
 // type LaData struct {
@@ -52,9 +52,9 @@ func (p *Player) OnCreate(entity entities.EntityRef) {
 	p.tileData.UsingCustomPos = true
 
 	// default hotbar crap or smth
-	p.hotbarTiles[0] = graphics.TileGreenGuy
-	p.hotbarTiles[1] = graphics.TileBlueGuy
-	p.hotbarTiles[2] = graphics.TileLife
+	p.hotbar[0] = graphics.Tile{TileId: graphics.TileBlueGuy}
+	p.hotbar[1] = graphics.Tile{TileId: graphics.TileGreenGuy}
+	p.hotbar[2] = graphics.Tile{TileId: graphics.TileLife}
 
 	// uuuuuy, _ := bobx.Open(filepath.Join(core.GetUserDir(), "test"))
 	// var sogmaballs LaData
@@ -67,15 +67,12 @@ func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
 	if platform.IsKeymapHeld("move_left") {
 		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(-speed * delta, 0, 0))
 	}
-
 	if platform.IsKeymapHeld("move_right") {
 		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(speed * delta, 0, 0))
 	}
-
 	if platform.IsKeymapHeld("move_up") {
 		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, -speed * delta, 0))
 	}
-
 	if platform.IsKeymapHeld("move_down") {
 		p.tileData.Position = p.tileData.Position.Add(core.NewVec3(0, speed * delta, 0))
 	}
@@ -91,12 +88,46 @@ func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
 	if platform.IsKeyJustPressed(platform.KeyNum7) { p.currentHotbarIdx = 6 }
 	if platform.IsKeyJustPressed(platform.KeyNum8) { p.currentHotbarIdx = 7 }
 	if platform.IsKeyJustPressed(platform.KeyNum9) { p.currentHotbarIdx = 8 }
+
+	// place the bloody tiles
+	// this is sad
+	// here at shell we are sad
+	pos := graphics.CurrentWorld.ScreenToTile(platform.MousePosition(), core.NewVec2i(64, 64))
+	if platform.IsMouseButtonJustPressed(platform.MouseButtonLeft) {
+		if p.hotbar[p.currentHotbarIdx].TileId != graphics.TileAir {
+			if graphics.CurrentWorld.GetTile(pos, true) == nil {
+				graphics.CurrentWorld.NewTile(pos, true, p.hotbar[p.currentHotbarIdx].TileId,
+					p.hotbar[p.currentHotbarIdx].EntityRef, p.hotbar[p.currentHotbarIdx].Variation)
+			}
+
+			if graphics.CurrentWorld.GetTile(pos, true).TileId == graphics.TileAir {
+				*graphics.CurrentWorld.GetTile(pos, true) = p.hotbar[p.currentHotbarIdx]
+			}
+
+			if graphics.CurrentWorld.GetTile(pos, false) == nil {
+				graphics.CurrentWorld.NewTile(pos, false, p.hotbar[p.currentHotbarIdx].TileId,
+					p.hotbar[p.currentHotbarIdx].EntityRef, p.hotbar[p.currentHotbarIdx].Variation)
+			}
+
+			if graphics.CurrentWorld.GetTile(pos, false).TileId == graphics.TileAir {
+				*graphics.CurrentWorld.GetTile(pos, false) = p.hotbar[p.currentHotbarIdx]
+			}
+		}
+	}
 }
 
 func (p *Player) OnGui(entity entities.EntityRef) {
 }
 
 func (p *Player) OnDraw(entity entities.EntityRef) {
+	// hover tiles and shit
+	pos := graphics.CurrentWorld.ScreenToTile(platform.MousePosition(), core.NewVec2i(64, 64))
+	graphics.DrawTexture(
+		graphics.LoadTexture("assets/highlight.png"),
+		graphics.CurrentWorld.TileToScreen(pos, core.NewVec2i(64, 64)),
+		0, core.ColorWhite,
+	)
+
 	ui.DrawRegularText("wasd to move\n1-9 to change hotbar crap\nleft click to place\nright click to break\nf3 shows some crap",
 		core.NewVec2(950, 500), ui.DefaultFontSize, core.ColorWhite)
 
@@ -112,7 +143,7 @@ func (p *Player) OnDraw(entity entities.EntityRef) {
 
 		// icon
 		graphics.DrawTexture(
-			graphics.LoadTexture(graphics.Tiles[p.hotbarTiles[i]][0].Texture),
+			graphics.LoadTexture(graphics.Tiles[p.hotbar[i].TileId][0].Texture),
 			core.NewVec2(x + 8, float64(core.RenderSize.Y) - 80 - 1),
 			0, core.ColorWhite,
 		)

@@ -68,8 +68,7 @@ func NewTileWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *TileWorld
 	tilhjjh.randGen = rand.New(rand.NewSource(tilhjjh.Seed))
 	tilhjjh.LoadedGroundTiles = make(map[core.Vec3i]*Tile)
 	tilhjjh.LoadedObjectTiles = make(map[core.Vec3i]*Tile)
-	// TODO make shit render at a specific resolution then scale it to fit the actual resolution
-	tilhjjh.CameraOffset = core.NewVec2(1366, 768).Sdiv(2)
+	tilhjjh.CameraOffset = core.RenderSize.Sdiv(2).ToVec2()
 
 	fmt.Println("[TILEMAP] Created new world")
 
@@ -242,4 +241,21 @@ func (t *TileWorld) Draw() {
 
 		DrawTexture(texture, pospos, 0, data.Tint)
 	}
+}
+
+// gets a tile position from screen positions
+func (t *TileWorld) ScreenToTile(pos core.Vec2, textureSize core.Vec2i) core.Vec3i {
+	return core.NewVec3i(
+		int64(math.Floor(((pos.X - t.CameraOffset.X) / textureSize.ToVec2().X) + t.CameraPosition.X)),
+		int64(math.Floor(((pos.Y - t.CameraOffset.Y) / textureSize.ToVec2().Y) + t.CameraPosition.Y)),
+		int64(t.CameraPosition.Z),
+	)
+}
+
+// gets a screen position from tile positions
+func (t *TileWorld) TileToScreen(pos core.Vec3i, textureSize core.Vec2i) core.Vec2 {
+	return core.NewVec2(
+		((float64(pos.X) - t.CameraPosition.X) * textureSize.ToVec2().X) + t.CameraOffset.X,
+		((float64(pos.Y) - t.CameraPosition.Y) * textureSize.ToVec2().Y) + t.CameraOffset.Y,
+	)
 }
