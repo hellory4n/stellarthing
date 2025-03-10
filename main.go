@@ -40,6 +40,7 @@ func main() {
 		}
 
 		graphics.Clear(core.ColorBlack)
+		ui.UpdateInputFieldsFrfrfrThisTime()
 		entities.UpdateAllEntities()
 		graphics.EndDrawing()
 	}

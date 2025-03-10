@@ -23,32 +23,8 @@ func TextInput(pos core.Vec2, size core.Vec2, placeholder string, out *string) {
 	rect := core.NewRect(pos.X, pos.Y, size.X, size.Y)
 	if rect.HasPoint(platform.MousePosition()) {
 		DrawHoverOutline(pos, size)
-
-		// apparently the character thingy is a queue
-		var key int32 = rl.GetCharPressed()
-		for key > 0 {
-			// you can't write control characters
-			// TODO: unicode has more control character than that
-			if key >= 32 {
-				*out += string(key)
-			}
-
-			// next character
-			key = rl.GetCharPressed()
-		}
-
-		// we all mank mistakes
-		if platform.IsKeyJustPressed(platform.KeyBackspace) && len(*out) > 0 {
-			// we do this fuckery so you dont remove half a character
-			thingyButInRunes := []rune(*out)
-			thingyButInRunes = (thingyButInRunes)[:len(thingyButInRunes) - 1]
-			*out = string(thingyButInRunes)
-		}
-
-		// guys i lost ctrl... theres no esc... just give me some space
-		// if platform.IsKeyJustPressed(platform.KeySpace) {
-		// 	*out += " "
-		// }
+		// bullshit i did to see if it stops fucking with player input
+		core.FocusedTextField = out
 	}
 
 	// text.
@@ -60,4 +36,31 @@ func TextInput(pos core.Vec2, size core.Vec2, placeholder string, out *string) {
 		DrawRegularText(*out, core.NewVec2(pos.X + 8, pos.Y + textY), DefaultFontSize, core.ColorWhite)
 	}
 	rl.EndScissorMode()
+}
+
+func UpdateInputFieldsFrfrfrThisTime() {
+	if core.FocusedTextField == nil {
+		return
+	}
+
+	// apparently the character thingy is a queue
+	var key int32 = rl.GetCharPressed()
+	for key > 0 {
+		// you can't write control characters
+		// TODO: unicode has more control character than that
+		if key >= 32 {
+			*core.FocusedTextField += string(key)
+		}
+
+		// next character
+		key = rl.GetCharPressed()
+	}
+
+	// we all mank mistakes
+	if platform.IsKeyJustPressed(platform.KeyBackspace) && len(*core.FocusedTextField) > 0 {
+		// we do this fuckery so you dont remove half a character
+		thingyButInRunes := []rune(*core.FocusedTextField)
+		thingyButInRunes = (thingyButInRunes)[:len(thingyButInRunes) - 1]
+		*core.FocusedTextField = string(thingyButInRunes)
+	}
 }
