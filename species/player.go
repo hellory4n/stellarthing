@@ -98,20 +98,38 @@ func (p *Player) OnUpdate(entity entities.EntityRef, delta float64) {
 			if graphics.CurrentWorld.GetTile(pos, true) == nil {
 				graphics.CurrentWorld.NewTile(pos, true, p.hotbar[p.currentHotbarIdx].TileId,
 					p.hotbar[p.currentHotbarIdx].EntityRef, p.hotbar[p.currentHotbarIdx].Variation)
-			}
-
-			if graphics.CurrentWorld.GetTile(pos, true).TileId == graphics.TileAir {
+			} else if graphics.CurrentWorld.GetTile(pos, true).TileId == graphics.TileAir {
 				*graphics.CurrentWorld.GetTile(pos, true) = p.hotbar[p.currentHotbarIdx]
-			}
-
-			if graphics.CurrentWorld.GetTile(pos, false) == nil {
+			} else if graphics.CurrentWorld.GetTile(pos, false) == nil {
 				graphics.CurrentWorld.NewTile(pos, false, p.hotbar[p.currentHotbarIdx].TileId,
 					p.hotbar[p.currentHotbarIdx].EntityRef, p.hotbar[p.currentHotbarIdx].Variation)
-			}
-
-			if graphics.CurrentWorld.GetTile(pos, false).TileId == graphics.TileAir {
+			} else if graphics.CurrentWorld.GetTile(pos, false).TileId == graphics.TileAir {
 				*graphics.CurrentWorld.GetTile(pos, false) = p.hotbar[p.currentHotbarIdx]
 			}
+		}
+	}
+
+	// you can also remove the bloody tiles
+	// this is also sad
+	// here at shell we are still sad
+	if platform.IsMouseButtonJustPressed(platform.MouseButtonRight) {
+		// PLEASE FUCKING WORK
+		if graphics.CurrentWorld.GetTile(pos, false) != nil {
+			if graphics.CurrentWorld.GetTile(pos, false).TileId == graphics.TileAir {
+				if graphics.CurrentWorld.GetTile(pos, true) != nil {
+					graphics.CurrentWorld.GetTile(pos, true).TileId = graphics.TileAir
+					return
+				}
+			}
+		}
+
+		if graphics.CurrentWorld.GetTile(pos, false) != nil {
+			graphics.CurrentWorld.GetTile(pos, false).TileId = graphics.TileAir
+			return
+		}
+		if graphics.CurrentWorld.GetTile(pos, true) != nil {
+			graphics.CurrentWorld.GetTile(pos, true).TileId = graphics.TileAir
+			return
 		}
 	}
 }
