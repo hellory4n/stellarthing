@@ -1,4 +1,4 @@
-package graphics
+package tile
 
 import (
 	"math/rand"
@@ -13,13 +13,13 @@ func GenerateChunk(randgen *rand.Rand, chunkPos core.Vec3i) (map[core.Vec3i]*Til
 
 	chunkStartX := chunkPos.X * ChunkSize
 	chunkStartY := chunkPos.Y * ChunkSize
-	chunkEndX := chunkPos.X * ChunkSize + ChunkSize
-	chunkEndY := chunkPos.Y * ChunkSize + ChunkSize
+	chunkEndX := chunkPos.X*ChunkSize + ChunkSize
+	chunkEndY := chunkPos.Y*ChunkSize + ChunkSize
 
 	for x := chunkStartX; x < chunkEndX; x++ {
 		for y := chunkStartY; y < chunkEndY; y++ {
-			ground[core.NewVec3i(x, y, chunkPos.Z)] = &Tile{
-				TileId: TileMarsRock,
+			ground[core.Vec3i{x, y, chunkPos.Z}] = &Tile{
+				TileId: MarsRock,
 			}
 		}
 	}

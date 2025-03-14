@@ -1,5 +1,5 @@
 // entity
-package entities
+package entity
 
 import (
 	"github.com/hellory4n/stellarthing/core"
@@ -7,38 +7,38 @@ import (
 )
 
 // as the name implies, it's an entity type
-type EntityType int
+type Type int
 
 const (
 	// pausable object in the game world
-	EntityTypeGameWorld EntityType = iota
+	TypeGameWorld Type = iota
 	// pausable 2d interface
-	EntityTypePausableUi
+	TypePausableUi
 	// pausable manager, which is an entity running in the background and, well, managing
-	EntityTypePausableManager
+	TypePausableManager
 	// ui that only runs when paused
-	EntityTypePausedUi
+	TypePausedUi
 	// manager that only manages when paused
-	EntityTypePausedManager
+	TypePausedManager
 )
 
 // it's an entity
 type Entity interface {
-	EntityType() EntityType
-	OnCreate(entity EntityRef)
-	OnGui(entity EntityRef)
-	OnUpdate(entity EntityRef, delta float64)
-	OnDraw(entity EntityRef)
-	OnFree(entity EntityRef)
+	EntityType() Type
+	OnCreate(ent Ref)
+	OnGui(ent Ref)
+	OnUpdate(ent Ref, delta float64)
+	OnDraw(ent Ref)
+	OnFree(ent Ref)
 }
 
 type Component interface {
 	ComponentType() ComponentType
-	OnCreate(entity EntityRef)
-	OnGui(entity EntityRef)
-	OnUpdate(entity EntityRef, delta float64)
-	OnDraw(entity EntityRef)
-	OnFree(entity EntityRef)
+	OnCreate(ent Ref)
+	OnGui(ent Ref)
+	OnUpdate(ent Ref, delta float64)
+	OnDraw(ent Ref)
+	OnFree(ent Ref)
 }
 
 const (
@@ -58,7 +58,7 @@ const (
 var Paused bool = false
 
 // random number used to reference entities
-type EntityRef uint32
+type Ref uint32
 
 // entity group
 type Group string
@@ -66,31 +66,31 @@ type Group string
 // type of component
 type ComponentType string
 
-var entities map[EntityRef]Entity
-var components map[EntityRef]map[ComponentType]Component
-var meta map[EntityRef]map[string]any
+var entities map[Ref]Entity
+var components map[Ref]map[ComponentType]Component
+var meta map[Ref]map[string]any
 
 // the value isn't used, go doesn't have a hash set
-var groups map[Group]map[EntityRef]byte
-var entgroups map[EntityRef]map[Group]byte
+var groups map[Group]map[Ref]byte
+var entgroups map[Ref]map[Group]byte
 
 func Init() {
-	entities = make(map[EntityRef]Entity)
-	groups = make(map[Group]map[EntityRef]byte)
-	components = make(map[EntityRef]map[ComponentType]Component)
-	meta = make(map[EntityRef]map[string]any)
-	entgroups = make(map[EntityRef]map[Group]byte)
+	entities = make(map[Ref]Entity)
+	groups = make(map[Group]map[Ref]byte)
+	components = make(map[Ref]map[ComponentType]Component)
+	meta = make(map[Ref]map[string]any)
+	entgroups = make(map[Ref]map[Group]byte)
 }
 
 func Free() {
 	for id := range entities {
-		RemoveEntity(id)
+		Remove(id)
 	}
 }
 
 // adds an entity and returns its ID
-func AddEntity(entity Entity) EntityRef {
-	var ref EntityRef = EntityRef(core.RandUint32(0, core.Uint32Max))
+func Add(entity Entity) Ref {
+	var ref Ref = Ref(core.RandUint32(0, core.Uint32Max))
 	entities[ref] = entity
 	meta[ref] = make(map[string]any)
 	entgroups[ref] = make(map[Group]byte)
@@ -98,12 +98,18 @@ func AddEntity(entity Entity) EntityRef {
 
 	var group Group = ""
 	switch entity.EntityType() {
-		case EntityTypeGameWorld: group = GroupGameWorld
-		case EntityTypePausableUi: group = GroupPausableUi
-		case EntityTypePausableManager: group = GroupPausableManager
-		case EntityTypePausedUi: group = GroupPausedUi
-		case EntityTypePausedManager: group = GroupPausedManager
-		default: panic("mate\n")
+	case TypeGameWorld:
+		group = GroupGameWorld
+	case TypePausableUi:
+		group = GroupPausableUi
+	case TypePausableManager:
+		group = GroupPausableManager
+	case TypePausedUi:
+		group = GroupPausedUi
+	case TypePausedManager:
+		group = GroupPausedManager
+	default:
+		panic("mate\n")
 	}
 	AddToGroup(group, ref)
 
@@ -112,9 +118,9 @@ func AddEntity(entity Entity) EntityRef {
 }
 
 // returns all entities in a group, and creates the group if it doesn't exist yet
-func GetGroup(group Group) []EntityRef {
+func GetGroup(group Group) []Ref {
 	// get rid of the byte :)
-	var hhgjjhg []EntityRef = make([]EntityRef, len(groups[group]))
+	var hhgjjhg []Ref = make([]Ref, len(groups[group]))
 
 	var i int = 0
 	for k := range groups[group] {
@@ -126,15 +132,15 @@ func GetGroup(group Group) []EntityRef {
 }
 
 // adds an entity to the group, and creates the group if it doesn't exist yet
-func AddToGroup(group Group, entity EntityRef) {
-	groups[group] = make(map[EntityRef]byte)
+func AddToGroup(group Group, entity Ref) {
+	groups[group] = make(map[Ref]byte)
 	groups[group][entity] = 0
 	entgroups[entity] = make(map[Group]byte)
 	entgroups[entity][group] = 0
 }
 
 // if true, the entity is in that group
-func IsInGroup(group Group, entity EntityRef) bool {
+func IsInGroup(group Group, entity Ref) bool {
 	groupm, ok := groups[group]
 	if !ok {
 		return false
@@ -144,13 +150,13 @@ func IsInGroup(group Group, entity EntityRef) bool {
 }
 
 // adds a component to an entity
-func AddComponent(entity EntityRef, component Component) {
+func AddComp(entity Ref, component Component) {
 	components[entity][component.ComponentType()] = component
 	component.OnCreate(entity)
 }
 
 // if true, the entity has that component
-func HasComponent(entity EntityRef, comptype ComponentType) bool {
+func HasComp(entity Ref, comptype ComponentType) bool {
 	for _, v := range components[entity] {
 		if v.ComponentType() == comptype {
 			return true
@@ -160,7 +166,7 @@ func HasComponent(entity EntityRef, comptype ComponentType) bool {
 }
 
 // gets the component, or nil if it's not there yet.
-func GetComponent(entity EntityRef, comptype ComponentType) any {
+func GetComp(entity Ref, comptype ComponentType) any {
 	for _, v := range components[entity] {
 		if v.ComponentType() == comptype {
 			return v
@@ -170,12 +176,12 @@ func GetComponent(entity EntityRef, comptype ComponentType) any {
 }
 
 // adds or a sets a key in the entity's metadata
-func SetMeta(entity EntityRef, key string, val any) {
+func SetMeta(entity Ref, key string, val any) {
 	meta[entity][key] = val
 }
 
 // if the key exists, returns the value, otherwise it sets the value to the defaultVal parameter.
-func GetMeta(entity EntityRef, key string, defaultVal any) any {
+func GetMeta(entity Ref, key string, defaultVal any) any {
 	someta, ok := meta[entity][key]
 	if !ok {
 		someta = defaultVal
@@ -184,7 +190,7 @@ func GetMeta(entity EntityRef, key string, defaultVal any) any {
 }
 
 // as the name implies, it removes an entity
-func RemoveEntity(entity EntityRef) {
+func Remove(entity Ref) {
 	entities[entity].OnFree(entity)
 	delete(meta, entity)
 	delete(components, entity)
@@ -195,7 +201,7 @@ func RemoveEntity(entity EntityRef) {
 	delete(entities, entity)
 }
 
-func updateEntity(entity Entity, ref EntityRef) {
+func updateEntity(entity Entity, ref Ref) {
 	// :(
 	core.InternalInputFieldFocus = false
 	entity.OnGui(ref)
@@ -208,8 +214,8 @@ func updateEntity(entity Entity, ref EntityRef) {
 }
 
 // updates entities duh
-func UpdateAllEntities() {
-	if (Paused) {
+func UpdateAll() {
+	if Paused {
 		for _, ref := range GetGroup(GroupPausedManager) {
 			updateEntity(entities[ref], ref)
 		}

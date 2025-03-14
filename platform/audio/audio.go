@@ -12,12 +12,12 @@ import (
 // it's audio
 type Audio struct {
 	internal rl.Sound
-	path string
-	vol float64
+	path     string
+	vol      float64
 }
 
 var audioCache map[string]Audio
-var listener core.Vec3 = core.NewVec3(0, 0, 0)
+var listener core.Vec3 = core.Vec3{0, 0, 0}
 
 // inits audio :)
 func Init() {
@@ -46,8 +46,8 @@ func LoadAudio(path string) Audio {
 	// make a copy of the thingy
 	return Audio{
 		internal: audio.internal,
-		path: path,
-		vol: 1,
+		path:     path,
+		vol:      1,
 	}
 }
 
@@ -79,7 +79,7 @@ func (a Audio) Pause(pause bool) {
 
 // sets the panning. -1 is on the left, 1 is on the right, and 0 is on the center.
 func (a Audio) SetPan(pan float64) {
-	rl.SetSoundPan(a.internal, float32(0.5 - 0.5 * pan));
+	rl.SetSoundPan(a.internal, float32(0.5-0.5*pan))
 }
 
 // sets the volume for the audio. works like a percentage so 0.5 would be 50% of the original volume
@@ -93,9 +93,9 @@ func (a Audio) SetVolume(vol float64) {
 // sets the position for the audio. the z axis isn't used, it's just so you can easily pass a tile position
 func (a Audio) SetPosition(pos core.Vec3) {
 	var delta core.Vec3 = pos.Sub(listener)
-	var distance float64 = math.Sqrt(delta.X * delta.X + delta.Y * delta.Y)
-	var pan float64 = core.Clamp(delta.X / distance, -1, 1)
-	var vol float64 = core.Clamp(a.vol / a.vol + distance, 0, 1)
+	var distance float64 = math.Sqrt(delta.X*delta.X + delta.Y*delta.Y)
+	var pan float64 = core.Clamp(delta.X/distance, -1, 1)
+	var vol float64 = core.Clamp(a.vol/a.vol+distance, 0, 1)
 	a.SetPan(pan)
 	a.SetVolume(vol)
 }

@@ -45,7 +45,7 @@ func LoadTexture(path string) Texture {
 
 // returns the size of the texture in pixels
 func (t Texture) Size() core.Vec2i {
-	return core.NewVec2i(int64(t.width), int64(t.height))
+	return core.Vec2i{int64(t.width), int64(t.height)}
 }
 
 // frees the texture and removes it from the cache. if you want to reload the texture, use this

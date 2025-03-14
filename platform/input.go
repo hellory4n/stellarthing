@@ -63,7 +63,7 @@ func IsKeymapJustPressed(keymap string) bool {
 	}
 
 	for _, v := range keymapdeez {
-		if (IsKeyJustPressed(v)) {
+		if IsKeyJustPressed(v) {
 			return true
 		}
 	}
@@ -84,7 +84,7 @@ func IsKeymapJustReleased(keymap string) bool {
 	}
 
 	for _, v := range keymapdeez {
-		if (IsKeyJustReleased(v)) {
+		if IsKeyJustReleased(v) {
 			return true
 		}
 	}
@@ -105,7 +105,7 @@ func IsKeymapHeld(keymap string) bool {
 	}
 
 	for _, v := range keymapdeez {
-		if (IsKeyHeld(v)) {
+		if IsKeyHeld(v) {
 			return true
 		}
 	}
@@ -126,7 +126,7 @@ func IsKeymapNotPressed(keymap string) bool {
 	}
 
 	for _, v := range keymapdeez {
-		if (IsKeyNotPressed(v)) {
+		if IsKeyNotPressed(v) {
 			return true
 		}
 	}
@@ -136,15 +136,15 @@ func IsKeymapNotPressed(keymap string) bool {
 // returns the mouse position in the fake resolution thingy
 func MousePosition() core.Vec2 {
 	var realMouse rl.Vector2 = rl.GetMousePosition()
-	var virtMouse core.Vec2 = core.NewVec2(0, 0)
+	var virtMouse core.Vec2 = core.Vec2{0, 0}
 
 	scale := math.Min(
-		float64(rl.GetRenderWidth()) / float64(core.RenderSize.X),
-		float64(rl.GetRenderHeight()) / float64(core.RenderSize.Y),
+		float64(rl.GetRenderWidth())/float64(core.RenderSize.X),
+		float64(rl.GetRenderHeight())/float64(core.RenderSize.Y),
 	)
 	// :(
-	virtMouse.X = core.Clamp((float64(realMouse.X) - (float64(rl.GetRenderWidth()) - (float64(core.RenderSize.X) * scale)) * 0.5) / scale, 0, core.RenderSize.ToVec2().X)
-	virtMouse.Y = core.Clamp((float64(realMouse.Y) - (float64(rl.GetRenderHeight()) - (float64(core.RenderSize.Y) * scale)) * 0.5) / scale, 0, core.RenderSize.ToVec2().Y)
+	virtMouse.X = core.Clamp((float64(realMouse.X)-(float64(rl.GetRenderWidth())-(float64(core.RenderSize.X)*scale))*0.5)/scale, 0, core.RenderSize.ToVec2().X)
+	virtMouse.Y = core.Clamp((float64(realMouse.Y)-(float64(rl.GetRenderHeight())-(float64(core.RenderSize.Y)*scale))*0.5)/scale, 0, core.RenderSize.ToVec2().Y)
 
 	return virtMouse
 }

@@ -11,10 +11,6 @@ type Vec2 struct {
 	X, Y float64
 }
 
-func NewVec2(x float64, y float64) Vec2 {
-	return Vec2{X: x, Y: y}
-}
-
 func (v Vec2) String() string {
 	return fmt.Sprintf("vec2(%f, %f)", v.X, v.Y)
 }

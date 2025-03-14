@@ -7,10 +7,6 @@ type Vec3i struct {
 	X, Y, Z int64
 }
 
-func NewVec3i(x int64, y int64, z int64) Vec3i {
-	return Vec3i{X: x, Y: y, Z: z}
-}
-
 func (v Vec3i) String() string {
 	return fmt.Sprintf("vec3i(%d, %d, %d)", v.X, v.Y, v.Z)
 }

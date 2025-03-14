@@ -7,10 +7,6 @@ type Vec2i struct {
 	X, Y int64
 }
 
-func NewVec2i(x int64, y int64) Vec2i {
-	return Vec2i{X: x, Y: y}
-}
-
 func (v Vec2i) String() string {
 	return fmt.Sprintf("vec2i(%d, %d)", v.X, v.Y)
 }

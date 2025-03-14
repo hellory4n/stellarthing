@@ -14,13 +14,13 @@ const Debug = true
 const StarryVersionStr = "v4.0.0-dev"
 
 // engine version
-var StarryVersion Vec3i = NewVec3i(4, 0, 0)
+var StarryVersion Vec3i = Vec3i{4, 0, 0}
 
 // game version string
 const GameVersionStr = "v1.0.0-alpha"
 
 // game version
-var GameVersion Vec3i = NewVec3i(1, 0, 0)
+var GameVersion Vec3i = Vec3i{1, 0, 0}
 
 // yeah
 const GameName = "stellarthing"
@@ -37,7 +37,7 @@ func Assert(msg string, condition bool) {
 	if !Debug {
 		return
 	}
-	
+
 	if !condition {
 		panic(fmt.Sprintf("assert failed: %v\n", msg))
 	}

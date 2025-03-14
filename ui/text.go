@@ -7,7 +7,7 @@ import (
 )
 
 // single-line text input. please note it's very barebones (not good). writes whatever the user wrote to out
-func TextInput(pos core.Vec2, size core.Vec2, placeholder string, out *string) {
+func TextInput(x, y, w, h float64, placeholder string, out *string) {
 	// vertical centering
 	var textSize rl.Vector2
 	if *out == "" {
@@ -15,14 +15,14 @@ func TextInput(pos core.Vec2, size core.Vec2, placeholder string, out *string) {
 	} else {
 		textSize = rl.MeasureTextEx(boldFont, *out, float32(DefaultFontSize), 1)
 	}
-	var textY float64 = (size.Y / 2) - (float64(textSize.Y) / 2)
+	var textY float64 = (w / 2) - (float64(textSize.Y) / 2)
 
-	DrawTextInput(pos, size)
+	DrawTextInput(core.Vec2{x, y}, core.Vec2{w, h})
 
 	// mate
-	rect := core.NewRect(pos.X, pos.Y, size.X, size.Y)
+	rect := core.Rect{x, y, w, h}
 	if rect.HasPoint(platform.MousePosition()) {
-		DrawHoverOutline(pos, size)
+		DrawHoverOutline(core.Vec2{x, y}, core.Vec2{w, h})
 		// bullshit i did to see if it stops fucking with player input
 		core.InternalInputFieldFocus = true
 
@@ -43,18 +43,18 @@ func TextInput(pos core.Vec2, size core.Vec2, placeholder string, out *string) {
 		if platform.IsKeyJustPressed(platform.KeyBackspace) && len(*out) > 0 {
 			// we do this fuckery so you dont remove half a character
 			thingyButInRunes := []rune(*out)
-			thingyButInRunes = (thingyButInRunes)[:len(thingyButInRunes) - 1]
+			thingyButInRunes = (thingyButInRunes)[:len(thingyButInRunes)-1]
 			*out = string(thingyButInRunes)
 		}
 	}
 
 	// text.
-	rl.BeginScissorMode(int32(pos.X), int32(pos.Y), int32(size.X), int32(size.Y))
+	rl.BeginScissorMode(int32(x), int32(y), int32(w), int32(h))
 	if *out == "" {
-		DrawRegularText(placeholder, core.NewVec2(pos.X + 8, pos.Y + textY),
+		DrawRegularText(placeholder, core.Vec2{x + 8, y + textY},
 			DefaultFontSize, core.Rgba(255, 255, 255, 127))
 	} else {
-		DrawRegularText(*out, core.NewVec2(pos.X + 8, pos.Y + textY), DefaultFontSize, core.ColorWhite)
+		DrawRegularText(*out, core.Vec2{x + 8, y + textY}, DefaultFontSize, core.ColorWhite)
 	}
 	rl.EndScissorMode()
 }

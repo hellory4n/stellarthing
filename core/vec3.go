@@ -10,10 +10,6 @@ type Vec3 struct {
 	X, Y, Z float64
 }
 
-func NewVec3(x float64, y float64, z float64) Vec3 {
-	return Vec3{X: x, Y: y, Z: z}
-}
-
 func (v Vec3) String() string {
 	return fmt.Sprintf("vec3(%f, %f, %f)", v.X, v.Y, v.Z)
 }

@@ -78,7 +78,7 @@ dstSize core.Vec2, origin core.Vec2, angle float64, tint core.Color) {
 // draws a texture. if you want a comically large parameter list use DrawTextureExt instead
 func DrawTexture(texture Texture, pos core.Vec2, angle float64, color core.Color) {
 	DrawTextureExt(
-		texture, core.NewVec2(0, 0), texture.Size().ToVec2(), pos, texture.Size().ToVec2(),
-		core.NewVec2(0, 0), angle, color,
+		texture, core.Vec2{0, 0}, texture.Size().ToVec2(), pos, texture.Size().ToVec2(),
+		core.Vec2{0, 0}, angle, color,
 	)
 }

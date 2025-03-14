@@ -21,12 +21,12 @@ func init() {
 
 // converts degrees to radians
 func DegToRad(deg float64) float64 {
-	return deg * (math.Pi / 180.0);
+	return deg * (math.Pi / 180.0)
 }
 
 // converts radians to degrees
 func RadToDeg(rad float64) float64 {
-	return rad * (180 / math.Pi);
+	return rad * (180 / math.Pi)
 }
 
 // clamp
@@ -35,7 +35,7 @@ func Clamp(val float64, min float64, max float64) float64 {
 }
 
 func RandInt(min int, max int) int {
-	return randGen.Intn(max - min) + min
+	return randGen.Intn(max-min) + min
 }
 
 func RandFloat(min float64, max float64) float64 {
