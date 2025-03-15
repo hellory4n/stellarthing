@@ -91,16 +91,16 @@ func NewWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *World {
 }
 
 // sets the camera position and loads chunks
-func (t *World) SetCameraPosition(pos core.Vec3) {
+func (w *World) SetCameraPosition(pos core.Vec3) {
 	// so i can use early returns :)
-	defer func() { t.CameraPosition = pos }()
+	defer func() { w.CameraPosition = pos }()
 
 	chunkX := int64(pos.X / float64(ChunkSize))
 	chunkY := int64(pos.Y / float64(ChunkSize))
 	chunkPos := core.Vec3i{chunkX, chunkY, int64(pos.Z)}
 
 	// do we even have to load it at all?
-	_, hasChunk := t.LoadedGroundTiles[core.Vec3i{int64(pos.X), int64(pos.Y), int64(pos.Z)}]
+	_, hasChunk := w.LoadedGroundTiles[core.Vec3i{int64(pos.X), int64(pos.Y), int64(pos.Z)}]
 	if hasChunk {
 		return
 	}
@@ -109,16 +109,16 @@ func (t *World) SetCameraPosition(pos core.Vec3) {
 	// generate multiple chunks fuck it
 	man := func(offset core.Vec3i) {
 		fmt.Printf("[TILEMAP] Generating chunk at %v\n", chunkPos.Add(offset))
-		newGround, newObjects := GenerateChunk(t.randGen, chunkPos.Add(offset))
+		newGround, newObjects := GenerateChunk(w.randGen, chunkPos.Add(offset))
 
 		// copy crap
 		for k, v := range newGround {
-			t.LoadedGroundTiles[k] = v
+			w.LoadedGroundTiles[k] = v
 		}
 		for k, v := range newObjects {
-			t.LoadedObjectTiles[k] = v
+			w.LoadedObjectTiles[k] = v
 		}
-		t.LoadedChunks = append(t.LoadedChunks, chunkPos.Add(offset))
+		w.LoadedChunks = append(w.LoadedChunks, chunkPos.Add(offset))
 	}
 	man(core.Vec3i{0, 0, 0})
 	man(core.Vec3i{-1, -1, 0})
@@ -142,7 +142,7 @@ func (t *World) GetTile(pos core.Vec3i, ground bool) *Tile {
 
 // as the name implies, it makes a new tile. if the variation doesn't exist, it's gonna copy the
 // default variation too
-func (t *World) NewTile(pos core.Vec3i, ground bool, tile Id, ent entity.Ref,
+func (w *World) NewTile(pos core.Vec3i, ground bool, tile Id, ent entity.Ref,
 	variation Variation) *Tile {
 	var letile *Tile = &Tile{
 		TileId:    tile,
@@ -156,22 +156,22 @@ func (t *World) NewTile(pos core.Vec3i, ground bool, tile Id, ent entity.Ref,
 	}
 
 	if ground {
-		t.LoadedGroundTiles[pos] = letile
+		w.LoadedGroundTiles[pos] = letile
 	} else {
-		t.LoadedObjectTiles[pos] = letile
+		w.LoadedObjectTiles[pos] = letile
 	}
 
 	// man
 	if ent != 0 {
-		t.theyMightBeMoving = append(t.theyMightBeMoving, letile)
+		w.theyMightBeMoving = append(w.theyMightBeMoving, letile)
 	}
 
 	return letile
 }
 
-func (t *World) drawTile(pos core.Vec2i, ground bool) {
+func (w *World) drawTile(pos core.Vec2i, ground bool) {
 	// grod ng tiles
-	tile := t.GetTile(core.Vec3i{pos.X, pos.Y, int64(t.CameraPosition.Z)}, ground)
+	tile := w.GetTile(core.Vec3i{pos.X, pos.Y, int64(w.CameraPosition.Z)}, ground)
 	if tile == nil {
 		return
 	}
@@ -186,13 +186,13 @@ func (t *World) drawTile(pos core.Vec2i, ground bool) {
 		// im going insane
 		// im watching my life go down the drain
 		pospos = core.Vec2{
-			((data.Position.X - t.CameraPosition.X) * texture.Size().ToVec2().X) + t.CameraOffset.X,
-			((data.Position.Y - t.CameraPosition.Y) * texture.Size().ToVec2().Y) + t.CameraOffset.Y,
+			((data.Position.X - w.CameraPosition.X) * texture.Size().ToVec2().X) + w.CameraOffset.X,
+			((data.Position.Y - w.CameraPosition.Y) * texture.Size().ToVec2().Y) + w.CameraOffset.Y,
 		}
 	} else {
 		pospos = core.Vec2{
-			((float64(pos.X) - t.CameraPosition.X) * texture.Size().ToVec2().X) + t.CameraOffset.X,
-			((float64(pos.Y) - t.CameraPosition.Y) * texture.Size().ToVec2().Y) + t.CameraOffset.Y,
+			((float64(pos.X) - w.CameraPosition.X) * texture.Size().ToVec2().X) + w.CameraOffset.X,
+			((float64(pos.Y) - w.CameraPosition.Y) * texture.Size().ToVec2().Y) + w.CameraOffset.Y,
 		}
 	}
 
@@ -200,27 +200,27 @@ func (t *World) drawTile(pos core.Vec2i, ground bool) {
 }
 
 // it draws the world. no shit.
-func (t *World) Draw() {
+func (w *World) Draw() {
 	// we draw the neighbors of the current chunk so it doesn't look funny
 	// when crossing chunk borders
-	renderAreaStartX := int64(math.Floor(t.CameraPosition.X - float64(ChunkSize)))
-	renderAreaStartY := int64(math.Floor(t.CameraPosition.Y - float64(ChunkSize)))
-	renderAreaEndX := int64(math.Floor(t.CameraPosition.X + float64(ChunkSize)))
-	renderAreaEndY := int64(math.Floor(t.CameraPosition.Y + float64(ChunkSize)))
+	renderAreaStartX := int64(math.Floor(w.CameraPosition.X - float64(ChunkSize)))
+	renderAreaStartY := int64(math.Floor(w.CameraPosition.Y - float64(ChunkSize)))
+	renderAreaEndX := int64(math.Floor(w.CameraPosition.X + float64(ChunkSize)))
+	renderAreaEndY := int64(math.Floor(w.CameraPosition.Y + float64(ChunkSize)))
 
 	for x := renderAreaStartX; x < renderAreaEndX; x++ {
 		for y := renderAreaStartY; y < renderAreaEndY; y++ {
-			t.drawTile(core.Vec2i{x, y}, true)
+			w.drawTile(core.Vec2i{x, y}, true)
 		}
 	}
 
 	for x := renderAreaStartX; x < renderAreaEndX; x++ {
 		for y := renderAreaStartY; y < renderAreaEndY; y++ {
-			t.drawTile(core.Vec2i{x, y}, false)
+			w.drawTile(core.Vec2i{x, y}, false)
 		}
 	}
 
-	for _, tile := range t.theyMightBeMoving {
+	for _, tile := range w.theyMightBeMoving {
 		// AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 		if tile == nil {
 			return
@@ -236,8 +236,8 @@ func (t *World) Draw() {
 			// im going insane
 			// im watching my life go down the drain
 			pospos = core.Vec2{
-				((data.Position.X - t.CameraPosition.X) * texture.Size().ToVec2().X) + t.CameraOffset.X,
-				((data.Position.Y - t.CameraPosition.Y) * texture.Size().ToVec2().Y) + t.CameraOffset.Y,
+				((data.Position.X - w.CameraPosition.X) * texture.Size().ToVec2().X) + w.CameraOffset.X,
+				((data.Position.Y - w.CameraPosition.Y) * texture.Size().ToVec2().Y) + w.CameraOffset.Y,
 			}
 		} else {
 			continue
@@ -248,18 +248,18 @@ func (t *World) Draw() {
 }
 
 // gets a tile position from screen positions
-func (t *World) ScreenToTile(pos core.Vec2, textureSize core.Vec2i) core.Vec3i {
+func (w *World) ScreenToTile(pos core.Vec2, textureSize core.Vec2i) core.Vec3i {
 	return core.Vec3i{
-		int64(math.Floor(((pos.X - t.CameraOffset.X) / textureSize.ToVec2().X) + t.CameraPosition.X)),
-		int64(math.Floor(((pos.Y - t.CameraOffset.Y) / textureSize.ToVec2().Y) + t.CameraPosition.Y)),
-		int64(t.CameraPosition.Z),
+		int64(math.Floor(((pos.X - w.CameraOffset.X) / textureSize.ToVec2().X) + w.CameraPosition.X)),
+		int64(math.Floor(((pos.Y - w.CameraOffset.Y) / textureSize.ToVec2().Y) + w.CameraPosition.Y)),
+		int64(w.CameraPosition.Z),
 	}
 }
 
 // gets a screen position from tile positions
-func (t *World) TileToScreen(pos core.Vec3i, textureSize core.Vec2i) core.Vec2 {
+func (w *World) TileToScreen(pos core.Vec3i, textureSize core.Vec2i) core.Vec2 {
 	return core.Vec2{
-		((float64(pos.X) - t.CameraPosition.X) * textureSize.ToVec2().X) + t.CameraOffset.X,
-		((float64(pos.Y) - t.CameraPosition.Y) * textureSize.ToVec2().Y) + t.CameraOffset.Y,
+		((float64(pos.X) - w.CameraPosition.X) * textureSize.ToVec2().X) + w.CameraOffset.X,
+		((float64(pos.Y) - w.CameraPosition.Y) * textureSize.ToVec2().Y) + w.CameraOffset.Y,
 	}
 }

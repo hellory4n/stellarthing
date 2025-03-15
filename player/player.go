@@ -41,18 +41,20 @@ func (p *Player) OnCreate(ent entity.Ref) {
 
 func (p *Player) OnUpdate(ent entity.Ref, delta float64) {
 	// move.
+	var move core.Vec3
 	if platform.IsKeymapHeld("move_left") {
-		p.tileData.Position = p.tileData.Position.Add(core.Vec3{-speed * delta, 0, 0})
+		move = core.Vec3{-speed * delta, 0, 0}
 	}
 	if platform.IsKeymapHeld("move_right") {
-		p.tileData.Position = p.tileData.Position.Add(core.Vec3{speed * delta, 0, 0})
+		move = core.Vec3{speed * delta, 0, 0}
 	}
 	if platform.IsKeymapHeld("move_up") {
-		p.tileData.Position = p.tileData.Position.Add(core.Vec3{0, -speed * delta, 0})
+		move = core.Vec3{0, -speed * delta, 0}
 	}
 	if platform.IsKeymapHeld("move_down") {
-		p.tileData.Position = p.tileData.Position.Add(core.Vec3{0, speed * delta, 0})
+		move = core.Vec3{0, speed * delta, 0}
 	}
+	p.tileData.Position = tile.ThisWorld.Collide(p.tileData.Position, move)
 	tile.ThisWorld.SetCameraPosition(p.tileData.Position)
 
 	p.updateHotbar()
