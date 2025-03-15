@@ -55,8 +55,8 @@ type World struct {
 	// the bottom right corner
 	EndPos core.Vec2i
 	// the keys are vec3is, i used a string so it works in json
-	LoadedGroundTiles map[string]*Tile
-	LoadedObjectTiles map[string]*Tile
+	LoadedGroundTiles map[core.Vec3i]*Tile
+	LoadedObjectTiles map[core.Vec3i]*Tile
 	LoadedChunks      []core.Vec3i
 	// this sucks
 	theyMightBeMoving []*Tile
@@ -72,8 +72,8 @@ func NewWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *World {
 	tilhjjh.EndPos = endPos
 	tilhjjh.Seed = seed
 	tilhjjh.randGen = rand.New(rand.NewSource(tilhjjh.Seed))
-	tilhjjh.LoadedGroundTiles = make(map[string]*Tile)
-	tilhjjh.LoadedObjectTiles = make(map[string]*Tile)
+	tilhjjh.LoadedGroundTiles = make(map[core.Vec3i]*Tile)
+	tilhjjh.LoadedObjectTiles = make(map[core.Vec3i]*Tile)
 	tilhjjh.CameraOffset = core.RenderSize.Sdiv(2).ToVec2()
 
 	fmt.Println("[TILEMAP] Created new world")
@@ -100,7 +100,7 @@ func (t *World) SetCameraPosition(pos core.Vec3) {
 	chunkPos := core.Vec3i{chunkX, chunkY, int64(pos.Z)}
 
 	// do we even have to load it at all?
-	_, hasChunk := t.LoadedGroundTiles[core.Vec3i{int64(pos.X), int64(pos.Y), int64(pos.Z)}.String()]
+	_, hasChunk := t.LoadedGroundTiles[core.Vec3i{int64(pos.X), int64(pos.Y), int64(pos.Z)}]
 	if hasChunk {
 		return
 	}
@@ -113,10 +113,10 @@ func (t *World) SetCameraPosition(pos core.Vec3) {
 
 		// copy crap
 		for k, v := range newGround {
-			t.LoadedGroundTiles[k.String()] = v
+			t.LoadedGroundTiles[k] = v
 		}
 		for k, v := range newObjects {
-			t.LoadedObjectTiles[k.String()] = v
+			t.LoadedObjectTiles[k] = v
 		}
 		t.LoadedChunks = append(t.LoadedChunks, chunkPos.Add(offset))
 	}
@@ -134,9 +134,9 @@ func (t *World) SetCameraPosition(pos core.Vec3) {
 // as the name implies, it gets a tile
 func (t *World) GetTile(pos core.Vec3i, ground bool) *Tile {
 	if ground {
-		return t.LoadedGroundTiles[pos.String()]
+		return t.LoadedGroundTiles[pos]
 	} else {
-		return t.LoadedObjectTiles[pos.String()]
+		return t.LoadedObjectTiles[pos]
 	}
 }
 
@@ -156,9 +156,9 @@ func (t *World) NewTile(pos core.Vec3i, ground bool, tile Id, ent entity.Ref,
 	}
 
 	if ground {
-		t.LoadedGroundTiles[pos.String()] = letile
+		t.LoadedGroundTiles[pos] = letile
 	} else {
-		t.LoadedObjectTiles[pos.String()] = letile
+		t.LoadedObjectTiles[pos] = letile
 	}
 
 	// man

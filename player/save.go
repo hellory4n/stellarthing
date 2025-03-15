@@ -1,7 +1,8 @@
 package player
 
 import (
-	"encoding/json"
+	"bytes"
+	"encoding/gob"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -17,7 +18,7 @@ const CurrentUniverse string = "the big dong theorem"
 const CurrentWorld string = "sigmoid_curve"
 
 var universePath string = filepath.Join(core.GetUserDir(), "saves", CurrentUniverse)
-var worldPath string = filepath.Join(core.GetUserDir(), "saves", CurrentUniverse, CurrentWorld+".json")
+var worldPath string = filepath.Join(core.GetUserDir(), "saves", CurrentUniverse, CurrentWorld+".gob")
 
 func (p *Player) setupSave(ent entity.Ref) {
 	if _, err := os.Stat(worldPath); err != nil {
@@ -55,9 +56,9 @@ func (p *Player) loadTilemap(ent entity.Ref) {
 	}
 
 	var uy *tile.World
-	err = json.Unmarshal(bytema, &uy)
-	fmt.Println(uy)
-	if err != nil {
+	buf := bytes.NewBuffer(bytema)
+	decodema := gob.NewDecoder(buf)
+	if err := decodema.Decode(&uy); err != nil {
 		panic(fmt.Sprintf("[SAVE] couldn't load world: %v\n", err.Error()))
 	}
 	tile.ThisWorld = uy
@@ -78,12 +79,13 @@ func (p *Player) saveTilemap() {
 		return
 	}
 
-	bytema, err := json.Marshal(tile.ThisWorld)
-	if err != nil {
+	var buf bytes.Buffer
+	encodema := gob.NewEncoder(&buf)
+	if err := encodema.Encode(tile.ThisWorld); err != nil {
 		panic(fmt.Sprintf("[SAVE] couldn't save world: %v\n", err.Error()))
 	}
 
-	err = os.WriteFile(worldPath, bytema, os.ModePerm)
+	err := os.WriteFile(worldPath, buf.Bytes(), os.ModePerm)
 	if err != nil {
 		panic(fmt.Sprintf("[SAVE] couldn't save world: %v\n", err.Error()))
 	}
