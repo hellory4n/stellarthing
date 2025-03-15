@@ -35,13 +35,8 @@ func (p *Player) OnCreate(ent entity.Ref) {
 	platform.AddKeymap("move_down", platform.KeyS)
 	platform.AddKeymap("move_down", platform.KeyDown)
 
-	p.tile = tile.ThisWorld.NewTile(core.Vec3i{0, 0, 0}, false, tile.BobGuy, ent, tile.Variation(ent))
-	p.tileData = p.tile.GetData()
-	p.tileData.Position = core.Vec3{15, 0, 0}
-	tile.ThisWorld.SetCameraPosition(p.tileData.Position)
-	p.tileData.UsingCustomPos = true
-
 	p.initHotbar()
+	p.setupSave(ent)
 }
 
 func (p *Player) OnUpdate(ent entity.Ref, delta float64) {
@@ -73,11 +68,13 @@ func (p *Player) OnDraw(ent entity.Ref) {
 		1-9 to change hotbar crap
 		left click to place
 		right click to break
-		f3 shows some crap`,
+		f3 shows some crap
+		restart to test saving pls`,
 		core.Vec2{950, 500}, ui.DefaultFontSize, core.ColorWhite,
 	)
 }
 
 func (p *Player) OnFree(ent entity.Ref) {
-	fmt.Println("rip")
+	// just in case
+	p.saveTilemap()
 }

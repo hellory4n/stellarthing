@@ -6,10 +6,10 @@ import (
 	"github.com/hellory4n/stellarthing/core"
 )
 
-// first result is ground tiles, 2nd is object tiles (cities use those)
-func GenerateChunk(randgen *rand.Rand, chunkPos core.Vec3i) (map[core.Vec3i]*Tile, map[core.Vec3i]*Tile) {
-	ground := make(map[core.Vec3i]*Tile)
-	objects := make(map[core.Vec3i]*Tile)
+func GenerateChunk(randgen *rand.Rand, chunkPos core.Vec3i) (ground map[core.Vec3i]*Tile,
+	objects map[core.Vec3i]*Tile) {
+	ground = make(map[core.Vec3i]*Tile)
+	objects = make(map[core.Vec3i]*Tile)
 
 	chunkStartX := chunkPos.X * ChunkSize
 	chunkStartY := chunkPos.Y * ChunkSize

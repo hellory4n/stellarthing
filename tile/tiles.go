@@ -22,11 +22,11 @@ type Variation uint32
 
 const (
 	Air      Id = 0
-	BobGuy      = 370779849
-	MarsRock    = 2370611866
-	BlueGuy     = 3620194283
-	GreenGuy    = 1097781405
-	Life        = 4262882056
+	BobGuy   Id = 370779849
+	MarsRock Id = 2370611866
+	BlueGuy  Id = 3620194283
+	GreenGuy Id = 1097781405
+	Life     Id = 4262882056
 )
 
 // tile data from IDs and variations

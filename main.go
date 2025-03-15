@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/core/util"
 	"github.com/hellory4n/stellarthing/entity"
@@ -28,9 +26,6 @@ func main() {
 
 	audio.Init()
 	defer audio.FreeAllAudio()
-
-	world := tile.NewWorld(core.Vec2i{-250, -250}, core.Vec2i{250, 250}, time.Now().UnixNano())
-	tile.ThisWorld = world
 
 	entity.Init()
 	defer entity.Free()
