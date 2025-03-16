@@ -39,7 +39,8 @@ func (p *Player) firstTime(ent entity.Ref) {
 	world := tile.NewWorld(core.Vec2i{-250, -250}, core.Vec2i{250, 250}, time.Now().UnixNano())
 	tile.ThisWorld = world
 
-	p.tile = tile.ThisWorld.NewTile(core.Vec3i{0, 0, 0}, false, tile.BobGuy, ent, tile.Variation(ent))
+	p.tile = tile.ThisWorld.NewTile(core.Vec3i{int64(core.Int32Min), int64(core.Int32Min), 0}, false,
+		tile.BobGuy, ent, tile.Variation(ent))
 	p.tileData = p.tile.GetData()
 	p.tileData.Position = core.Vec3{8, 8, 0}
 	tile.ThisWorld.SetCameraPosition(p.tileData.Position)
@@ -65,7 +66,8 @@ func (p *Player) loadTilemap(ent entity.Ref) {
 	tile.ThisWorld = uy
 
 	// the player position is always the camera position
-	p.tile = tile.ThisWorld.NewTile(core.Vec3i{0, 0, 0}, false, tile.BobGuy, ent, tile.Variation(ent))
+	p.tile = tile.ThisWorld.NewTile(core.Vec3i{int64(core.Int32Min), int64(core.Int32Min), 0}, false,
+		tile.BobGuy, ent, tile.Variation(ent))
 	p.tileData = p.tile.GetData()
 	p.tileData.Position = tile.ThisWorld.CameraPosition
 	tile.ThisWorld.SetCameraPosition(p.tileData.Position)
