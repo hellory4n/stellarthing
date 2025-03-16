@@ -3,6 +3,7 @@ package player
 import (
 	"bytes"
 	"encoding/gob"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -19,6 +20,21 @@ const CurrentWorld string = "sigmoid_curve"
 
 var universePath string = filepath.Join(core.GetUserDir(), "saves", CurrentUniverse)
 var worldPath string = filepath.Join(core.GetUserDir(), "saves", CurrentUniverse, CurrentWorld+".gob")
+var versionPath string = filepath.Join(core.GetUserDir(), "saves", CurrentUniverse, "versions.json")
+
+type versions struct {
+	StarryVersion  core.Vec3i
+	GameVersion    core.Vec3i
+	PluginVersions map[string]core.Vec3i
+}
+
+func newver() versions {
+	return versions{
+		StarryVersion:  core.StarryVersion,
+		GameVersion:    core.GameVersion,
+		PluginVersions: make(map[string]core.Vec3i),
+	}
+}
 
 func (p *Player) setupSave(ent entity.Ref) {
 	if _, err := os.Stat(worldPath); err != nil {
@@ -35,6 +51,17 @@ func (p *Player) setupSave(ent entity.Ref) {
 func (p *Player) firstTime(ent entity.Ref) {
 	// hehe
 	os.MkdirAll(universePath, os.ModePerm)
+
+	// save the version
+	bytema, err := json.Marshal(newver())
+	if err != nil {
+		panic(fmt.Sprintf("[SAVE] couldn't save world: %v\n", err.Error()))
+	}
+
+	err = os.WriteFile(versionPath, bytema, os.ModePerm)
+	if err != nil {
+		panic(fmt.Sprintf("[SAVE] couldn't save world: %v\n", err.Error()))
+	}
 
 	world := tile.NewWorld(core.Vec2i{-250, -250}, core.Vec2i{250, 250}, time.Now().UnixNano())
 	tile.ThisWorld = world
