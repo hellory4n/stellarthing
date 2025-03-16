@@ -11,7 +11,7 @@ best game engine in the world awards 1922 winner
 - `assets/`: stuff that isn't code
 - `core/`: common functionality
 - `core/util/`: didn't know where else to put it
-- `entity/`: bestest entity system ever see [./entities.md]
+- `entity/`: bestest entity system ever
 - `platform/`: pretty much just a layer of stuff over raylib in case I decide to not use raylib
 - `player/`: we care about players so much we gave them a whole folder ❤️ what am i saying
 - `tile/`: tilemap system (it's quite tricky)
