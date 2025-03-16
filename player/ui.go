@@ -13,6 +13,7 @@ func (p *Player) initHotbar() {
 	p.hotbar[0] = tile.Tile{TileId: tile.BlueGuy}
 	p.hotbar[1] = tile.Tile{TileId: tile.GreenGuy}
 	p.hotbar[2] = tile.Tile{TileId: tile.Life}
+	p.hotbar[3] = tile.Tile{TileId: tile.MarsRock}
 }
 
 func (p *Player) updateHotbar() {
@@ -93,9 +94,13 @@ func (p *Player) updateHotbar() {
 func (p *Player) drawHotbar() {
 	// hover tiles and shit
 	pos := tile.ThisWorld.ScreenToTile(platform.MousePosition(), core.Vec2i{64, 64})
-	graphics.DrawTexture(
+	graphics.DrawTextureExt(
 		graphics.LoadTexture("assets/highlight.png"),
+		core.Vec2{0, 0},
+		graphics.LoadTexture("assets/highlight.png").Size().ToVec2(),
 		tile.ThisWorld.TileToScreen(pos, core.Vec2i{64, 64}),
+		graphics.LoadTexture("assets/highlight.png").Size().ToVec2().Mul(tile.ThisWorld.CameraScale),
+		core.Vec2{0, 0},
 		0, core.ColorWhite,
 	)
 

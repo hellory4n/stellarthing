@@ -59,6 +59,13 @@ func (p *Player) OnUpdate(ent entity.Ref, delta float64) {
 	tile.ThisWorld.SetCameraPosition(p.tileData.Position)
 
 	p.updateHotbar()
+
+	// zoom in/out :)
+	if platform.GetScroll() > 0.9 {
+		tile.ThisWorld.CameraScale = tile.ThisWorld.CameraScale.Smul(1.5)
+	} else if platform.GetScroll() < -0.9 {
+		tile.ThisWorld.CameraScale = tile.ThisWorld.CameraScale.Sdiv(1.5)
+	}
 }
 
 func (p *Player) OnGui(ent entity.Ref) {}
@@ -71,6 +78,7 @@ func (p *Player) OnDraw(ent entity.Ref) {
 1-9 to change hotbar crap
 left click to place
 right click to break
+scroll to zoom
 f3 shows some crap
 restart to test saving pls`,
 		core.Vec2{950, 500}, ui.DefaultFontSize, core.ColorWhite,

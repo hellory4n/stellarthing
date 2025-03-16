@@ -38,7 +38,7 @@ func UpdateDebugMode() {
 	if tile.ThisWorld != nil {
 		text = fmt.Sprintf(
 			"%v\n\nTilemap camera: %v\nLoaded ground tiles: %v (~%v chunks)\n"+
-				"Loaded object tiles: %v (~%v chunks)\nCurrent chunk: %v",
+				"Loaded object tiles: %v (~%v chunks)\nCurrent chunk: %v\nZoom: %v",
 			text, tile.ThisWorld.CameraPosition,
 			len(tile.ThisWorld.LoadedGroundTiles),
 			int64(len(tile.ThisWorld.LoadedGroundTiles))/tile.ChunkSize/tile.ChunkSize,
@@ -50,6 +50,7 @@ func UpdateDebugMode() {
 				int64(math.Floor(tile.ThisWorld.CameraPosition.Y / float64(tile.ChunkSize))),
 				int64(tile.ThisWorld.CameraPosition.Z),
 			},
+			tile.ThisWorld.CameraScale,
 		)
 	}
 

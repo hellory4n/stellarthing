@@ -50,6 +50,8 @@ type World struct {
 	CameraPosition core.Vec3
 	// mate
 	CameraOffset core.Vec2
+	// multiplier. you can zoom in on things.
+	CameraScale core.Vec2
 	// the top left corner
 	StartPos core.Vec2i
 	// the bottom right corner
@@ -75,7 +77,7 @@ func NewWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *World {
 	tilhjjh.LoadedGroundTiles = make(map[core.Vec3i]*Tile)
 	tilhjjh.LoadedObjectTiles = make(map[core.Vec3i]*Tile)
 	tilhjjh.CameraOffset = core.RenderSize.Sdiv(2).ToVec2()
-
+	tilhjjh.CameraScale = core.Vec2{1, 1}
 	fmt.Println("[TILEMAP] Created new world")
 
 	// load some chunks :)
@@ -186,27 +188,52 @@ func (w *World) drawTile(pos core.Vec2i, ground bool) {
 		// im going insane
 		// im watching my life go down the drain
 		pospos = core.Vec2{
-			((data.Position.X - w.CameraPosition.X) * texture.Size().ToVec2().X) + w.CameraOffset.X,
-			((data.Position.Y - w.CameraPosition.Y) * texture.Size().ToVec2().Y) + w.CameraOffset.Y,
+			((data.Position.X - w.CameraPosition.X) * (texture.Size().ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
+			((data.Position.Y - w.CameraPosition.Y) * (texture.Size().ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 		}
 	} else {
 		pospos = core.Vec2{
-			((float64(pos.X) - w.CameraPosition.X) * texture.Size().ToVec2().X) + w.CameraOffset.X,
-			((float64(pos.Y) - w.CameraPosition.Y) * texture.Size().ToVec2().Y) + w.CameraOffset.Y,
+			((float64(pos.X) - w.CameraPosition.X) * (texture.Size().ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
+			((float64(pos.Y) - w.CameraPosition.Y) * (texture.Size().ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 		}
 	}
 
-	graphics.DrawTexture(texture, pospos, 0, data.Tint)
+	graphics.DrawTextureExt(
+		texture,
+		core.Vec2{0, 0},
+		texture.Size().ToVec2(),
+		pospos,
+		texture.Size().ToVec2().Mul(w.CameraScale),
+		core.Vec2{0, 0},
+		0, data.Tint,
+	)
 }
 
 // it draws the world. no shit.
 func (w *World) Draw() {
-	// we draw the neighbors of the current chunk so it doesn't look funny
-	// when crossing chunk borders
-	renderAreaStartX := int64(math.Floor(w.CameraPosition.X - float64(ChunkSize)))
-	renderAreaStartY := int64(math.Floor(w.CameraPosition.Y - float64(ChunkSize)))
-	renderAreaEndX := int64(math.Floor(w.CameraPosition.X + float64(ChunkSize)))
-	renderAreaEndY := int64(math.Floor(w.CameraPosition.Y + float64(ChunkSize)))
+	// stop busting
+	var renderAreaStartX int64
+	var renderAreaStartY int64
+	var renderAreaEndX int64
+	var renderAreaEndY int64
+
+	// we draw the neighbors of the current chunk so it doesn't look funny when crossing chunk borders
+	// you can see more if you're really zoomed out
+	// * 1.5 on the x axis because screens are wide
+	if w.CameraScale.Lt(core.Vec2{0.9, 0.9}) {
+		// When zoomed out, extend the render area by a factor of 1/scale,
+		// plus an extra 1.5 multiplier on the x axis for wider screens.
+		renderAreaStartX = int64(math.Floor(w.CameraPosition.X - float64(ChunkSize)*(1.5/w.CameraScale.X)))
+		renderAreaStartY = int64(math.Floor(w.CameraPosition.Y - float64(ChunkSize)*(1.0/w.CameraScale.Y)))
+		renderAreaEndX = int64(math.Floor(w.CameraPosition.X + float64(ChunkSize)*(1.5/w.CameraScale.X)))
+		renderAreaEndY = int64(math.Floor(w.CameraPosition.Y + float64(ChunkSize)*(1.0/w.CameraScale.Y)))
+	} else {
+		// At normal zoom, show just one chunk size around the camera.
+		renderAreaStartX = int64(math.Floor(w.CameraPosition.X - float64(ChunkSize)))
+		renderAreaStartY = int64(math.Floor(w.CameraPosition.Y - float64(ChunkSize)))
+		renderAreaEndX = int64(math.Floor(w.CameraPosition.X + float64(ChunkSize)))
+		renderAreaEndY = int64(math.Floor(w.CameraPosition.Y + float64(ChunkSize)))
+	}
 
 	for x := renderAreaStartX; x < renderAreaEndX; x++ {
 		for y := renderAreaStartY; y < renderAreaEndY; y++ {
@@ -236,22 +263,30 @@ func (w *World) Draw() {
 			// im going insane
 			// im watching my life go down the drain
 			pospos = core.Vec2{
-				((data.Position.X - w.CameraPosition.X) * texture.Size().ToVec2().X) + w.CameraOffset.X,
-				((data.Position.Y - w.CameraPosition.Y) * texture.Size().ToVec2().Y) + w.CameraOffset.Y,
+				((data.Position.X - w.CameraPosition.X) * (texture.Size().ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
+				((data.Position.Y - w.CameraPosition.Y) * (texture.Size().ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 			}
 		} else {
 			continue
 		}
 
-		graphics.DrawTexture(texture, pospos, 0, data.Tint)
+		graphics.DrawTextureExt(
+			texture,
+			core.Vec2{0, 0},
+			texture.Size().ToVec2(),
+			pospos,
+			texture.Size().ToVec2().Mul(w.CameraScale),
+			core.Vec2{0, 0},
+			0, data.Tint,
+		)
 	}
 }
 
 // gets a tile position from screen positions
 func (w *World) ScreenToTile(pos core.Vec2, textureSize core.Vec2i) core.Vec3i {
 	return core.Vec3i{
-		int64(math.Floor(((pos.X - w.CameraOffset.X) / textureSize.ToVec2().X) + w.CameraPosition.X)),
-		int64(math.Floor(((pos.Y - w.CameraOffset.Y) / textureSize.ToVec2().Y) + w.CameraPosition.Y)),
+		int64(math.Floor(((pos.X - w.CameraOffset.X) / (textureSize.ToVec2().X * w.CameraScale.X)) + w.CameraPosition.X)),
+		int64(math.Floor(((pos.Y - w.CameraOffset.Y) / (textureSize.ToVec2().Y * w.CameraScale.Y)) + w.CameraPosition.Y)),
 		int64(w.CameraPosition.Z),
 	}
 }
@@ -259,7 +294,7 @@ func (w *World) ScreenToTile(pos core.Vec2, textureSize core.Vec2i) core.Vec3i {
 // gets a screen position from tile positions
 func (w *World) TileToScreen(pos core.Vec3i, textureSize core.Vec2i) core.Vec2 {
 	return core.Vec2{
-		((float64(pos.X) - w.CameraPosition.X) * textureSize.ToVec2().X) + w.CameraOffset.X,
-		((float64(pos.Y) - w.CameraPosition.Y) * textureSize.ToVec2().Y) + w.CameraOffset.Y,
+		((float64(pos.X) - w.CameraPosition.X) * (textureSize.ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
+		((float64(pos.Y) - w.CameraPosition.Y) * (textureSize.ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 	}
 }

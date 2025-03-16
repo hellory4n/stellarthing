@@ -148,3 +148,11 @@ func MousePosition() core.Vec2 {
 
 	return virtMouse
 }
+
+// returns the movement of the scroll wheel, positive if scrolling up and negative if scrolling down.
+// note that while it could be +1/-1, the value could also be higher/smaller if you're scrolling
+// really fast. honestly idfk
+func GetScroll() float64 {
+	// who tf scrolls horizontally
+	return float64(rl.GetMouseWheelMoveV().Y)
+}
