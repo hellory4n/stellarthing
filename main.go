@@ -1,10 +1,6 @@
 package main
 
 import (
-	"log"
-	"os"
-	"runtime/pprof"
-
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/core/util"
 	"github.com/hellory4n/stellarthing/entity"
@@ -29,7 +25,7 @@ func main() {
 	defer ui.FreeTheme()
 
 	audio.Init()
-	defer audio.FreeAllAudio()
+	defer audio.FreeAll()
 
 	entity.Init()
 	defer entity.Free()
@@ -55,11 +51,4 @@ func main() {
 		util.UpdateDebugMode()
 		graphics.EndDrawing()
 	}
-
-	f, err := os.Create("heap.prof")
-	if err != nil {
-		log.Fatal(err)
-	}
-	pprof.WriteHeapProfile(f)
-	f.Close()
 }

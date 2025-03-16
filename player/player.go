@@ -67,11 +67,11 @@ func (p *Player) OnDraw(ent entity.Ref) {
 
 	ui.DrawRegularText(
 		`wasd to move
-		1-9 to change hotbar crap
-		left click to place
-		right click to break
-		f3 shows some crap
-		restart to test saving pls`,
+1-9 to change hotbar crap
+left click to place
+right click to break
+f3 shows some crap
+restart to test saving pls`,
 		core.Vec2{950, 500}, ui.DefaultFontSize, core.ColorWhite,
 	)
 }

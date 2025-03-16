@@ -131,7 +131,7 @@ func (w *World) SetCameraPosition(pos core.Vec3) {
 	man(core.Vec3i{1, 1, 0})
 }
 
-// as the name implies, it gets a tile
+// as the name implies, it gets a tile. returns nil if it's not there.
 func (t *World) GetTile(pos core.Vec3i, ground bool) *Tile {
 	if ground {
 		return t.LoadedGroundTiles[pos]

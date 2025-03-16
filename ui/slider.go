@@ -6,7 +6,7 @@ import (
 )
 
 // makes a slider lol. writes into out
-func Slider(x, y, w, h float64, label string, min float64, max float64, out *float64) {
+func Slider(x, y, w, h float64, min float64, max float64, out *float64) {
 	// some extra padding in the hitbox so its less fucky
 	sliderRect := core.Rect{x - 64, y, w + 64, y}
 	if sliderRect.HasPoint(platform.MousePosition()) {

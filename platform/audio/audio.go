@@ -26,7 +26,7 @@ func Init() {
 }
 
 // frees everything
-func FreeAllAudio() {
+func FreeAll() {
 	for _, v := range audioCache {
 		v.Free()
 	}
@@ -34,7 +34,7 @@ func FreeAllAudio() {
 }
 
 // loads audio :)
-func LoadAudio(path string) Audio {
+func Load(path string) Audio {
 	audio, ok := audioCache[path]
 	if !ok {
 		audio.internal = rl.LoadSound(path)

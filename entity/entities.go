@@ -32,6 +32,7 @@ type Entity interface {
 	OnFree(ent Ref)
 }
 
+// compoentn
 type Component interface {
 	ComponentType() ComponentType
 	OnCreate(ent Ref)
@@ -40,19 +41,6 @@ type Component interface {
 	OnDraw(ent Ref)
 	OnFree(ent Ref)
 }
-
-const (
-	// pausable object in the game world
-	GroupGameWorld Group = "starry.GAME_WORLD"
-	// pausable 2d interface
-	GroupPausableUi = "starry.PAUSABLE_UI"
-	// pausable manager, which is an entity running in the background and, well, managing
-	GroupPausableManager = "starry.PAUSABLE_MANAGER"
-	// ui that only runs when paused
-	GroupPausedUi = "starry.PAUSED_UI"
-	// manager that only manages when paused
-	GroupPausedManager = "starry.PAUSED_MANAGER"
-)
 
 // if true, the game is paused. not all entities get paused, see EntityType
 var Paused bool = false
@@ -165,11 +153,11 @@ func HasComp(entity Ref, comptype ComponentType) bool {
 	return false
 }
 
-// gets the component, or nil if it's not there yet.
+// gets the component (as a pointer), or nil if it's not there yet.
 func GetComp(entity Ref, comptype ComponentType) any {
 	for _, v := range components[entity] {
 		if v.ComponentType() == comptype {
-			return v
+			return &v
 		}
 	}
 	return nil

@@ -25,10 +25,11 @@ func (w *World) Collide(pos core.Vec3, move core.Vec3) core.Vec3 {
 }
 
 func mateDoesItCollideImBefuddled(w *World, pos core.Vec3) bool {
-	leftTile := math.Floor(pos.X)
-	rightTile := math.Floor(pos.X + 1)
-	topTile := math.Floor(pos.Y)
-	bottomTile := math.Floor(pos.Y + 1)
+	// theres some padding so its less janky
+	leftTile := math.Floor(pos.X + 0.1)
+	rightTile := math.Floor(pos.X + 0.8)
+	topTile := math.Floor(pos.Y + 0.1)
+	bottomTile := math.Floor(pos.Y + 0.8)
 
 	for x := leftTile; x <= rightTile; x++ {
 		for y := topTile; y <= bottomTile; y++ {

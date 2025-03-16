@@ -29,6 +29,7 @@ func (p *Player) setupSave(ent entity.Ref) {
 
 	timer := util.NewTimer(5, true)
 	timer.Timeout = p.saveTilemap
+	timer.Start()
 }
 
 func (p *Player) firstTime(ent entity.Ref) {
