@@ -37,7 +37,7 @@ func FreeAll() {
 func Load(path string) Audio {
 	audio, ok := audioCache[path]
 	if !ok {
-		audio.internal = rl.LoadSound(path)
+		audio.internal = rl.LoadSound(core.AssetPath(path))
 		audio.path = path
 		audio.vol = 1
 		audioCache[path] = audio

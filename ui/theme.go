@@ -13,8 +13,10 @@ import (
 
 // yeah
 const DefaultFontSize int = 26
+
 // yeah
 const Separation int = 8
+
 // yeah
 const ButtonHeight float64 = 40
 
@@ -26,9 +28,10 @@ var italicFont rl.Font
 func LoadTheme() {
 	// this is just the first 2 blocks of unicode
 	chars := []rune("!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI\nJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmn\nopqrstuvwxyz{|}~¡¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓ\nÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷\nøùúûüýþÿ")
-	regularFont = rl.LoadFontEx("assets/Figtree/Figtree-Regular.ttf", 64, chars, 250)
-	boldFont = rl.LoadFontEx("assets/Figtree/Figtree-Bold.ttf", 64, chars, 250)
-	italicFont = rl.LoadFontEx("assets/Figtree/Figtree-Italic.ttf", 64, chars, 250)
+
+	regularFont = rl.LoadFontEx(core.AssetPath("assets/Figtree/Figtree-Regular.ttf"), 64, chars, 250)
+	boldFont = rl.LoadFontEx(core.AssetPath("assets/Figtree/Figtree-Bold.ttf"), 64, chars, 250)
+	italicFont = rl.LoadFontEx(core.AssetPath("assets/Figtree/Figtree-Italic.ttf"), 64, chars, 250)
 
 	// yeah
 	rl.SetTextLineSpacing(1)
@@ -145,22 +148,22 @@ func DrawPressedButton(pos core.Vec2, size core.Vec2) {
 func DrawSlider(pos core.Vec2, size core.Vec2, grabber float64) {
 	// background
 	rl.DrawRectangleRounded(
-		rl.NewRectangle(float32(pos.X), float32(pos.Y + (size.Y / 4)), float32(size.X), float32(size.Y / 2)),
+		rl.NewRectangle(float32(pos.X), float32(pos.Y+(size.Y/4)), float32(size.X), float32(size.Y/2)),
 		1, 12, gocolor.RGBA{0x26, 0x09, 0x2b, 0xff},
 	)
 	rl.DrawRectangleRoundedLinesEx(
-		rl.NewRectangle(float32(pos.X), float32(pos.Y + (size.Y / 4)), float32(size.X), float32(size.Y / 2)),
+		rl.NewRectangle(float32(pos.X), float32(pos.Y+(size.Y/4)), float32(size.X), float32(size.Y/2)),
 		1, 12, 2, gocolor.RGBA{0x12, 0x04, 0x14, 0xff},
 	)
 
 	// grabber
 	// im sorry... im sorry... im sorry...
 	rl.DrawRectangleRounded(
-		rl.NewRectangle(float32(core.Clamp(pos.X + (size.X * grabber) - size.Y / 1.75, 0 + size.Y / 2, size.X - size.Y / 2)), float32(pos.Y), float32(size.Y), float32(size.Y)),
+		rl.NewRectangle(float32(core.Clamp(pos.X+(size.X*grabber)-size.Y/1.75, 0+size.Y/2, size.X-size.Y/2)), float32(pos.Y), float32(size.Y), float32(size.Y)),
 		1, 12, gocolor.RGBA{0x7c, 0x4d, 0xff, 0xff},
 	)
 	rl.DrawRectangleRoundedLinesEx(
-		rl.NewRectangle(float32(core.Clamp(pos.X + (size.X * grabber) - size.Y / 1.75, 0 + size.Y / 2, size.X - size.Y / 2)), float32(pos.Y), float32(size.Y), float32(size.Y)),
+		rl.NewRectangle(float32(core.Clamp(pos.X+(size.X*grabber)-size.Y/1.75, 0+size.Y/2, size.X-size.Y/2)), float32(pos.Y), float32(size.Y), float32(size.Y)),
 		1, 12, 2, gocolor.RGBA{0x7b, 0x1f, 0xa2, 0xff},
 	)
 }

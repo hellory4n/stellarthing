@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 // enables/disables some features such as assert
@@ -61,5 +62,21 @@ func GetUserDir() string {
 		return path
 	default:
 		panic(fmt.Sprintf("unsupported OS: %v\n", runtime.GOOS))
+	}
+}
+
+// just doing "assets/fuckoff" sometimes dies and busts
+func AssetPath(path string) string {
+	exeDir, err := os.Executable()
+	if err != nil {
+		panic("uh oh")
+	}
+
+	// go run . puts the executable in a temp folder
+	// the assets aren't copied to there so that wouldn't work
+	if strings.HasPrefix(exeDir, os.TempDir()) {
+		return path
+	} else {
+		return filepath.Join(filepath.Dir(exeDir), path)
 	}
 }

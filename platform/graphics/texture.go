@@ -10,12 +10,12 @@ import (
 // texture :)
 type Texture struct {
 	// these are used for converting to raylib textures
-    id uint32
-    width int32
-    height int32
-    mipmaps int32
-    format rl.PixelFormat
-	path string
+	id      uint32
+	width   int32
+	height  int32
+	mipmaps int32
+	format  rl.PixelFormat
+	path    string
 }
 
 var textureCache map[string]Texture
@@ -28,14 +28,14 @@ func init() {
 func LoadTexture(path string) Texture {
 	texture, ok := textureCache[path]
 	if !ok {
-		var txddrx rl.Texture2D = rl.LoadTexture(path)
+		var txddrx rl.Texture2D = rl.LoadTexture(core.AssetPath(path))
 		texture = Texture{
-			id: txddrx.ID,
-			width: txddrx.Width,
-			height: txddrx.Height,
+			id:      txddrx.ID,
+			width:   txddrx.Width,
+			height:  txddrx.Height,
 			mipmaps: txddrx.Mipmaps,
-			format: txddrx.Format,
-			path: path,
+			format:  txddrx.Format,
+			path:    path,
 		}
 		textureCache[path] = texture
 		fmt.Printf("[GRAPHICS] Loaded texture at %v\n", path)
@@ -51,11 +51,11 @@ func (t Texture) Size() core.Vec2i {
 // frees the texture and removes it from the cache. if you want to reload the texture, use this
 func (t Texture) Free() {
 	var rltltx rl.Texture2D = rl.Texture2D{
-		ID: t.id,
-		Width: t.width,
-		Height: t.height,
+		ID:      t.id,
+		Width:   t.width,
+		Height:  t.height,
 		Mipmaps: t.mipmaps,
-		Format: t.format,
+		Format:  t.format,
 	}
 	rl.UnloadTexture(rltltx)
 	delete(textureCache, t.path)
