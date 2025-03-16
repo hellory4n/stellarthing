@@ -84,3 +84,16 @@ func (a Vec3) Neq(b Vec3) bool {
 func (a Vec3) Neg() Vec3 {
 	return Vec3{-a.X, -a.Y, -a.Z}
 }
+
+// as the name implies, it normalizes the vector
+func (a Vec3) Normalize() Vec3 {
+	magnitude := math.Sqrt(a.X*a.X + a.Y*a.Y + a.Z*a.Z)
+
+	result := Vec3{a.X, a.Y, a.Z}
+	if magnitude != 0 {
+		result.X = result.X / magnitude
+		result.Y = result.Y / magnitude
+		result.Z = result.Z / magnitude
+	}
+	return result
+}

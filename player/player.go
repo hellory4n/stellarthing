@@ -43,18 +43,19 @@ func (p *Player) OnUpdate(ent entity.Ref, delta float64) {
 	// move.
 	var move core.Vec3
 	if platform.IsKeymapHeld("move_left") {
-		move = core.Vec3{-speed * delta, 0, 0}
+		move = move.Add(core.Vec3{-1, 0, 0})
 	}
 	if platform.IsKeymapHeld("move_right") {
-		move = core.Vec3{speed * delta, 0, 0}
+		move = move.Add(core.Vec3{1, 0, 0})
 	}
 	if platform.IsKeymapHeld("move_up") {
-		move = core.Vec3{0, -speed * delta, 0}
+		move = move.Add(core.Vec3{0, -1, 0})
 	}
 	if platform.IsKeymapHeld("move_down") {
-		move = core.Vec3{0, speed * delta, 0}
+		move = move.Add(core.Vec3{0, 1, 0})
 	}
-	p.tileData.Position = tile.ThisWorld.Collide(p.tileData.Position, move)
+	// death and destructio n
+	p.tileData.Position = tile.ThisWorld.Collide(p.tileData.Position, move.Normalize().Smul(speed).Smul(delta))
 	tile.ThisWorld.SetCameraPosition(p.tileData.Position)
 
 	p.updateHotbar()

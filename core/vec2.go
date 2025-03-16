@@ -90,3 +90,15 @@ func (a Vec2) Neg() Vec2 {
 func (a Vec2) ToVec2i() Vec2i {
 	return Vec2i{X: int64(a.X), Y: int64(a.Y)}
 }
+
+// as the name implies, it normalizes the vector
+func (a Vec2) Normalize() Vec2 {
+	magnitude := math.Sqrt(a.X*a.X + a.Y*a.Y)
+
+	result := Vec2{a.X, a.Y}
+	if magnitude != 0 {
+		result.X = result.X / magnitude
+		result.Y = result.Y / magnitude
+	}
+	return result
+}
