@@ -5,6 +5,7 @@ import (
 	"math"
 	"math/rand"
 
+	"github.com/aquilax/go-perlin"
 	"github.com/hellory4n/stellarthing/core"
 	"github.com/hellory4n/stellarthing/entity"
 	"github.com/hellory4n/stellarthing/platform/graphics"
@@ -44,8 +45,9 @@ func (t *Tile) String() string {
 
 // world of tiles :D
 type World struct {
-	Seed    int64
-	randGen *rand.Rand
+	Seed      int64
+	randGen   *rand.Rand
+	perlinGen *perlin.Perlin
 	// set with SetCameraPosition :)
 	CameraPosition core.Vec3
 	// mate
@@ -74,6 +76,7 @@ func NewWorld(startPos core.Vec2i, endPos core.Vec2i, seed int64) *World {
 	tilhjjh.EndPos = endPos
 	tilhjjh.Seed = seed
 	tilhjjh.randGen = rand.New(rand.NewSource(tilhjjh.Seed))
+	tilhjjh.perlinGen = perlin.NewPerlin(2, 2, 4, seed)
 	tilhjjh.LoadedGroundTiles = make(map[core.Vec3i]*Tile)
 	tilhjjh.LoadedObjectTiles = make(map[core.Vec3i]*Tile)
 	tilhjjh.CameraOffset = core.RenderSize.Sdiv(2).ToVec2()
@@ -111,15 +114,7 @@ func (w *World) SetCameraPosition(pos core.Vec3) {
 	// generate multiple chunks fuck it
 	man := func(offset core.Vec3i) {
 		fmt.Printf("[TILEMAP] Generating chunk at %v\n", chunkPos.Add(offset))
-		newGround, newObjects := GenerateChunk(w.randGen, chunkPos.Add(offset))
-
-		// copy crap
-		for k, v := range newGround {
-			w.LoadedGroundTiles[k] = v
-		}
-		for k, v := range newObjects {
-			w.LoadedObjectTiles[k] = v
-		}
+		w.GenerateChunk(chunkPos.Add(offset))
 		w.LoadedChunks = append(w.LoadedChunks, chunkPos.Add(offset))
 	}
 	man(core.Vec3i{0, 0, 0})
