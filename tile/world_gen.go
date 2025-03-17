@@ -12,7 +12,7 @@ func (w *World) GenerateChunk(chunkPos core.Vec3i) {
 	// chunkEndX := chunkPos.X*ChunkSize + ChunkSize
 	// chunkEndY := chunkPos.Y*ChunkSize + ChunkSize
 
-	var noiseMap = w.GenerateNoiseMap(ChunkSize, ChunkSize, 5)
+	var noiseMap = w.GenerateNoiseMap(chunkStartX, chunkStartY, ChunkSize, ChunkSize, 27.6)
 
 	for y := range int(ChunkSize) {
 		for x := range int(ChunkSize) {
@@ -45,7 +45,7 @@ func (w *World) GenerateChunk(chunkPos core.Vec3i) {
 }
 
 // idk whats going on anymore
-func (w *World) GenerateNoiseMap(width int64, height int64, scale float64) [][]float64 {
+func (w *World) GenerateNoiseMap(chunkX, chunkY, width, height int64, scale float64) [][]float64 {
 	m := make([][]float64, height)
 	for i := range m {
 		m[i] = make([]float64, width)
@@ -56,8 +56,8 @@ func (w *World) GenerateNoiseMap(width int64, height int64, scale float64) [][]f
 
 	for y := range height {
 		for x := range width {
-			var sampleX float64 = float64(x) / scale
-			var sampleY float64 = float64(y) / scale
+			var sampleX float64 = float64(x+chunkX) / scale
+			var sampleY float64 = float64(y+chunkY) / scale
 
 			var perlinma float64 = w.perlinGen.Noise2D(sampleX, sampleY)
 			m[y][x] = perlinma

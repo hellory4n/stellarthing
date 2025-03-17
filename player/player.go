@@ -10,8 +10,6 @@ import (
 	"github.com/hellory4n/stellarthing/ui"
 )
 
-const speed float64 = 5
-
 type Player struct {
 	tile             *tile.Tile
 	tileData         *tile.TileData
@@ -40,6 +38,13 @@ func (p *Player) OnCreate(ent entity.Ref) {
 }
 
 func (p *Player) OnUpdate(ent entity.Ref, delta float64) {
+	var speed float64
+	if platform.IsKeyHeld(platform.KeyLeftControl) {
+		speed = 25
+	} else {
+		speed = 5
+	}
+
 	// move.
 	var move core.Vec3
 	if platform.IsKeymapHeld("move_left") {
@@ -79,6 +84,7 @@ func (p *Player) OnDraw(ent entity.Ref) {
 left click to place
 right click to break
 scroll to zoom
+hold ctrl to get really fast
 f3 shows some crap
 restart to test saving pls`,
 		core.Vec2{950, 500}, ui.DefaultFontSize, core.ColorWhite,
