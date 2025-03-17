@@ -56,3 +56,13 @@ func RandBase64(length int) string {
 	}
 	return x.String()
 }
+
+// lerp
+func Lerp(a, b, t float64) float64 {
+	return (1-t)*a + t*b
+}
+
+// similar to lerp but in reverse
+func InverseLerp(a, b, v float64) float64 {
+	return (v - a) / (b - a)
+}
