@@ -183,13 +183,13 @@ func (w *World) drawTile(pos core.Vec2i, ground bool) {
 		// im going insane
 		// im watching my life go down the drain
 		pospos = core.Vec2{
-			((data.Position.X - w.CameraPosition.X) * (texture.Size().ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
-			((data.Position.Y - w.CameraPosition.Y) * (texture.Size().ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
+			((data.Position.X - w.CameraPosition.X) * (Size.X * w.CameraScale.X)) + w.CameraOffset.X,
+			((data.Position.Y - w.CameraPosition.Y) * (Size.Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 		}
 	} else {
 		pospos = core.Vec2{
-			((float64(pos.X) - w.CameraPosition.X) * (texture.Size().ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
-			((float64(pos.Y) - w.CameraPosition.Y) * (texture.Size().ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
+			((float64(pos.X) - w.CameraPosition.X) * (Size.X * w.CameraScale.X)) + w.CameraOffset.X,
+			((float64(pos.Y) - w.CameraPosition.Y) * (Size.Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 		}
 	}
 
@@ -258,8 +258,8 @@ func (w *World) Draw() {
 			// im going insane
 			// im watching my life go down the drain
 			pospos = core.Vec2{
-				((data.Position.X - w.CameraPosition.X) * (texture.Size().ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
-				((data.Position.Y - w.CameraPosition.Y) * (texture.Size().ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
+				((data.Position.X - w.CameraPosition.X) * (Size.X * w.CameraScale.X)) + w.CameraOffset.X,
+				((data.Position.Y - w.CameraPosition.Y) * (Size.Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 			}
 		} else {
 			continue
@@ -267,10 +267,10 @@ func (w *World) Draw() {
 
 		graphics.DrawTextureExt(
 			texture,
-			core.Vec2{0, 0},
-			texture.Size().ToVec2(),
+			data.AtlasPos,
+			Size,
 			pospos,
-			texture.Size().ToVec2().Mul(w.CameraScale),
+			Size.Mul(w.CameraScale),
 			core.Vec2{0, 0},
 			0, data.Tint,
 		)
@@ -278,18 +278,18 @@ func (w *World) Draw() {
 }
 
 // gets a tile position from screen positions
-func (w *World) ScreenToTile(pos core.Vec2, textureSize core.Vec2i) core.Vec3i {
+func (w *World) ScreenToTile(pos core.Vec2) core.Vec3i {
 	return core.Vec3i{
-		int64(math.Floor(((pos.X - w.CameraOffset.X) / (textureSize.ToVec2().X * w.CameraScale.X)) + w.CameraPosition.X)),
-		int64(math.Floor(((pos.Y - w.CameraOffset.Y) / (textureSize.ToVec2().Y * w.CameraScale.Y)) + w.CameraPosition.Y)),
+		int64(math.Floor(((pos.X - w.CameraOffset.X) / (Size.X * w.CameraScale.X)) + w.CameraPosition.X)),
+		int64(math.Floor(((pos.Y - w.CameraOffset.Y) / (Size.Y * w.CameraScale.Y)) + w.CameraPosition.Y)),
 		int64(w.CameraPosition.Z),
 	}
 }
 
 // gets a screen position from tile positions
-func (w *World) TileToScreen(pos core.Vec3i, textureSize core.Vec2i) core.Vec2 {
+func (w *World) TileToScreen(pos core.Vec3i) core.Vec2 {
 	return core.Vec2{
-		((float64(pos.X) - w.CameraPosition.X) * (textureSize.ToVec2().X * w.CameraScale.X)) + w.CameraOffset.X,
-		((float64(pos.Y) - w.CameraPosition.Y) * (textureSize.ToVec2().Y * w.CameraScale.Y)) + w.CameraOffset.Y,
+		((float64(pos.X) - w.CameraPosition.X) * (Size.X * w.CameraScale.X)) + w.CameraOffset.X,
+		((float64(pos.Y) - w.CameraPosition.Y) * (Size.Y * w.CameraScale.Y)) + w.CameraOffset.Y,
 	}
 }

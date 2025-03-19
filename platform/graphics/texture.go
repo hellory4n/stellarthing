@@ -29,6 +29,11 @@ func LoadTexture(path string) Texture {
 	texture, ok := textureCache[path]
 	if !ok {
 		var txddrx rl.Texture2D = rl.LoadTexture(core.AssetPath(path))
+
+		// theres weird random black lines
+		rl.GenTextureMipmaps(&txddrx)
+		rl.SetTextureWrap(txddrx, rl.WrapClamp)
+
 		texture = Texture{
 			id:      txddrx.ID,
 			width:   txddrx.Width,

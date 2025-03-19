@@ -49,7 +49,7 @@ func (p *Player) updateHotbar() {
 	// place the bloody tiles
 	// this is sad
 	// here at shell we are sad
-	pos := tile.ThisWorld.ScreenToTile(platform.MousePosition(), core.Vec2i{64, 64})
+	pos := tile.ThisWorld.ScreenToTile(platform.MousePosition())
 	if platform.IsMouseButtonJustPressed(platform.MouseButtonLeft) {
 		if p.hotbar[p.currentHotbarIdx].TileId != tile.Air {
 			if tile.ThisWorld.GetTile(pos, true) == nil {
@@ -93,12 +93,12 @@ func (p *Player) updateHotbar() {
 
 func (p *Player) drawHotbar() {
 	// hover tiles and shit
-	pos := tile.ThisWorld.ScreenToTile(platform.MousePosition(), tile.Size.ToVec2i())
+	pos := tile.ThisWorld.ScreenToTile(platform.MousePosition())
 	graphics.DrawTextureExt(
 		graphics.LoadTexture("assets/atlas.png"),
 		core.Vec2{2, 0}.Mul(tile.Size),
 		tile.Size,
-		tile.ThisWorld.TileToScreen(pos, tile.Size.ToVec2i()),
+		tile.ThisWorld.TileToScreen(pos),
 		tile.Size.Mul(tile.ThisWorld.CameraScale),
 		core.Vec2{0, 0},
 		0, core.ColorWhite,
@@ -115,10 +115,13 @@ func (p *Player) drawHotbar() {
 		}
 
 		// icon
-		graphics.DrawTexture(
+		graphics.DrawTextureExt(
 			graphics.LoadTexture(tile.Tiles[p.hotbar[i].TileId][0].Texture),
+			tile.Tiles[p.hotbar[i].TileId][0].AtlasPos,
+			tile.Size,
 			core.Vec2{x + 8, float64(core.RenderSize.Y) - 80 - 1},
-			0, core.ColorWhite,
+			tile.Size,
+			core.Vec2{0, 0}, 0, core.ColorWhite,
 		)
 
 		x += 80 + 8

@@ -7,7 +7,7 @@ retract v0.0.0-20250308030251-f0b63329c720
 
 require (
 	github.com/gen2brain/raylib-go/raylib v0.0.0-20250215042252-db8e47f0e5c5
-	github.com/aquilax/go-perlin v1.1.0 // indirect
+	github.com/aquilax/go-perlin v1.1.0
 	// shut up lsp
 	//github.com/yuin/gopher-lua v1.1.1
 )
