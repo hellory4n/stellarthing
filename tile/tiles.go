@@ -8,6 +8,8 @@ type TileData struct {
 	Texture string
 	// used for moving entities
 	Position core.Vec3
+	// you're supposed to use texture atlases because fast
+	AtlasPos core.Vec2
 	// man
 	UsingCustomPos bool
 	// lol
@@ -19,6 +21,9 @@ type Id uint32
 
 // tiles can have variations. the default variation is always 0
 type Variation uint32
+
+// yeah
+var Size core.Vec2 = core.Vec2{64, 64}
 
 const (
 	Air          Id = 0
@@ -42,92 +47,107 @@ const (
 var Tiles map[Id]map[Variation]*TileData = map[Id]map[Variation]*TileData{
 	Air: {
 		0: &TileData{
-			Texture: "assets/air.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{0, 0},
+			Tint:     core.ColorWhite,
 		},
 	},
 	BobGuy: {
 		0: &TileData{
-			Texture: "assets/bob_guy.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{3, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	MarsRock: {
 		0: &TileData{
-			Texture: "assets/mars_rock.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{7, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	BlueGuy: {
 		0: &TileData{
-			Texture: "assets/blue_guy.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{4, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	GreenGuy: {
 		0: &TileData{
-			Texture: "assets/green_guy.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{5, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	Life: {
 		0: &TileData{
-			Texture: "assets/life.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{6, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	DeepOcean: {
 		0: &TileData{
-			Texture: "assets/deep_ocean.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{8, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	HighGrass: {
 		0: &TileData{
-			Texture: "assets/high_grass.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{13, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	LowGrass: {
 		0: &TileData{
-			Texture: "assets/low_grass.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{12, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	MidOcean: {
 		0: &TileData{
-			Texture: "assets/mid_ocean.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{9, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	Mountain: {
 		0: &TileData{
-			Texture: "assets/mountain.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{15, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	Sand: {
 		0: &TileData{
-			Texture: "assets/sand.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{11, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	ShallowOcean: {
 		0: &TileData{
-			Texture: "assets/shallow_ocean.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{10, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	Snow: {
 		0: &TileData{
-			Texture: "assets/snow.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{0, 1}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 	Stone: {
 		0: &TileData{
-			Texture: "assets/stone.png",
-			Tint:    core.ColorWhite,
+			Texture:  "assets/atlas.png",
+			AtlasPos: core.Vec2{14, 0}.Mul(Size),
+			Tint:     core.ColorWhite,
 		},
 	},
 }

@@ -93,13 +93,13 @@ func (p *Player) updateHotbar() {
 
 func (p *Player) drawHotbar() {
 	// hover tiles and shit
-	pos := tile.ThisWorld.ScreenToTile(platform.MousePosition(), core.Vec2i{64, 64})
+	pos := tile.ThisWorld.ScreenToTile(platform.MousePosition(), tile.Size.ToVec2i())
 	graphics.DrawTextureExt(
-		graphics.LoadTexture("assets/highlight.png"),
-		core.Vec2{0, 0},
-		graphics.LoadTexture("assets/highlight.png").Size().ToVec2(),
-		tile.ThisWorld.TileToScreen(pos, core.Vec2i{64, 64}),
-		graphics.LoadTexture("assets/highlight.png").Size().ToVec2().Mul(tile.ThisWorld.CameraScale),
+		graphics.LoadTexture("assets/atlas.png"),
+		core.Vec2{2, 0}.Mul(tile.Size),
+		tile.Size,
+		tile.ThisWorld.TileToScreen(pos, tile.Size.ToVec2i()),
+		tile.Size.Mul(tile.ThisWorld.CameraScale),
 		core.Vec2{0, 0},
 		0, core.ColorWhite,
 	)

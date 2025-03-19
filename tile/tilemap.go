@@ -195,10 +195,10 @@ func (w *World) drawTile(pos core.Vec2i, ground bool) {
 
 	graphics.DrawTextureExt(
 		texture,
-		core.Vec2{0, 0},
-		texture.Size().ToVec2(),
+		data.AtlasPos,
+		Size,
 		pospos,
-		texture.Size().ToVec2().Mul(w.CameraScale),
+		Size.Mul(w.CameraScale),
 		core.Vec2{0, 0},
 		0, data.Tint,
 	)
