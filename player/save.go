@@ -62,7 +62,7 @@ func (p *Player) firstTime(ent entity.Ref) {
 		panic(fmt.Sprintf("[SAVE] couldn't save world: %v\n", err.Error()))
 	}
 
-	world := tile.NewWorld(core.Vec2i{-250, -250}, core.Vec2i{250, 250}, 69420)
+	world := tile.NewWorld(core.Vec2i{-250, -250}, core.Vec2i{250, 250}, 42069)
 	tile.ThisWorld = world
 
 	p.tile = tile.ThisWorld.NewTile(core.Vec3i{int64(core.Int32Min), int64(core.Int32Min), 0}, false,

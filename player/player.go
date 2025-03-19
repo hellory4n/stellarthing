@@ -40,7 +40,7 @@ func (p *Player) OnCreate(ent entity.Ref) {
 func (p *Player) OnUpdate(ent entity.Ref, delta float64) {
 	var speed float64
 	if platform.IsKeyHeld(platform.KeyLeftControl) {
-		speed = 25
+		speed = 35
 	} else {
 		speed = 5
 	}
