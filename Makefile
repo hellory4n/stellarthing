@@ -19,7 +19,8 @@ PROJECT_SOURCE_FILES ?= main/main.c \
 	platform/window.c \
 	platform/input.c \
 	platform/graphics/graphics.c \
-	platform/graphics/texture.c
+	platform/graphics/texture.c \
+    platform/graphics/model.c
 
 INCLUDE_PATHS = -Isrc -Ilib
 

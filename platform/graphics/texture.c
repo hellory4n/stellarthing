@@ -6,12 +6,12 @@
 
 StHashMap* textures;
 
-void __st_init_textures__(void)
+void __st_init_textures(void)
 {
 	textures = StHashMap_new(0);
 }
 
-void __st_free_textures__(void)
+void __st_free_textures(void)
 {
 	// free items in the hashmap
 	StList* items = StHashMap_items(textures);

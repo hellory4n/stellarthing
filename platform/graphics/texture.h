@@ -10,9 +10,9 @@ typedef struct {
 	i32 format;
 } StTexture;
 
-void __st_init_textures__(void);
+void __st_init_textures(void);
 
-void __st_free_textures__(void);
+void __st_free_textures(void);
 
 /// Loads a texture from a path. supported formats are PNG, BMP, TGA, JPG, GIF, QOI, PSD, DDS, HDR, KTX,
 /// ASTC, PKM, and PVR
