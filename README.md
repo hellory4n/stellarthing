@@ -2,30 +2,17 @@
 
 Space game.
 
-Featuring a game engine in Go: Starry™™™
-
-starry is the next biggest ever replacement of unity unreal godot game maker cryengine frostbite source 2 rpg maker lumberyard defold panda3d flax monogame libgdx ogre bevy phaser armory gdevelop cocos2d renpy urho3d stride haxeflixel pygame blender game engine fucking idk
-
-best game engine in the world awards 1922 winner
-
-10th best game engine when it comes to usability awards 3001 BC winner
-
-## Documentation
-
-[It's in the docs folder](./docs/starry.md)
+Featuring a game engine in C99
 
 ## Building
 
-You need Go 1.23.6 or higher
+Install raylib (`raylib-devel` on fedora, not sure if other distros have it)
 
-[See this for dependencies](https://github.com/gen2brain/raylib-go?tab=readme-ov-file#requirements)
+Run `make && ./stellarthing`
 
-Run:
+You can also compile from linux to windows if you're insane:
 
-```sh
-go run .
-```
-
-On Linux you can also cross-compile with `release.sh`
-
-I tried cross-compiling to macOS too but it just didn't work several times
+1. step 1: install wine
+2. step 2: [install raylib on wine](https://raysan5.itch.io/raylib/purchase)
+3. step 3: run raylib installation/w64devkit.exe
+4. step 4: compile the project like you would on linux

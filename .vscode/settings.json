@@ -1,8 +1,0 @@
-{
-    "gopls": {
-        "analyses": {
-            // its fucking with vectors
-            "composites": false, 
-        }
-    }
-}
