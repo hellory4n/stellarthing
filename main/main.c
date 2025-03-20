@@ -25,12 +25,12 @@ static void init_game(void)
 	st_add_keymap("test_move", ST_KEY_J);
 
 	m = StTexture_new("assets/test.png");
-	suzanne = StModel_new("assets/suzanne.obj");
+	suzanne = StModel_new("assets/suzanne.glb");
 }
 
 static void update_game(void)
 {
-	st_clear(ST_WHITE);
+	st_clear(ST_BLACK);
 	// before the 2d stuff because 2d is used for ui stuff
 	st_draw_all_3d_objects();
 
@@ -48,6 +48,7 @@ static void update_game(void)
 		.position = (StVec3){0, 0, 0},
 		.rotation = (StVec3){7, 15, 62},
 		.scale = (StVec3){2, 1, 1},
+		.tint = st_rgb(255, 255, 255),
 	});
 
 	st_end_drawing();

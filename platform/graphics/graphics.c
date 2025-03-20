@@ -1,8 +1,10 @@
 #include <raylib.h>
 #include <raymath.h>
+#include <rlgl.h>
 #include <stdio.h>
 #include "graphics.h"
 #include "core/math/math.h"
+#include "platform/input.h"
 
 StObject3D objs[ST_MAX_3D_OBJECTS];
 nint obj_len = 0;
@@ -56,6 +58,8 @@ void st_draw_texture_ext(StTexture* texture, StVec2 src_pos, StVec2 src_size, St
 
 Camera3D rlcam;
 StCamera stcam;
+// enable with f5
+bool wireframe_mode = false;
 
 StCamera st_camera(void)
 {
@@ -91,8 +95,18 @@ void st_draw_object_3d(StObject3D obj)
 /// Does exactly what the name says
 void st_draw_all_3d_objects(void)
 {
+	if (st_is_key_just_pressed(ST_KEY_F5)) {
+		wireframe_mode = !wireframe_mode;
+	}
+
 	BeginMode3D(rlcam);
+
+	// why not
 	DrawGrid(100, 1);
+
+	if (wireframe_mode) {
+		rlEnableWireMode();
+	}
 
 	// we don't iterate over the max objs because what if i make that ridiculously big
 	// it'll be wasting time on nothing
@@ -128,6 +142,10 @@ void st_draw_all_3d_objects(void)
 			DrawMesh(model.meshes[i], model.materials[model.meshMaterial[i]], model.transform);
 			model.materials[model.meshMaterial[i]].maps[MATERIAL_MAP_DIFFUSE].color = color;
 		}
+	}
+
+	if (wireframe_mode) {
+		rlDisableWireMode();
 	}
 
 	EndMode3D();
