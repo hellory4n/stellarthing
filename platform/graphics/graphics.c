@@ -2,6 +2,7 @@
 #include <raymath.h>
 #include <rlgl.h>
 #include <stdio.h>
+#include <string.h>
 #include "graphics.h"
 #include "core/math/math.h"
 #include "platform/input.h"
@@ -118,10 +119,11 @@ void st_draw_all_3d_objects(void)
 	// why not
 	DrawGrid(100, 1);
 
-	BeginShaderMode(light_shader);
-
 	if (wireframe_mode) {
 		rlEnableWireMode();
+	}
+	else {
+		BeginShaderMode(light_shader);
 	}
 
 	// we don't iterate over the max objs because what if i make that ridiculously big
@@ -154,9 +156,15 @@ void st_draw_all_3d_objects(void)
 			color_tint.b = (unsigned char)(((int)color.b*(int)obj.tint.b)/255);
 			color_tint.a = (unsigned char)(((int)color.a*(int)obj.tint.a)/255);
 
-			model.materials[model.meshMaterial[i]].shader = light_shader;
-			Vector4 please = {color_tint.r / 256.0f, color_tint.g / 256.0f, color_tint.b / 256.0f, color_tint.a / 256.0f};
-			SetShaderValue(light_shader, GetShaderLocation(light_shader, "materialColor"), &please, SHADER_UNIFORM_VEC4);
+			if (!wireframe_mode) {
+				model.materials[model.meshMaterial[i]].shader = light_shader;
+				Vector4 please = {color_tint.r / 256.0f, color_tint.g / 256.0f, color_tint.b / 256.0f, color_tint.a / 256.0f};
+				SetShaderValue(light_shader, GetShaderLocation(light_shader, "materialColor"), &please, SHADER_UNIFORM_VEC4);
+			}
+			else {
+				// use default shader
+				model.materials[model.meshMaterial[i]].shader = LoadShader(NULL, NULL);
+			}
 			model.materials[model.meshMaterial[i]].maps[MATERIAL_MAP_DIFFUSE].color = color_tint;
 			DrawMesh(model.meshes[i], model.materials[model.meshMaterial[i]], model.transform);
 			model.materials[model.meshMaterial[i]].maps[MATERIAL_MAP_DIFFUSE].color = color;
@@ -166,8 +174,9 @@ void st_draw_all_3d_objects(void)
 	if (wireframe_mode) {
 		rlDisableWireMode();
 	}
-
-	EndShaderMode(); // light_shader
+	else {
+		EndShaderMode(); // light_shader
+	}
 	EndMode3D();
 
 	// it'll just start overwriting things
