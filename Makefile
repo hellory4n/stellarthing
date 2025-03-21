@@ -9,8 +9,8 @@ PLATFORM              ?= PLATFORM_DESKTOP
 PROJECT_NAME          ?= stellarthing
 PROJECT_VERSION       ?= 0.11.0
 PROJECT_BUILD_PATH    ?= .
-# i love make
-# youre just supposed to put every folder here
+
+# just put every C file here
 PROJECT_SOURCE_FILES ?= main/main.c \
 	core/math/color.c \
 	core/math/math.c \
@@ -20,9 +20,12 @@ PROJECT_SOURCE_FILES ?= main/main.c \
 	platform/input.c \
 	platform/graphics/graphics.c \
 	platform/graphics/texture.c \
-    platform/graphics/model.c
+    platform/graphics/model.c \
+    misc/ui/raylib_nuklear.c \
+    misc/ui/ui.c \
+    misc/debug/debug_mode.c
 
-INCLUDE_PATHS = -Isrc -Ilib
+INCLUDE_PATHS = -I. -Ilib
 
 # raylib library variables
 RAYLIB_SRC_PATH       ?= lib/raylib_linux
@@ -125,7 +128,7 @@ endif
 
 # Define default C compiler: CC
 #------------------------------------------------------------------------------------------------
-CC = gcc
+CC = clang
 
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),OSX)

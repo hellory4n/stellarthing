@@ -5,12 +5,12 @@
 /// key is a string, value is a stlist of stkeys
 StHashMap* keymaps;
 
-void __st_init_input()
+void st_init_input()
 {
     keymaps = StHashMap_new(0);
 }
 
-void __st_free_input()
+void st_free_input()
 {
     // sometimes you start losing your fucking mind
     StListKeyValue* items = StHashMap_items(keymaps);

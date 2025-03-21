@@ -1,5 +1,7 @@
 #include "core/math/color.h"
 #include "core/math/vec.h"
+#include "misc/debug/debug_mode.h"
+#include "misc/ui/ui.h"
 #include "platform/graphics/model.h"
 #include "platform/graphics/texture.h"
 #include "platform/window.h"
@@ -31,10 +33,6 @@ static void init_game(void)
 
 static void update_game(void)
 {
-	st_clear(ST_BLACK);
-	// before the 2d stuff because 2d is used for ui stuff
-	st_draw_all_3d_objects();
-
 	f64 dt = st_window_get_delta_time();
 	rot = (StVec3){
 		.x = rot.x + (100 * dt),
@@ -59,7 +57,7 @@ static void update_game(void)
 		.tint = st_rgb(255, 255, 255),
 	});
 
-	st_end_drawing();
+	nk_label(st_ui_ctx(), "Sigma sigma on the wall", NK_TEXT_ALIGN_LEFT);
 }
 
 static void free_game(void)
@@ -71,23 +69,37 @@ int main(int argc, char const *argv[])
 {
 	st_window_new("Stellarthing", (StVec2i){640, 480});
 	st_window_toggle_fullscreen();
-	__st_init_input();
-	__st_init_textures();
-	__st_init_models();
+	st_init_input();
+	st_init_textures();
+	st_init_models();
 	st_init_lighting();
+	st_init_ui();
 
 	init_game();
 
 	while (!st_window_closing()) {
+		st_clear(ST_BLACK);
+
+		// before the 2d stuff because 2d is used for ui stuff
+		st_draw_all_3d_objects();
+
+		st_early_update_ui();
+		st_update_debug_mode();
+		// TODO: anything that uses ui would go here
+		st_late_update_ui();
+
 		update_game();
+
+		st_end_drawing();
 	}
 
 	free_game();
 
+	st_free_ui();
 	st_free_lighting();
-	__st_free_models();
-	__st_free_textures();
-	__st_free_input();
+	st_free_models();
+	st_free_textures();
+	st_free_input();
 	st_window_free();
 	return 0;
 }

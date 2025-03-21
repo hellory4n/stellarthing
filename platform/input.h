@@ -29,6 +29,6 @@ bool st_is_keymap_held(const char* keymap);
 
 bool st_is_keymap_not_pressed(const char* keymap);
 
-void __st_init_input();
+void st_init_input();
 
-void __st_free_input();
+void st_free_input();

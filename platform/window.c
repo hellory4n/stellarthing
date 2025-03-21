@@ -9,7 +9,7 @@ bool __st_ready__ = false;
 
 void st_window_new(const char* title, StVec2i size)
 {
-	printf("Stellarthing %s: running Starry %s", ST_GAME_VERSION, ST_STARRY_VERSION);
+	printf("Stellarthing %s: running Starry %s\n", ST_GAME_VERSION, ST_STARRY_VERSION);
 	
 	// man
 	srand(time(NULL));

@@ -3,9 +3,9 @@
 // I can't include raylib in my header files
 typedef void StModel;
 
-void __st_init_models(void);
+void st_init_models(void);
 
-void __st_free_models(void);
+void st_free_models(void);
 
 // Loads a model. Must be in GLTF/GLB format
 StModel* StModel_new(const char* path);

@@ -6,12 +6,12 @@
 typedef StHashMap StHashMapStringModel;
 StHashMapStringModel* models;
 
-void __st_init_models(void)
+void st_init_models(void)
 {
 	models = StHashMap_new(0);
 }
 
-void __st_free_models(void)
+void st_free_models(void)
 {
 	StListKeyValue* items = StHashMap_items(models);
 	for (nint i = 0; i < items->length; i++) {
