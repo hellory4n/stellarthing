@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 /// Random "size"s everywhere would be weird. This is equivalent to an uint64 on most pcs i think
 typedef size_t nint;
@@ -50,3 +51,6 @@ typedef double f64;
 /// The game version
 #define ST_GAME_VERSION "v0.11.0"
 #endif
+
+/// assert.h is busted
+void st_assert(bool x, const char* msg);
