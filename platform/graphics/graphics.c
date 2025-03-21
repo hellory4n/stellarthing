@@ -54,12 +54,26 @@ void st_draw_texture_ext(StTexture* texture, StVec2 src_pos, StVec2 src_size, St
 	);
 }
 
-// THE 3D FUCKERY SHALL COMMENCE
-
 Camera3D rlcam;
 StCamera stcam;
 // enable with f5
 bool wireframe_mode = false;
+Shader light_shader;
+
+void st_init_lighting()
+{
+	light_shader = LoadShader("assets/light.vert", "assets/light.frag");
+	Vector3 light_dir = { -0.5f, -1.0f, -0.5f };
+	SetShaderValue(light_shader, GetShaderLocation(light_shader, "lightDir"), &light_dir, SHADER_UNIFORM_VEC3);
+
+	Vector4 ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+	SetShaderValue(light_shader, GetShaderLocation(light_shader, "ambient"), &ambient, SHADER_UNIFORM_VEC4);
+}
+
+void st_free_lighting()
+{
+	UnloadShader(light_shader);
+}
 
 StCamera st_camera(void)
 {
@@ -104,6 +118,8 @@ void st_draw_all_3d_objects(void)
 	// why not
 	DrawGrid(100, 1);
 
+	BeginShaderMode(light_shader);
+
 	if (wireframe_mode) {
 		rlEnableWireMode();
 	}
@@ -138,6 +154,7 @@ void st_draw_all_3d_objects(void)
 			color_tint.b = (unsigned char)(((int)color.b*(int)obj.tint.b)/255);
 			color_tint.a = (unsigned char)(((int)color.a*(int)obj.tint.a)/255);
 
+			model.materials[model.meshMaterial[i]].shader = light_shader;
 			model.materials[model.meshMaterial[i]].maps[MATERIAL_MAP_DIFFUSE].color = color_tint;
 			DrawMesh(model.meshes[i], model.materials[model.meshMaterial[i]], model.transform);
 			model.materials[model.meshMaterial[i]].maps[MATERIAL_MAP_DIFFUSE].color = color;
@@ -148,6 +165,7 @@ void st_draw_all_3d_objects(void)
 		rlDisableWireMode();
 	}
 
+	EndShaderMode(); // light_shader
 	EndMode3D();
 
 	// it'll just start overwriting things

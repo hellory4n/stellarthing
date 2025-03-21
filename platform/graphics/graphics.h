@@ -50,6 +50,12 @@ void st_draw_texture(StTexture* texture, StVec2 pos, f64 degrees);
 void st_draw_texture_ext(StTexture* texture, StVec2 src_pos, StVec2 src_size, StVec2 dst_pos,
 	StVec2 dst_size, StVec2 origin, f64 degrees, StColor tint);
 
+// It inits lighting :)
+void st_init_lighting();
+
+// It frees lighting :)
+void st_free_lighting();
+
 /// Returns the current camera
 StCamera st_camera(void);
 

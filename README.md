@@ -10,6 +10,9 @@ Install raylib (`raylib-devel` on fedora, not sure if other distros have it)
 
 Run `make && ./stellarthing`
 
+Please note the C/C++ VS Code extension is dogwater, instead use clangd and then run
+`bear -- make` (you may have to install bear) so everything works properly
+
 You can also compile from linux to windows if you're insane:
 
 1. step 1: install wine

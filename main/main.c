@@ -9,11 +9,12 @@
 
 StTexture* m;
 StModel* suzanne;
+StVec3 rot;
 
 static void init_game(void)
 {
 	st_set_camera((StCamera){
-		.position = (StVec3){0.5, 0.5, 5},
+		.position = (StVec3){0.5, 5, 5},
 		.target = (StVec3){0, 0, 0},
 		.fov = 90,
 		.perspective = true,
@@ -34,6 +35,13 @@ static void update_game(void)
 	// before the 2d stuff because 2d is used for ui stuff
 	st_draw_all_3d_objects();
 
+	f64 dt = st_window_get_delta_time();
+	rot = (StVec3){
+		.x = rot.x + (100 * dt),
+		.y = rot.y + (100 * dt),
+		.z = rot.z + (100 * dt),
+	};
+
 	// st_draw_texture_ext(
 	// 	m,
 	// 	(StVec2){0, 0},
@@ -46,7 +54,7 @@ static void update_game(void)
 	st_draw_object_3d((StObject3D){
 		.model = suzanne,
 		.position = (StVec3){0, 0, 0},
-		.rotation = (StVec3){7, 15, 62},
+		.rotation = rot,
 		.scale = (StVec3){2, 1, 1},
 		.tint = st_rgb(255, 255, 255),
 	});
@@ -66,6 +74,7 @@ int main(int argc, char const *argv[])
 	__st_init_input();
 	__st_init_textures();
 	__st_init_models();
+	st_init_lighting();
 
 	init_game();
 
@@ -75,6 +84,7 @@ int main(int argc, char const *argv[])
 
 	free_game();
 
+	st_free_lighting();
 	__st_free_models();
 	__st_free_textures();
 	__st_free_input();
