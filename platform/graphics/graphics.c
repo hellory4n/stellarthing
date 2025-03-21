@@ -155,6 +155,8 @@ void st_draw_all_3d_objects(void)
 			color_tint.a = (unsigned char)(((int)color.a*(int)obj.tint.a)/255);
 
 			model.materials[model.meshMaterial[i]].shader = light_shader;
+			Vector4 please = {color_tint.r / 256.0f, color_tint.g / 256.0f, color_tint.b / 256.0f, color_tint.a / 256.0f};
+			SetShaderValue(light_shader, GetShaderLocation(light_shader, "materialColor"), &please, SHADER_UNIFORM_VEC4);
 			model.materials[model.meshMaterial[i]].maps[MATERIAL_MAP_DIFFUSE].color = color_tint;
 			DrawMesh(model.meshes[i], model.materials[model.meshMaterial[i]], model.transform);
 			model.materials[model.meshMaterial[i]].maps[MATERIAL_MAP_DIFFUSE].color = color;
