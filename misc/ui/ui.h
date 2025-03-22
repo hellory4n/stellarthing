@@ -49,10 +49,10 @@ void st_init_ui(void);
 void st_free_ui(void);
 
 /// Help
-void st_early_update_ui(void);
+void st_update_ui(void);
 
-/// pleH
-void st_late_update_ui(void);
+/// If true, the user is interacting with UI :)
+bool st_ui_is_interacting(void);
 
 // themes
 
@@ -71,9 +71,6 @@ void st_ui_draw_secondary_button(f64 x, f64 y, f64 w, f64 h);
 /// Draws danger button, not an actual button, it's just drawing
 void st_ui_draw_danger_button(f64 x, f64 y, f64 w, f64 h);
 
-/// Draws danger button, not an actual button, it's just drawing
-void st_ui_draw_danger_button(f64 x, f64 y, f64 w, f64 h);
-
 /// Draws hover outline
 void st_ui_draw_hover_outline(f64 x, f64 y, f64 w, f64 h);
 
@@ -83,8 +80,8 @@ void st_ui_draw_line_edit(f64 x, f64 y, f64 w, f64 h);
 /// Draws pressed button, not an actual button, it's just drawing
 void st_ui_draw_pressed_button(f64 x, f64 y, f64 w, f64 h);
 
-/// Draws slider, not an actual slider, it's just drawing
-void st_ui_draw_slider(f64 x, f64 y, f64 w, f64 h);
+/// Draws slider, not an actual slider, it's just drawing. Grabber is from 0 to 1
+void st_ui_draw_slider(f64 x, f64 y, f64 w, f64 h, f64 grabber);
 
 /// Draws window, not an actual window, it's just drawing
 void st_ui_draw_window(f64 x, f64 y, f64 w, f64 h);
