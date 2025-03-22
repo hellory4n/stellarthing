@@ -24,7 +24,8 @@ PROJECT_SOURCE_FILES ?= main/main.c \
     misc/ui/ui.c \
     misc/debug/debug_mode.c \
     core/core.c \
-    core/stack.c
+    core/stack.c \
+    core/math/rect.c
 
 INCLUDE_PATHS = -I. -Ilib
 
