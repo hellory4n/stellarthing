@@ -1,5 +1,7 @@
+#include <stdio.h>
 #include "core/math/color.h"
 #include "core/math/vec.h"
+#include "core/stack.h"
 #include "misc/debug/debug_mode.h"
 #include "misc/ui/ui.h"
 #include "platform/graphics/model.h"
@@ -7,8 +9,6 @@
 #include "platform/window.h"
 #include "platform/graphics/graphics.h"
 #include "platform/input.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 StTexture* m;
 StModel* suzanne;
@@ -58,7 +58,7 @@ static void update_game(void)
 		.tint = st_rgb(255, 255, 255),
 	});
 
-	nk_label(st_ui_ctx(), "Sigma sigma on the wall", NK_TEXT_ALIGN_LEFT);
+	//nk_label(st_ui_ctx(), "Sigma sigma on the wall", NK_TEXT_ALIGN_LEFT);
 }
 
 static void free_game(void)
@@ -66,8 +66,20 @@ static void free_game(void)
 	printf("adios\n");
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, const char* argv[])
 {
+	i64 sigma = 69;
+	i64 sigmas = 420;
+	i64 sk = 682862;
+	StStack* huh = StStack_new();
+	StStack_push(huh, &sigma);
+	StStack_push(huh, &sigmas);
+	StStack_push(huh, &sk);
+	while (huh->length != 0) {
+		printf("%li\n", *(i64*)StStack_pop(huh));
+	}
+	StStack_free(huh);
+
 	st_window_new("Stellarthing", (StVec2i){640, 480});
 	st_window_toggle_fullscreen();
 	st_init_input();

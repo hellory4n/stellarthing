@@ -21,10 +21,10 @@ PROJECT_SOURCE_FILES ?= main/main.c \
 	platform/graphics/graphics.c \
 	platform/graphics/texture.c \
     platform/graphics/model.c \
-    misc/ui/raylib_nuklear.c \
     misc/ui/ui.c \
     misc/debug/debug_mode.c \
-    core/core.c
+    core/core.c \
+    core/stack.c
 
 INCLUDE_PATHS = -I. -Ilib
 
