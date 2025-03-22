@@ -18,11 +18,9 @@ Constructors are called `new` and destructors are called `free`, e.g. `StObject_
 
 For member functions, instead of something like `self` or `this`, have the first letter of the type instead, e.g. `StEntity_update(StEntity* e);`
 
-Arrays should have the actual array as `<name>v` along with the length as `<name>c`
-
 ## Spacing
 
-Indentation is 4 spaces.
+Use tabs for spacing. I use 4 spaces but you can use any width, I don't care..
 
 Brackets are K&R style:
 

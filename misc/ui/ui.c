@@ -2,18 +2,23 @@
 #include <raylib.h>
 #include "ui.h"
 
-Font fontma;
+typedef struct {
+	
+} StButtonInstruction;
+
+Font regular_font;
+Font bold_font;
 
 void st_init_ui(void)
 {
-	// fontma = LoadFontEx("assets/Figtree-Regular", 16, NULL, 0);
-	// ctx = InitNuklearEx(fontma, 16);
+	regular_font = LoadFontEx("assets/Figtree-Regular.ttf", ST_UI_FONT_SIZE, NULL, 0);
+	bold_font = LoadFontEx("assets/Figtree-Regular.ttf", ST_UI_FONT_SIZE, NULL, 0);
 }
 
 void st_free_ui(void)
 {
-	// UnloadNuklear(ctx);
-	// UnloadFont(fontma);
+	UnloadFont(regular_font);
+	UnloadFont(bold_font);
 }
 
 void st_early_update_ui(void)

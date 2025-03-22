@@ -55,11 +55,12 @@ void st_early_update_ui(void);
 void st_late_update_ui(void);
 
 // themes
+
 // Draws regular text
-void st_ui_text(const char* text, StColor color);
+void st_ui_draw_text(f64 x, f64 y, const char* text, StColor color);
 
 /// Draws bold text
-void st_ui_bold_text(const char* text, StColor color);
+void st_ui_draw_bold_text(f64 x, f64 y, const char* text, StColor color);
 
 /// Draws primary button, not an actual button, it's just drawing
 void st_ui_draw_primary_button(f64 x, f64 y, f64 w, f64 h);
@@ -112,6 +113,12 @@ void st_ui_hlist_start(void);
 void st_ui_hlist_end(void);
 
 /// widgets
+
+// Draws regular text using the current layout
+void st_ui_text(const char* text, StColor color);
+
+/// Draws bold text
+void st_ui_bold_text(const char* text, StColor color);
 
 /// Makes a button, and returns true if it was pressed. Positioning and size are handled through
 /// layouts.
