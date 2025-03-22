@@ -10,7 +10,6 @@ bool enabled = false;
 
 void st_update_debug_mode(void)
 {
-	st_assert(false, "sir what the fuck");
 	if (st_is_key_just_pressed(ST_KEY_F3)) {
 		enabled = !enabled;
 	}
@@ -21,7 +20,7 @@ void st_update_debug_mode(void)
 
 	struct nk_context* ctx = st_ui_ctx();
 	bool visible = nk_begin(ctx, "debug mode", nk_rect(0, 0, 300, 300), 0);
-	st_assert(false, "sir what the fuck");
+	st_assert(!visible, "sir what the fuck");
 	if (visible) {
 		nk_layout_row_push(ctx, 100);
 		nk_label(ctx, "Sigma sigma\non the wall", NK_TEXT_ALIGN_LEFT);

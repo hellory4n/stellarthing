@@ -4,7 +4,7 @@
 
 void st_assert(bool x, const char* msg)
 {
-	if (x) {
+	if (!x) {
 		printf("failed assert: %s\n", msg);
 		fflush(stdout);
 		exit(1);

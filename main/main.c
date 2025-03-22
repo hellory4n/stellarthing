@@ -8,6 +8,7 @@
 #include "platform/graphics/graphics.h"
 #include "platform/input.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 StTexture* m;
 StModel* suzanne;
@@ -67,7 +68,6 @@ static void free_game(void)
 
 int main(int argc, char const *argv[])
 {
-	st_assert(false, "sir what the fuck");
 	st_window_new("Stellarthing", (StVec2i){640, 480});
 	st_window_toggle_fullscreen();
 	st_init_input();
