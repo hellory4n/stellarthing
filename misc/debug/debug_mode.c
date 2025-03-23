@@ -18,12 +18,7 @@ void st_update_debug_mode(void)
 		return;
 	}
 
-	st_ui_window_start(ST_UI_ANCHOR_TOP_LEFT, 600, 400);
-		st_ui_vlist_start();
-			st_ui_text("please", ST_WHITE);
-			// st_ui_button("New All", ST_UI_BUTTON_STYLE_SECONDARY);
-		st_ui_vlist_end();
-	st_ui_window_end();
+	st_ui_text(0, 0, "please", ST_WHITE);
 
 	/*struct nk_context* ctx = st_ui_ctx();
 	bool visible = nk_begin(ctx, "debug mode", nk_rect(0, 0, 300, 300), 0);

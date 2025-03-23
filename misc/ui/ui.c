@@ -1,29 +1,11 @@
 #include <stddef.h>
 #include <raylib.h>
 #include "core/math/math.h"
-#include "core/stack.h"
 #include "ui.h"
-
-typedef struct {
-	StUiAnchor anchor;
-	f64 w, h;
-} StLayoutWindow;
-
-typedef struct {
-	bool horizontal;
-	f64 w, h;
-} StLayoutList;
-
-typedef union {
-	StLayoutWindow window;
-	StLayoutList list;
-} StLayout;
 
 Font regular_font;
 Font bold_font;
-
 i64 interacted_widgets;
-StStack layout;
 
 void st_init_ui(void)
 {
