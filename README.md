@@ -1,4 +1,7 @@
-# Stellarthing
+# Stellarthing (v1.1.0 dev)
+
+## NOTE: This branch is in active development. It may be janky, or worse, busted. For stable versions, check
+## other branches.
 
 Space game.
 
