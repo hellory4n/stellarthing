@@ -116,15 +116,15 @@ Functions with error handling should return true if they succeeded, and false ot
 ```c
 bool function_that_busts()
 {
-    printf("Oh look, function's busted.\n");
+    st_log("Oh look, function's busted.");
     return false;
 }
 
 if (!function_that_busts()) {
-    printf("the function busted :(\n");
+    st_log("the function busted :(");
 }
 else {
-    printf("yippeee\n");
+    st_log("yippeee");
 }
 ```
 

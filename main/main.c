@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "core/core.h"
 #include "core/math/color.h"
 #include "core/math/vec.h"
 #include "misc/debug/debug_mode.h"
@@ -62,11 +63,12 @@ static void update_game(void)
 
 static void free_game(void)
 {
-	printf("adios\n");
+	st_log("adios");
 }
 
 int main(int argc, const char* argv[])
 {
+	st_init_logging();
 	st_window_new("Stellarthing", (StVec2i){1280, 720});
 	//st_window_toggle_fullscreen();
 	st_init_input();
@@ -99,5 +101,6 @@ int main(int argc, const char* argv[])
 	st_free_textures();
 	st_free_input();
 	st_window_free();
+	st_free_logging();
 	return 0;
 }

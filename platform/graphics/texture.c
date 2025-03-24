@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <raylib.h>
 #include "core/hashmap.h"
 #include "core/list.h"
@@ -17,7 +16,7 @@ void st_free_textures(void)
 	StList* items = StHashMap_items(textures);
 	for (nint i = 0; i < items->length; i++) {
 		StTexture_free(((StKeyValue*)items->data[i])->val);
-		printf("[ASSETS] Freed texture at %s\n", (char*)((StKeyValue*)items->data[i])->key);
+		st_log("[ASSETS] Freed texture at %s", (char*)((StKeyValue*)items->data[i])->key);
 	}
 	StList_free_all(items);
 
@@ -40,7 +39,7 @@ StTexture* StTexture_new(const char* path)
 	dog->format = mate.format;
 	StHashMap_set(textures, path, dog);
 
-	printf("[ASSETS] Loaded texture at %s\n", path);
+	st_log("[ASSETS] Loaded texture at %s", path);
 	return dog;
 }
 

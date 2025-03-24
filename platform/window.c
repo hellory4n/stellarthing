@@ -1,55 +1,58 @@
 #include <stdio.h>
 #include <time.h>
 #include <raylib.h>
-#include "window.h"
 #include "core/math/vec.h"
+#include "window.h"
 
-bool __st_fullscreen__ = false;
-bool __st_closing__ = false;
-bool __st_ready__ = false;
+bool fullscreen = false;
+bool closing = false;
+bool ready = false;
 
 void st_window_new(const char* title, StVec2i size)
 {
-	printf("Stellarthing %s: running Starry %s\n", ST_GAME_VERSION, ST_STARRY_VERSION);
+	st_log("Stellarthing %s: running Starry %s", ST_GAME_VERSION, ST_STARRY_VERSION);
 	
 	// man
 	srand(time(NULL));
 
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+	// make raylib spam our log file :)
+	SetTraceLogCallback(&st_rl_log_callback);
 	InitWindow(size.x, size.y, title);
 	SetExitKey(KEY_NULL);
-	printf("[WINDOW] Window has been created\n");
 
-	__st_ready__ = true;
+	st_log("[WINDOW] Window has been created");
+
+	ready = true;
 }
 
 void st_window_toggle_fullscreen(void)
 {
 	ToggleBorderlessWindowed();
-	printf("[WINDOW] Toggled fullscreen\n");
+	st_log("[WINDOW] Toggled fullscreen\n");
 }
 
 bool st_window_closing(void)
 {
-	return __st_closing__ || WindowShouldClose();
+	return closing || WindowShouldClose();
 }
 
 void st_window_request_close(void)
 {
-	__st_closing__ = true;
-	printf("[WINDOW] Window requested to be closed\n");
+	closing = true;
+	st_log("[WINDOW] Window requested to be closed");
 }
 
 void st_window_free()
 {
-	__st_ready__ = false;
+	ready = false;
 	CloseWindow();
-	printf("[WINDOW] Window closed\n");
+	st_log("[WINDOW] Window closed");
 }
 
 bool st_window_is_ready()
 {
-	return __st_ready__;
+	return ready;
 }
 
 f64 st_window_get_time()

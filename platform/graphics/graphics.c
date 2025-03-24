@@ -99,7 +99,7 @@ void st_draw_object_3d(StObject3D obj)
 {
 	// not a huge fan of segfaults
 	if (obj_len >= ST_MAX_3D_OBJECTS) {
-		fprintf(stderr, "[GRAPHICS] Couldn't render object; object limit was achieved (%i objects)\n", ST_MAX_3D_OBJECTS);
+		st_log("[GRAPHICS] Couldn't render object; object limit was achieved (%i objects)", ST_MAX_3D_OBJECTS);
 		return;
 	}
 

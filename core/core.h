@@ -1,4 +1,5 @@
 #pragma once
+#include <__stdarg_va_list.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -52,5 +53,17 @@ typedef double f64;
 #define ST_GAME_VERSION "v1.1.0"
 #endif
 
-/// assert.h is busted
+/// `assert` is busted
 void st_assert(bool x, const char* msg);
+
+/// Similar to printf, but it also writes to a log file and adds a line break against your will
+void st_log(const char* format, ...);
+
+/// This is just the callback raylib is gonna use for logging
+void st_rl_log_callback(i32 level, const char* text, va_list args);
+
+/// uh
+void st_init_logging(void);
+
+/// uh
+void st_free_logging(void);

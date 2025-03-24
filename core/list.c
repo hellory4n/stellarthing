@@ -15,7 +15,7 @@ bool StList_resize(StList* l, nint new_cap)
 {
 	void* new_data = realloc(l->data, new_cap * sizeof(void*));
 	if (new_data == NULL) {
-		fprintf(stderr, "Memory reallocation error\n");
+		st_log("Memory reallocation error");
 		return false;
 	}
 
@@ -42,9 +42,7 @@ void* StList_at(StList* l, nint idx)
 {
 	// not a huge fan of segfaults
 	if (idx >= l->length) {
-		fprintf(stderr, "Index out of range\n");
-		// a segfault is about to happen!
-		fflush(stdout);
+		st_log("Index %i out of range", idx);
 		return NULL;
 	}
 	
@@ -55,9 +53,7 @@ bool StList_set(StList* l, nint idx, void* item)
 {
 	// not a huge fan of segfaults
 	if (idx >= l->length) {
-		fprintf(stderr, "Index out of range\n");
-		// a segfault is about to happen!
-		fflush(stdout);
+		st_log("Index %i out of range", idx);
 		return false;
 	}
 
