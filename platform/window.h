@@ -28,3 +28,6 @@ f64 st_window_get_delta_time();
 
 /// Returns the frame rate the game is running at
 i64 st_window_get_fps();
+
+/// Gets the window size in pixels
+StVec2i st_window_get_size();

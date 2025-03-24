@@ -49,7 +49,7 @@ typedef double f64;
 
 #ifndef ST_GAME_VERSION
 /// The game version
-#define ST_GAME_VERSION "v0.11.0"
+#define ST_GAME_VERSION "v1.1.0"
 #endif
 
 /// assert.h is busted

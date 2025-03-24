@@ -67,8 +67,8 @@ static void free_game(void)
 
 int main(int argc, const char* argv[])
 {
-	st_window_new("Stellarthing", (StVec2i){640, 480});
-	st_window_toggle_fullscreen();
+	st_window_new("Stellarthing", (StVec2i){1280, 720});
+	//st_window_toggle_fullscreen();
 	st_init_input();
 	st_init_textures();
 	st_init_models();

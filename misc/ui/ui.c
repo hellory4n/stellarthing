@@ -24,8 +24,8 @@ static StRect scale_stuff(f64 x, f64 y, f64 w, f64 h)
 	return (StRect){
 		(GetRenderWidth() - ST_UI_RENDER_WIDTH * scale) * 0.5,
 		(GetRenderHeight() - ST_UI_RENDER_HEIGHT * scale) * 0.5,
-		ST_UI_RENDER_WIDTH * scale,
-		ST_UI_RENDER_HEIGHT * scale,
+		w * scale,
+		h * scale,
 	};
 }
 

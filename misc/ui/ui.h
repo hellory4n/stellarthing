@@ -2,7 +2,7 @@
 #include "core/math/color.h"
 
 #ifndef ST_UI_FONT_SIZE
-#define ST_UI_FONT_SIZE 16
+#define ST_UI_FONT_SIZE 20
 #endif
 
 #ifndef ST_UI_SEPARATION

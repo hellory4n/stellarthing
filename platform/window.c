@@ -2,6 +2,7 @@
 #include <time.h>
 #include <raylib.h>
 #include "window.h"
+#include "core/math/vec.h"
 
 bool __st_fullscreen__ = false;
 bool __st_closing__ = false;
@@ -64,4 +65,11 @@ f64 st_window_get_delta_time()
 i64 st_window_get_fps()
 {
 	return GetFPS();
+}
+
+StVec2i st_window_get_size()
+{
+	i32 width = GetRenderWidth();
+	i32 height = GetRenderHeight();
+	return (StVec2i){width, height};
 }
