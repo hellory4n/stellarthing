@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "core/core.h"
 #include "core/math/color.h"
 #include "core/math/vec.h"
@@ -29,7 +28,7 @@ static void init_game(void)
 	st_add_keymap("test_move", ST_KEY_J);
 
 	m = StTexture_new("assets/test.png");
-	suzanne = StModel_new("assets/suzanne.glb");
+	suzanne = StModel_new("assets/species/bob.glb");
 }
 
 static void update_game(void)
@@ -54,7 +53,7 @@ static void update_game(void)
 		.model = suzanne,
 		.position = (StVec3){0, 0, 0},
 		.rotation = rot,
-		.scale = (StVec3){2, 1, 1},
+		.scale = (StVec3){1, 1, 1},
 		.tint = st_rgb(255, 255, 255),
 	});
 

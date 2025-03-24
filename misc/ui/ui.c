@@ -34,12 +34,14 @@ void st_init_ui(void)
 	regular_font = LoadFontEx("assets/Figtree/Figtree-Regular.ttf", 256, NULL, 0);
 	bold_font = LoadFontEx("assets/Figtree/Figtree-Bold.ttf", 256, NULL, 0);
 	SetTextLineSpacing(1);
+	st_log("[UI] Loaded default theme");
 }
 
 void st_free_ui(void)
 {
 	UnloadFont(regular_font);
 	UnloadFont(bold_font);
+	st_log("[UI] Freed default theme");
 }
 
 void st_update_ui(void)
