@@ -2,6 +2,7 @@
 *.exe
 *.so
 *.dll
+!lib/raylib_windows/lib/raylib.dll
 *.dylib
 # linux executable
 stellarthing

@@ -6,16 +6,42 @@ Featuring a game engine in C99
 
 ## Building
 
-Install raylib (`raylib-devel` on fedora, not sure if other distros have it)
+### Linux
 
-Run `make && ./stellarthing`
+Make sure you have clang and make
+
+Install raylib dependencies:
+
+```sh
+# ubuntu, debian, & company
+sudo apt install libasound2-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev libxinerama-dev libwayland-dev libxkbcommon-dev
+
+# fedora
+sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel libatomic
+
+# arch
+sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
+```
+
+Run `make` from the project folder
+
+Now you have the executable (`stellarthing`) on the project folder
 
 Please note the C/C++ VS Code extension is dogwater, instead use clangd and then run
 `bear -- make` (you may have to install bear) so everything works properly
 
-You can also compile from linux to windows if you're insane:
+I don't know how to setup cross-compilation (linux to windows/mac), for Windows just compile from wine, and I don't even know if it would work on Mac
 
-1. step 1: install wine
-2. step 2: [install raylib on wine](https://raysan5.itch.io/raylib/purchase)
-3. step 3: run raylib installation/w64devkit.exe
-4. step 4: compile the project like you would on linux
+### Windows
+
+[Install raylib](https://raysan5.itch.io/raylib) (it comes with a compiler)
+
+By default it installs to `C:\raylib`
+
+Run `C:\raylib\w64devkit\w64devkit.exe`
+
+Go to the project folder (if you don't speak terminal it's `cd [project folder]` with no brackets)
+
+Run `make`
+
+Now you have the executable (`stellarthing.exe`) on the project folder

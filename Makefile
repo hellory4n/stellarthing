@@ -7,7 +7,6 @@ PLATFORM              ?= PLATFORM_DESKTOP
 
 # Define project variables
 PROJECT_NAME          ?= stellarthing
-PROJECT_VERSION       ?= 0.11.0
 PROJECT_BUILD_PATH    ?= .
 
 # just put every C file here
@@ -27,12 +26,7 @@ PROJECT_SOURCE_FILES ?= main/main.c \
     core/stack.c \
     core/math/rect.c 
 
-INCLUDE_PATHS = -I. -Ilib
-
-# raylib library variables
-RAYLIB_SRC_PATH       ?= lib/raylib_linux
-RAYLIB_INCLUDE_PATH   ?= lib/raylib_linux/include
-RAYLIB_LIB_PATH       ?= lib/raylib_linux/lib
+INCLUDE_PATHS = -Ilib
 
 # Library type used for raylib: STATIC (.a) or SHARED (.so/.dll)
 RAYLIB_LIBTYPE        ?= SHARED
@@ -128,11 +122,33 @@ ifeq ($(PLATFORM_OS),WINDOWS)
     endif
 endif
 
+# so you don't have to install raylib on linux
+# both for compiling it and for running it
+ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+    ifeq ($(PLATFORM_OS),LINUX)
+        RAYLIB_SRC_PATH       ?= lib/raylib_linux
+        RAYLIB_INCLUDE_PATH   ?= lib/raylib_linux/include
+        RAYLIB_LIB_PATH       ?= lib/raylib_linux/lib
+    endif
+endif
+ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+    ifeq ($(PLATFORM_OS),WINDOWS)
+        RAYLIB_SRC_PATH       ?= lib/raylib_windows
+        RAYLIB_INCLUDE_PATH   ?= lib/raylib_windows/include
+        RAYLIB_LIB_PATH       ?= lib/raylib_windows/lib
+    endif
+endif
+
 # Define default C compiler: CC
 #------------------------------------------------------------------------------------------------
 CC = clang
 
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+    ifeq ($(PLATFORM_OS),WINDOWS)
+        # i dont think mingw has clang
+        # or at least the toolchain raylib for windows installs
+        CC = gcc
+    endif
     ifeq ($(PLATFORM_OS),OSX)
         # OSX default compiler
         CC = clang
