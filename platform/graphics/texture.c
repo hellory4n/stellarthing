@@ -17,7 +17,7 @@ void st_free_textures(void)
 	StList* items = StHashMap_items(textures);
 	for (nint i = 0; i < items->length; i++) {
 		StTexture_free(((StKeyValue*)items->data[i])->val);
-		printf("[ASSETS] Freed texture at %s\n", (char*)((StKeyValue*)items->data[i])->val);
+		printf("[ASSETS] Freed texture at %s\n", (char*)((StKeyValue*)items->data[i])->key);
 	}
 	StList_free_all(items);
 

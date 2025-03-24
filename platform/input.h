@@ -1,5 +1,6 @@
 #pragma once
 #include <stdbool.h>
+#include "core/math/vec.h"
 #include "input_enums.h"
 
 bool st_is_key_just_pressed(StKey key);
@@ -32,3 +33,5 @@ bool st_is_keymap_not_pressed(const char* keymap);
 void st_init_input();
 
 void st_free_input();
+
+StVec2 st_mouse_position();

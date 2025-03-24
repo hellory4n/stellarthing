@@ -40,13 +40,11 @@ void st_update_ui(void);
 /// If true, the user is interacting with UI :)
 bool st_ui_is_interacting(void);
 
-// themes
-
 // Draws regular text
-void st_ui_draw_text(f64 x, f64 y, const char* text, StColor color);
+void st_ui_text(f64 x, f64 y, const char* text, StColor color);
 
 /// Draws bold text
-void st_ui_draw_bold_text(f64 x, f64 y, const char* text, StColor color);
+void st_ui_bold_text(f64 x, f64 y, const char* text, StColor color);
 
 /// Draws primary button, not an actual button, it's just drawing
 void st_ui_draw_primary_button(f64 x, f64 y, f64 w, f64 h);
@@ -72,14 +70,6 @@ void st_ui_draw_slider(f64 x, f64 y, f64 w, f64 h, f64 grabber);
 /// ha
 void st_ui_window(f64 x, f64 y, f64 w, f64 h);
 
-/// widgets
-
-// Draws regular text using the current layout
-void st_ui_text(f64 x, f64 y, const char* text, StColor color);
-
-/// Draws bold text
-void st_ui_bold_text(f64 x, f64 y, const char* text, StColor color);
-
 /// Makes a button, and returns true if it was pressed. Positioning and size are handled through
 /// layouts.
 bool st_ui_button(f64 x, f64 y, f64 w, f64 h, const char* text, StUiButtonStyle style);
@@ -95,4 +85,4 @@ void st_ui_cycle_button(f64 x, f64 y, f64 w, f64 h, const char* options[], nint 
 void st_ui_slider(f64 x, f64 y, f64 w, f64 h, f64 min, f64 max, f64* out);
 
 /// Line edit. Writes whatever was written into out. Make sure it can fit whatever the max length is.
-void st_ui_line_edit(f64 x, f64 y, f64 w, f64 h, nint max_len, const char* placeholder, const char** out);
+void st_ui_line_edit(f64 x, f64 y, f64 w, f64 h, nint max_len, const char* placeholder, char** out);
