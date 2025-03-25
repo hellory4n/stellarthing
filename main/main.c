@@ -44,10 +44,10 @@ int main(int argc, const char* argv[])
 		// before the 2d stuff because 2d is used for ui stuff
 		st_draw_all_3d_objects();
 
+		st_early_update_ui();
 		st_update_debug_mode();
-		st_update_ui();
-
 		update_game();
+		st_late_update_ui();
 
 		st_end_drawing();
 	}

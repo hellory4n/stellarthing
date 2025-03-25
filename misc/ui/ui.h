@@ -35,7 +35,10 @@ void st_init_ui(void);
 void st_free_ui(void);
 
 /// Help
-void st_update_ui(void);
+void st_early_update_ui(void);
+
+/// pleH
+void st_late_update_ui(void);
 
 /// If true, the user is interacting with UI :)
 bool st_ui_is_interacting(void);
