@@ -1,5 +1,5 @@
 #pragma once
-#include "core/math/color.h"
+#include "core/core.h"
 
 #ifndef ST_UI_FONT_SIZE
 #define ST_UI_FONT_SIZE 24
@@ -44,10 +44,10 @@ void st_late_update_ui(void);
 bool st_ui_is_interacting(void);
 
 // Draws regular text
-void st_ui_text(f64 x, f64 y, const char* text, StColor color);
+void st_ui_text(f64 x, f64 y, const char* text);
 
 /// Draws bold text
-void st_ui_bold_text(f64 x, f64 y, const char* text, StColor color);
+void st_ui_bold_text(f64 x, f64 y, const char* text);
 
 /// Draws primary button, not an actual button, it's just drawing
 void st_ui_draw_primary_button(f64 x, f64 y, f64 w, f64 h);
@@ -88,4 +88,4 @@ void st_ui_cycle_button(f64 x, f64 y, f64 w, f64 h, const char* options[], nint 
 void st_ui_slider(f64 x, f64 y, f64 w, f64 h, f64 min, f64 max, f64* out);
 
 /// Line edit. Writes whatever was written into out. Make sure it can fit whatever the max length is.
-void st_ui_line_edit(f64 x, f64 y, f64 w, f64 h, nint max_len, const char* placeholder, char** out);
+void st_ui_line_edit(f64 x, f64 y, f64 w, f64 h, nint max_len, char** out);

@@ -1,7 +1,6 @@
 #include <rlFPCamera.h>
 #include <stdio.h>
 #include "core/core.h"
-#include "core/math/color.h"
 #include "core/math/vec.h"
 #include "misc/ui/ui.h"
 #include "platform/graphics/graphics.h"
@@ -61,12 +60,12 @@ void st_update_player(void)
 		// pause screen
 		st_ui_window(0, 0, ST_UI_RENDER_WIDTH, ST_UI_RENDER_HEIGHT);
 
-		st_ui_bold_text(8, 8, "Paused", ST_WHITE);
-		st_ui_slider(8, 24+8, 300, 40, 45, 180, &fov);
-		cam.FOV.y = fov;
+		st_ui_bold_text(8, 8, "Paused");
+		st_ui_button(8, 24+8, 300, 40, "Quit Sibelius", ST_UI_BUTTON_STYLE_PRIMARY);
+		// st_ui_slider(8, 24+8, 300, 40, 45, 180, &fov);
 
 		char version[64];
 		snprintf(version, sizeof(version), "Stellarthing %s", ST_GAME_VERSION);
-		st_ui_text(8, 700-16, version, ST_WHITE);
+		st_ui_text(8, 700-16, version);
 	}
 }

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <raylib.h>
-#include "core/math/color.h"
 #include "core/math/math.h"
 #include "core/math/vec.h"
 #include "core/math/rect.h"
@@ -68,6 +67,7 @@ void st_early_update_ui(void)
 {
 	interacted_widgets = 0;
 	BeginTextureMode(ui_render);
+	ClearBackground(BLANK);
 }
 
 void st_late_update_ui(void)
@@ -96,27 +96,47 @@ bool st_ui_is_interacting(void)
 	return interacted_widgets >= 1;
 }
 
-void st_ui_text(f64 x, f64 y, const char* text, StColor color)
+void st_ui_text(f64 x, f64 y, const char* text)
 {
+	// shadow :)
+	DrawTextEx(
+		regular_font,
+		text,
+		(Vector2){x + 2, y + 2},
+		ST_UI_FONT_SIZE,
+		1,
+		BLACK
+	);
+
 	DrawTextEx(
 		regular_font,
 		text,
 		(Vector2){x, y},
 		ST_UI_FONT_SIZE,
 		1,
-		(Color){color.r, color.g, color.b, color.a}
+		WHITE
 	);
 }
 
-void st_ui_bold_text(f64 x, f64 y, const char* text, StColor color)
+void st_ui_bold_text(f64 x, f64 y, const char* text)
 {
+	// shadow :)
+	DrawTextEx(
+		bold_font,
+		text,
+		(Vector2){x + 2, y + 2},
+		ST_UI_FONT_SIZE,
+		1,
+		BLACK
+	);
+
 	DrawTextEx(
 		bold_font,
 		text,
 		(Vector2){x, y},
 		ST_UI_FONT_SIZE,
 		1,
-		(Color){color.r, color.g, color.b, color.a}
+		WHITE
 	);
 }
 
@@ -230,13 +250,12 @@ bool st_ui_button(f64 x, f64 y, f64 w, f64 h, const char* text, StUiButtonStyle 
 {
 	bool pressed = false;
 
-	// center text:
+	// center text
 	Vector2 text_size = MeasureTextEx(bold_font, text, ST_UI_FONT_SIZE, 1);
 	StVec2 text_pos = (StVec2){
 		(w / 2) - (text_size.x / 2),
 		(h / 2) - (text_size.y / 2),
 	};
-	StColor text_color = ST_WHITE;
 
 	switch (style) {
 		case ST_UI_BUTTON_STYLE_PRIMARY: st_ui_draw_primary_button(x, y, w, h); break;
@@ -256,13 +275,12 @@ bool st_ui_button(f64 x, f64 y, f64 w, f64 h, const char* text, StUiButtonStyle 
 
 		// different mouse thingy so it's not highlighted for 1 frame
 		if (st_is_mouse_button_held(ST_MOUSE_BUTTON_LEFT)) {
-			text_color = ST_BLACK;
 			st_ui_draw_pressed_button(x, y, w, h);
 		}
 	}
 
 	// finally draw text :)
-	st_ui_bold_text(text_pos.x, text_pos.y, text, text_color);
+	st_ui_bold_text(text_pos.x, text_pos.y, text);
 
 	if (pressed) {
 		interacted_widgets++;
@@ -318,18 +336,12 @@ void st_ui_slider(f64 x, f64 y, f64 w, f64 h, f64 min, f64 max, f64* out)
 	st_ui_draw_slider(x, y, w, h, ((*out - min) / max) * 2);
 }
 
-void st_ui_line_edit(f64 x, f64 y, f64 w, f64 h, nint max_len, const char* placeholder, char** out)
+void st_ui_line_edit(f64 x, f64 y, f64 w, f64 h, nint max_len, char** out)
 {
 	// TODO serious dejankifying needs to happen here
 
 	// vertical centering
-	Vector2 text_size;
-	if (strlen(*out) == 0) {
-		text_size = MeasureTextEx(bold_font, placeholder, ST_UI_FONT_SIZE, 1);
-	}
-	else {
-		text_size = MeasureTextEx(bold_font, *out, ST_UI_FONT_SIZE, 1);
-	}
+	Vector2 text_size = MeasureTextEx(bold_font, *out, ST_UI_FONT_SIZE, 1);
 	f64 text_y = (w / 2) - (text_size.y / 2);
 
 	st_ui_draw_line_edit(x, y, w, h);
@@ -369,11 +381,6 @@ void st_ui_line_edit(f64 x, f64 y, f64 w, f64 h, nint max_len, const char* place
 
 	// huh
 	BeginScissorMode(x, y, w, h);
-	if (strlen(*out) == 0) {
-		st_ui_text(x + 8, y + text_y, placeholder, st_rgba(255, 255, 255, 127));
-	}
-	else {
-		st_ui_text(x + 8, y + text_y, *out, st_rgba(255, 255, 255, 127));
-	}
+	st_ui_text(x + 8, y + text_y, *out);
 	EndScissorMode();
 }
