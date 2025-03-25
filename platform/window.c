@@ -15,7 +15,7 @@ void st_window_new(const char* title, StVec2i size)
 	// man
 	srand(time(NULL));
 
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE);
+	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT);
 	// make raylib spam our log file :)
 	SetTraceLogCallback(&st_rl_log_callback);
 	InitWindow(size.x, size.y, title);

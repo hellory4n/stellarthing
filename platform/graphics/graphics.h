@@ -11,7 +11,7 @@
 /// It's a camera. Quite important for seeing shit.
 typedef struct {
 	StVec3 position;
-	/// What the camera is looking at
+	/// Where the camera is looking at
 	StVec3 target;
 	/// Field of view
 	f64 fov;

@@ -18,12 +18,12 @@ i64 interacted_widgets;
 static StRect scale_stuff(f64 x, f64 y, f64 w, f64 h)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	return (StRect){
-		(GetRenderWidth() - ST_UI_RENDER_WIDTH * scale) * 0.5,
-		(GetRenderHeight() - ST_UI_RENDER_HEIGHT * scale) * 0.5,
+		(GetRenderWidth() - (ST_UI_RENDER_WIDTH - x) * scale),
+		(GetRenderHeight() - (ST_UI_RENDER_HEIGHT - y) * scale),
 		w * scale,
 		h * scale,
 	};
@@ -57,8 +57,8 @@ bool st_ui_is_interacting(void)
 void st_ui_text(f64 x, f64 y, const char* text, StColor color)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, 0, 0);
 	DrawTextEx(
@@ -74,8 +74,8 @@ void st_ui_text(f64 x, f64 y, const char* text, StColor color)
 void st_ui_bold_text(f64 x, f64 y, const char* text, StColor color)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, 0, 0);
 	DrawTextEx(
@@ -91,8 +91,8 @@ void st_ui_bold_text(f64 x, f64 y, const char* text, StColor color)
 void st_ui_draw_primary_button(f64 x, f64 y, f64 w, f64 h)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, w, h);
 	DrawRectangleRounded(
@@ -108,8 +108,8 @@ void st_ui_draw_primary_button(f64 x, f64 y, f64 w, f64 h)
 void st_ui_draw_secondary_button(f64 x, f64 y, f64 w, f64 h)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, w, h);
 	DrawRectangleRounded(
@@ -125,8 +125,8 @@ void st_ui_draw_secondary_button(f64 x, f64 y, f64 w, f64 h)
 void st_ui_draw_danger_button(f64 x, f64 y, f64 w, f64 h)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, w, h);
 	DrawRectangleRounded(
@@ -142,8 +142,8 @@ void st_ui_draw_danger_button(f64 x, f64 y, f64 w, f64 h)
 void st_ui_draw_hover_outline(f64 x, f64 y, f64 w, f64 h)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, w, h);
 	DrawRectangleRoundedLinesEx(
@@ -155,8 +155,8 @@ void st_ui_draw_hover_outline(f64 x, f64 y, f64 w, f64 h)
 void st_ui_draw_line_edit(f64 x, f64 y, f64 w, f64 h)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, w, h);
 	DrawRectangleRounded(
@@ -181,8 +181,8 @@ void st_ui_draw_pressed_button(f64 x, f64 y, f64 w, f64 h)
 void st_ui_draw_slider(f64 x, f64 y, f64 w, f64 h, f64 grabber)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, w, h);
 
@@ -201,14 +201,14 @@ void st_ui_draw_slider(f64 x, f64 y, f64 w, f64 h, f64 grabber)
 	DrawRectangleRounded(
 		(Rectangle){
 			st_clamp(tf.x + (tf.w * grabber) - tf.h / 1.75, tf.h / 2, tf.w - tf.h / 2),
-			y, w, h
+			tf.y, tf.w, tf.h
 		},
 		1, 12, (Color){0x7c, 0x4d, 0xff, 0xff}
 	);
 	DrawRectangleRoundedLinesEx(
 		(Rectangle){
 			st_clamp(tf.x + (tf.w * grabber) - tf.h / 1.75, tf.h / 2, tf.w - tf.h / 2),
-			y, w, h
+			tf.y, tf.w, tf.h
 		},
 		1, 12, 2 * scale, (Color){0x7b, 0x1f, 0xa2, 0xff}
 	);
@@ -217,8 +217,8 @@ void st_ui_draw_slider(f64 x, f64 y, f64 w, f64 h, f64 grabber)
 void st_ui_window(f64 x, f64 y, f64 w, f64 h)
 {
 	f64 scale = fmin(
-		GetRenderWidth() / (double)ST_UI_RENDER_WIDTH,
-		GetRenderHeight() / (double)ST_UI_RENDER_HEIGHT
+		GetRenderWidth() / (f64)ST_UI_RENDER_WIDTH,
+		GetRenderHeight() / (f64)ST_UI_RENDER_HEIGHT
 	);
 	StRect tf = scale_stuff(x, y, w, h);
 	DrawRectangle(

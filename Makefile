@@ -24,7 +24,9 @@ PROJECT_SOURCE_FILES ?= main/main.c \
     misc/debug/debug_mode.c \
     core/core.c \
     core/stack.c \
-    core/math/rect.c 
+    core/math/rect.c \
+    game/player/player.c \
+	lib/rlFPCamera.c
 
 INCLUDE_PATHS = -Ilib
 

@@ -1,6 +1,7 @@
 #include "core/core.h"
 #include "core/math/color.h"
 #include "core/math/vec.h"
+#include "game/player/player.h"
 #include "misc/debug/debug_mode.h"
 #include "misc/ui/ui.h"
 #include "platform/graphics/model.h"
@@ -9,60 +10,19 @@
 #include "platform/graphics/graphics.h"
 #include "platform/input.h"
 
-StTexture* m;
-StModel* suzanne;
-StVec3 rot;
-
 static void init_game(void)
 {
-	st_set_camera((StCamera){
-		.position = (StVec3){0.5, 5, 5},
-		.target = (StVec3){0, 0, 0},
-		.fov = 90,
-		.perspective = true,
-	});
-
-	// mate
-	st_add_keymap("test_move", ST_KEY_SPACE);
-	st_add_keymap("test_move", ST_KEY_NUM6);
-	st_add_keymap("test_move", ST_KEY_J);
-
-	m = StTexture_new("assets/test.png");
-	suzanne = StModel_new("assets/species/bob.glb");
+	st_init_player();
 }
 
 static void update_game(void)
 {
-	f64 dt = st_window_get_delta_time();
-	rot = (StVec3){
-		.x = rot.x + (100 * dt),
-		.y = rot.y + (100 * dt),
-		.z = rot.z + (100 * dt),
-	};
-
-	// st_draw_texture_ext(
-	// 	m,
-	// 	(StVec2){0, 0},
-	// 	(StVec2){m->width, m->height},
-	// 	(StVec2){0, 0},
-	// 	(StVec2){m->width, m->height},
-	// 	(StVec2){0, 0}, 0, ST_WHITE
-	// );
-
-	st_draw_object_3d((StObject3D){
-		.model = suzanne,
-		.position = (StVec3){0, 0, 0},
-		.rotation = rot,
-		.scale = (StVec3){1, 1, 1},
-		.tint = st_rgb(255, 255, 255),
-	});
-
-	//nk_label(st_ui_ctx(), "Sigma sigma on the wall", NK_TEXT_ALIGN_LEFT);
+	st_update_player();
 }
 
 static void free_game(void)
 {
-	st_log("adios");
+	st_free_player();
 }
 
 int main(int argc, const char* argv[])
