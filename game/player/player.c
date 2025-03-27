@@ -1,5 +1,6 @@
-#include <rlFPCamera.h>
 #include <stdio.h>
+#include <raylib.h>
+#include <rlFPCamera.h>
 #include "core/core.h"
 #include "core/math/vec.h"
 #include "misc/ui/ui.h"
@@ -7,7 +8,6 @@
 #include "platform/graphics/model.h"
 #include "platform/input.h"
 #include "platform/input_enums.h"
-#include "raylib.h"
 #include "player.h"
 
 StModel* bob;
@@ -21,9 +21,24 @@ void st_init_player(void)
 
 	// init camera
 	rlFPCameraInit(&cam, 90, (Vector3) { 1, 0, 0 });
-    cam.MoveSpeed.z = 1;
-    cam.MoveSpeed.x = 1;
+    cam.MoveSpeed.z = 2;
+    cam.MoveSpeed.x = 2;
     cam.FarPlane = 5000;
+	// TODO custom flight/jumping/gravity whatever
+	// fly up
+	cam.ControlsKeys[4] = KEY_SPACE;
+	// fly down
+	cam.ControlsKeys[5] = KEY_LEFT_SHIFT;
+
+	// rlfpcamera allows rotating camera with the arrow keys
+	// we don't want that
+	cam.ControlsKeys[6] = KEY_NULL;
+    cam.ControlsKeys[7] = KEY_NULL;
+    cam.ControlsKeys[8] = KEY_NULL;
+    cam.ControlsKeys[9] = KEY_NULL;
+
+	// sprint
+	cam.ControlsKeys[10] = KEY_LEFT_CONTROL;
 
 	st_log("[PLAYER] Setup player");
 }
@@ -61,8 +76,6 @@ void st_update_player(void)
 		st_ui_window(0, 0, ST_UI_RENDER_WIDTH, ST_UI_RENDER_HEIGHT);
 
 		st_ui_bold_text(8, 8, "Paused");
-		st_ui_button(8, 24+8, 300, 40, "Quit Sibelius", ST_UI_BUTTON_STYLE_PRIMARY);
-		// st_ui_slider(8, 24+8, 300, 40, 45, 180, &fov);
 
 		char version[64];
 		snprintf(version, sizeof(version), "Stellarthing %s", ST_GAME_VERSION);
