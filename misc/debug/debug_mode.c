@@ -13,7 +13,7 @@ bool enabled = false;
 
 void st_update_debug_mode(void)
 {
-	if (st_is_key_just_pressed(ST_KEY_F3)) {
+	if (st_is_key_just_pressed(ST_KEY_F1)) {
 		enabled = !enabled;
 	}
 

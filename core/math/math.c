@@ -49,3 +49,18 @@ f64 st_clamp(f64 val, f64 min, f64 max)
 	else if (val > max) return max;
 	else return val;
 }
+
+f64 st_lerp(f64 a, f64 b, f64 t)
+{
+	return (1.0 - t) * a + t * b;
+}
+
+f64 st_inverse_lerp(f64 a, f64 b, f64 v)
+{
+	return (v - a) / (b - a);
+}
+
+f64 st_remap(f64 v, f64 src_min, f64 src_max, f64 dst_min, f64 dst_max)
+{
+	return st_lerp(dst_min, dst_max, st_inverse_lerp(src_min, src_max, v));
+}

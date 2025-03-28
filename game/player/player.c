@@ -21,9 +21,9 @@ void st_init_player(void)
 
 	// init camera
 	rlFPCameraInit(&cam, 90, (Vector3) { 1, 0, 0 });
-    cam.MoveSpeed.z = 2;
-    cam.MoveSpeed.x = 2;
-    cam.FarPlane = 5000;
+	cam.MoveSpeed.z = 2;
+	cam.MoveSpeed.x = 2;
+	cam.FarPlane = 5000;
 	// TODO custom flight/jumping/gravity whatever
 	// fly up
 	cam.ControlsKeys[4] = KEY_SPACE;
@@ -33,9 +33,9 @@ void st_init_player(void)
 	// rlfpcamera allows rotating camera with the arrow keys
 	// we don't want that
 	cam.ControlsKeys[6] = KEY_NULL;
-    cam.ControlsKeys[7] = KEY_NULL;
-    cam.ControlsKeys[8] = KEY_NULL;
-    cam.ControlsKeys[9] = KEY_NULL;
+	cam.ControlsKeys[7] = KEY_NULL;
+	cam.ControlsKeys[8] = KEY_NULL;
+	cam.ControlsKeys[9] = KEY_NULL;
 
 	// sprint
 	cam.ControlsKeys[10] = KEY_LEFT_CONTROL;
@@ -80,5 +80,9 @@ void st_update_player(void)
 		char version[64];
 		snprintf(version, sizeof(version), "Stellarthing %s", ST_GAME_VERSION);
 		st_ui_text(8, 700-16, version);
+	}
+
+	if (!IsWindowFocused()) {
+		EnableCursor();
 	}
 }

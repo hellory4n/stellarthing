@@ -1,6 +1,8 @@
 #include "core/core.h"
 #include "core/math/color.h"
+#include "core/math/math.h"
 #include "core/math/vec.h"
+#include "game/generator/world/world_gen.h"
 #include "game/player/player.h"
 #include "misc/debug/debug_mode.h"
 #include "misc/ui/ui.h"
@@ -9,20 +11,47 @@
 #include "platform/window.h"
 #include "platform/graphics/graphics.h"
 #include "platform/input.h"
+#include "raylib.h"
+
+Texture bloodyworldlbodoyelophmalte;
 
 static void init_game(void)
 {
 	st_init_player();
+
+	// generate the bloody world
+	i64* bloody_world = malloc(256 * 256 * sizeof(i64));
+	Image please = GenImageColor(256, 256, WHITE);
+
+	for (i64 z = 0; z < 256; z++) {
+		for (i64 x = 0; x < 256; x++) {
+			i64 height = st_gen_get_block_height(1337, x, z);
+			// it doesn't let me do [x][z]
+			bloody_world[x * 256 + z] = height;
+
+			f64 j = st_remap(height, 0, 20, 0, 256);
+			ImageDrawPixel(&please, x, z, (Color){j, j, j, 255});
+		}
+	}
+
+	// ImageColorInvert(&please);
+	bloodyworldlbodoyelophmalte = LoadTextureFromImage(please);
+	UnloadImage(please);
+	free(bloody_world);
 }
 
 static void update_game(void)
 {
 	st_update_player();
+
+	DrawTextureEx(bloodyworldlbodoyelophmalte, (Vector2){16, 16}, 0, 2.5, WHITE);
 }
 
 static void free_game(void)
 {
 	st_free_player();
+
+	UnloadTexture(bloodyworldlbodoyelophmalte);
 }
 
 int main(int argc, const char* argv[])

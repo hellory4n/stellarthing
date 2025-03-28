@@ -26,7 +26,9 @@ PROJECT_SOURCE_FILES ?= main/main.c \
     core/stack.c \
     core/math/rect.c \
     game/player/player.c \
-	lib/rlFPCamera.c
+	lib/rlFPCamera.c \
+    lib/FastNoiseLite.c \
+    game/generator/world/world_gen.c
 
 INCLUDE_PATHS = -Ilib
 

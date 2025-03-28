@@ -29,3 +29,12 @@ void st_rand_base64(nint len, char* out);
 
 /// clamp
 f64 st_clamp(f64 val, f64 min, f64 max);
+
+/// lerp
+f64 st_lerp(f64 a, f64 b, f64 t);
+
+/// Similar to lerp, but inverse.
+f64 st_inverse_lerp(f64 a, f64 b, f64 v);
+
+/// Converts a number from one scale to another
+f64 st_remap(f64 v, f64 src_min, f64 src_max, f64 dst_min, f64 dst_max);
