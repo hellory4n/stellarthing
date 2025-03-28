@@ -25,11 +25,11 @@ static void init_game(void)
 
 	for (i64 z = 0; z < 256; z++) {
 		for (i64 x = 0; x < 256; x++) {
-			i64 height = st_gen_get_block_height(1337, x, z);
+			i64 height = st_gen_get_block_height(42069, x, z);
 			// it doesn't let me do [x][z]
 			bloody_world[x * 256 + z] = height;
 
-			f64 j = st_remap(height, 0, 20, 0, 256);
+			f64 j = st_clamp(st_remap(height, -1, 20, 0, 255), 0, 255);
 			ImageDrawPixel(&please, x, z, (Color){j, j, j, 255});
 		}
 	}
