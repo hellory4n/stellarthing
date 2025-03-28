@@ -25,16 +25,50 @@ static void init_game(void)
 
 	for (i64 z = 0; z < 256; z++) {
 		for (i64 x = 0; x < 256; x++) {
-			i64 height = st_gen_get_block_height(42069, x, z);
+			f64 height = st_gen_get_block_height(42069, x, z);
 			// it doesn't let me do [x][z]
 			bloody_world[x * 256 + z] = height;
 
-			f64 j = st_clamp(st_remap(height, -1, 20, 0, 255), 0, 255);
-			ImageDrawPixel(&please, x, z, (Color){j, j, j, 255});
+			// color
+			// the range is -1 to 1
+			Color color;
+			if (height < -0.6 / 2) {
+				color = DARKBLUE;
+			}
+			else if (height < -0.3 / 2) {
+				color = BLUE;
+			}
+			else if (height < -0.1 / 2) {
+				color = SKYBLUE;
+			}
+			else if (height < 0.0) {
+				color = BEIGE;
+			}
+			else if (height < 0.2 / 2) {
+				color = GREEN;
+			}
+			else if (height < 0.4 / 2) {
+				color = LIME;
+			}
+			else if (height < 0.6 / 2) {
+				color = DARKGREEN;
+			}
+			else if (height < 0.75 / 2) {
+				color = GRAY;
+			}
+			else if (height < 0.9 / 2) {
+				color = DARKGRAY;
+			}
+			else {
+				color = WHITE;
+			}
+			if (height < -0.8 || height > 0.8) {
+				st_log("%f", height);
+			}
+			ImageDrawPixel(&please, x, z, color);
 		}
 	}
 
-	// ImageColorInvert(&please);
 	bloodyworldlbodoyelophmalte = LoadTextureFromImage(please);
 	UnloadImage(please);
 	free(bloody_world);
