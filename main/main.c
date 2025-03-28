@@ -30,7 +30,7 @@ static void init_game(void)
 			bloody_world[x * 256 + z] = height;
 
 			// color
-			// the range is -1 to 1
+			// the range is -1 to 1 except not really??
 			Color color;
 			if (height < -0.6 / 2) {
 				color = DARKBLUE;
@@ -42,7 +42,7 @@ static void init_game(void)
 				color = SKYBLUE;
 			}
 			else if (height < 0.0) {
-				color = BEIGE;
+				color = (Color){0xf0, 0xf4, 0xc3, 0xff};
 			}
 			else if (height < 0.2 / 2) {
 				color = GREEN;
@@ -54,16 +54,13 @@ static void init_game(void)
 				color = DARKGREEN;
 			}
 			else if (height < 0.75 / 2) {
-				color = GRAY;
+				color = (Color){96, 130, 145, 0xff};
 			}
 			else if (height < 0.9 / 2) {
 				color = DARKGRAY;
 			}
 			else {
 				color = WHITE;
-			}
-			if (height < -0.8 || height > 0.8) {
-				st_log("%f", height);
 			}
 			ImageDrawPixel(&please, x, z, color);
 		}
