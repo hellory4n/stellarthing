@@ -1,6 +1,5 @@
 #include "core/core.h"
 #include "core/math/color.h"
-#include "core/math/math.h"
 #include "core/math/vec.h"
 #include "game/generator/world/world_gen.h"
 #include "game/player/player.h"
@@ -12,100 +11,37 @@
 #include "platform/graphics/graphics.h"
 #include "platform/input.h"
 #include "raylib.h"
-#include <stdlib.h>
 
-Texture bloodyworldlbodoyelophmalte;
+StModel* mate;
 
 static void init_game(void)
 {
 	st_init_player();
 
 	// generate the bloody world
-	const i64 width = 256;
-	const i64 height = 256;
-	
-	i64* bloody_world = malloc(256 * 256 * sizeof(i64));
-
-	Mesh meshma;
-	meshma.vertexCount = width * height;
-	meshma.triangleCount = (width - 1) * (height - 1) * 6;
-	meshma.vertices = malloc(meshma.vertexCount * sizeof(float) * 3);
-	meshma.texcoords = malloc(meshma.vertexCount * sizeof(float) * 2);
-
-	nint vertices = 0;
-
-	// add triangle
-	// meshma.vertices[triangle_idx] = x;
-	// meshma.vertices[triangle_idx + 1] = y;
-	// meshma.vertices[triangle_idx + 2] = z;
-	// triangle_idx += 3;
-
-	f32 top_left_x = (width - 1) / -2.0f;
-	f32 top_left_z = (height - 1) / 2.0f;
-
-	nint vert_idx_smth = 0;
-	for (i64 z = 0; z < width; z++) {
-		for (i64 x = 0; x < height; x++) {
-			f64 y = st_gen_get_block_height(42069, x, z);
-			// it doesn't let me do [x][z]
-			bloody_world[x * width + z] = y;
-
-			StColor bloody_colour = st_gen_get_color(y);
-
-			// mesh deez
-			meshma.vertices[vertices] = top_left_x + x;
-			meshma.vertices[vertices + 1] = y;
-			meshma.vertices[vertices + 2] =  top_left_z - z;
-			vertices += 3;
-
-			meshma.vertices[vertices] = top_left_x + x + 1;
-			meshma.vertices[vertices + 1] = y;
-			meshma.vertices[vertices + 2] =  top_left_z - z;
-			vertices += 3;
-
-			meshma.vertices[vertices] = top_left_x + x + 1;
-			meshma.vertices[vertices + 1] = y;
-			meshma.vertices[vertices + 2] =  top_left_z - z + 1;
-			vertices += 3;
-
-			meshma.vertices[vertices] = top_left_x + x;
-			meshma.vertices[vertices + 1] = y;
-			meshma.vertices[vertices + 2] =  top_left_z - z;
-			vertices += 3;
-
-			meshma.vertices[vertices] = top_left_x + x;
-			meshma.vertices[vertices + 1] = y;
-			meshma.vertices[vertices + 2] =  top_left_z - z + 1;
-			vertices += 3;
-
-			meshma.vertices[vertices] = top_left_x + x + 1;
-			meshma.vertices[vertices + 1] = y;
-			meshma.vertices[vertices + 2] =  top_left_z - z + 1;
-			vertices += 3;
-
-			if (x < width - 1 && y < height - 1) {
-
-			}
-
-			vert_idx_smth++;
-		}
-	}
-
-	free(bloody_world);
+	StTerrainPart* world = st_gen_chunk(42069, 0, 0);
+	mate = st_gen_chunk_mesh(world);
+	free(world);
 }
 
 static void update_game(void)
 {
 	st_update_player();
 
-	DrawTextureEx(bloodyworldlbodoyelophmalte, (Vector2){16, 16}, 0, 2.5, WHITE);
+	st_draw_object_3d((StObject3D){
+		.model = mate,
+		.position = (StVec3){0, 0, 0},
+		.rotation = 0,
+		.scale = (StVec3){1, 1, 1},
+		.tint = ST_WHITE,
+	});
 }
 
 static void free_game(void)
 {
 	st_free_player();
 
-	UnloadTexture(bloodyworldlbodoyelophmalte);
+	UnloadModel(*(Model*)mate);
 }
 
 int main(int argc, const char* argv[])
