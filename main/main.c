@@ -12,6 +12,7 @@
 #include "platform/graphics/graphics.h"
 #include "platform/input.h"
 #include "raylib.h"
+#include <stdlib.h>
 
 Texture bloodyworldlbodoyelophmalte;
 
@@ -20,54 +21,76 @@ static void init_game(void)
 	st_init_player();
 
 	// generate the bloody world
+	const i64 width = 256;
+	const i64 height = 256;
+	
 	i64* bloody_world = malloc(256 * 256 * sizeof(i64));
-	Image please = GenImageColor(256, 256, WHITE);
 
-	for (i64 z = 0; z < 256; z++) {
-		for (i64 x = 0; x < 256; x++) {
-			f64 height = st_gen_get_block_height(42069, x, z);
+	Mesh meshma;
+	meshma.vertexCount = width * height;
+	meshma.triangleCount = (width - 1) * (height - 1) * 6;
+	meshma.vertices = malloc(meshma.vertexCount * sizeof(float) * 3);
+	meshma.texcoords = malloc(meshma.vertexCount * sizeof(float) * 2);
+
+	nint vertices = 0;
+
+	// add triangle
+	// meshma.vertices[triangle_idx] = x;
+	// meshma.vertices[triangle_idx + 1] = y;
+	// meshma.vertices[triangle_idx + 2] = z;
+	// triangle_idx += 3;
+
+	f32 top_left_x = (width - 1) / -2.0f;
+	f32 top_left_z = (height - 1) / 2.0f;
+
+	nint vert_idx_smth = 0;
+	for (i64 z = 0; z < width; z++) {
+		for (i64 x = 0; x < height; x++) {
+			f64 y = st_gen_get_block_height(42069, x, z);
 			// it doesn't let me do [x][z]
-			bloody_world[x * 256 + z] = height;
+			bloody_world[x * width + z] = y;
 
-			// color
-			// the range is -1 to 1 except not really??
-			Color color;
-			if (height < -0.6 / 2) {
-				color = DARKBLUE;
+			StColor bloody_colour = st_gen_get_color(y);
+
+			// mesh deez
+			meshma.vertices[vertices] = top_left_x + x;
+			meshma.vertices[vertices + 1] = y;
+			meshma.vertices[vertices + 2] =  top_left_z - z;
+			vertices += 3;
+
+			meshma.vertices[vertices] = top_left_x + x + 1;
+			meshma.vertices[vertices + 1] = y;
+			meshma.vertices[vertices + 2] =  top_left_z - z;
+			vertices += 3;
+
+			meshma.vertices[vertices] = top_left_x + x + 1;
+			meshma.vertices[vertices + 1] = y;
+			meshma.vertices[vertices + 2] =  top_left_z - z + 1;
+			vertices += 3;
+
+			meshma.vertices[vertices] = top_left_x + x;
+			meshma.vertices[vertices + 1] = y;
+			meshma.vertices[vertices + 2] =  top_left_z - z;
+			vertices += 3;
+
+			meshma.vertices[vertices] = top_left_x + x;
+			meshma.vertices[vertices + 1] = y;
+			meshma.vertices[vertices + 2] =  top_left_z - z + 1;
+			vertices += 3;
+
+			meshma.vertices[vertices] = top_left_x + x + 1;
+			meshma.vertices[vertices + 1] = y;
+			meshma.vertices[vertices + 2] =  top_left_z - z + 1;
+			vertices += 3;
+
+			if (x < width - 1 && y < height - 1) {
+
 			}
-			else if (height < -0.3 / 2) {
-				color = BLUE;
-			}
-			else if (height < -0.1 / 2) {
-				color = SKYBLUE;
-			}
-			else if (height < 0.0) {
-				color = (Color){0xf0, 0xf4, 0xc3, 0xff};
-			}
-			else if (height < 0.2 / 2) {
-				color = GREEN;
-			}
-			else if (height < 0.4 / 2) {
-				color = LIME;
-			}
-			else if (height < 0.6 / 2) {
-				color = DARKGREEN;
-			}
-			else if (height < 0.75 / 2) {
-				color = (Color){96, 130, 145, 0xff};
-			}
-			else if (height < 0.9 / 2) {
-				color = DARKGRAY;
-			}
-			else {
-				color = WHITE;
-			}
-			ImageDrawPixel(&please, x, z, color);
+
+			vert_idx_smth++;
 		}
 	}
 
-	bloodyworldlbodoyelophmalte = LoadTextureFromImage(please);
-	UnloadImage(please);
 	free(bloody_world);
 }
 
