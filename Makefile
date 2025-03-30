@@ -28,7 +28,8 @@ PROJECT_SOURCE_FILES ?= main/main.c \
     game/player/player.c \
 	lib/rlFPCamera.c \
     lib/FastNoiseLite.c \
-    game/generator/world/world_gen.c
+    game/generator/world/world_gen.c \
+    misc/debug/console.c
 
 INCLUDE_PATHS = -Ilib
 

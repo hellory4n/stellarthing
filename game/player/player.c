@@ -20,7 +20,7 @@ void st_init_player(void)
 	bob = StModel_new("assets/species/bob.glb");
 
 	// init camera
-	rlFPCameraInit(&cam, 90, (Vector3) { 1, 0, 0 });
+	rlFPCameraInit(&cam, 90, (Vector3) { 0, 100, 0 });
 	cam.MoveSpeed.z = 2;
 	cam.MoveSpeed.x = 2;
 	cam.FarPlane = 5000;

@@ -1,7 +1,6 @@
 #pragma once
 #include "core/core.h"
 #include "core/math/color.h"
-#include "platform/graphics/model.h"
 
 #ifndef ST_GEN_BASE_HEIGHT
 #define ST_GEN_BASE_HEIGHT 64
@@ -25,4 +24,4 @@ StTerrainPart* st_gen_chunk(i64 seed, i64 chunk_x, i64 chunk_z);
 StColor st_gen_get_color(f64 height);
 
 /// Generates a chunk mesh from the output of `st_gen_chunk`
-StModel* st_gen_chunk_mesh(StTerrainPart* chunk);
+//void* st_gen_chunk_mesh(StTerrainPart* chunk);
