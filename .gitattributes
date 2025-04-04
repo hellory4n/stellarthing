@@ -1,2 +1,2 @@
-lib/** linguist-vendored
+vendor/** linguist-vendored
 * text=auto eol=lf

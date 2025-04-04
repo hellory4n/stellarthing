@@ -4,8 +4,6 @@
 
 Space game.
 
-Featuring a game engine in C99
-
 ## Building
 
 ### Linux

@@ -1,26 +1,22 @@
 # Conventions
 
-## Naming
+C can be tricky. That's why we choose conventions to make things less tricky.
 
-Types start with `St` and are in `PascalCase`, e.g. `StObject`
+## Style
 
-Please note acronyms and abbreviations are NOT capitalized, so for example it would be `StJson`, not `StJSON`
+Types are in `PascalCase`, e.g. `ObjectObject`
 
-Functions start with `st_` and are in `snake_case`, e.g. `st_log`
+Please note acronyms and abbreviations are NOT capitalized, so for example it would be `ThingyId`, not `ThingyID`
 
-Member functions start with the type name and then are in `snake_case`, e.g. `StObject_annihilate_all_that_has_ever_lived`
+Functions are in `snake_case`, e.g. `thingy_do_the_thing`
 
 Macros start with `ST_` and are in `UPPER_CASE`, e.g. `ST_IDK_MAN`
 
-If you have something that's supposed to be private, put a `__` prefix, e.g. `__st_send_nuke`
+If you have something that's supposed to be private, put a `__` prefix, e.g. `__st_send_nuke` (but private is bloat don't use this)
 
-Constructors are called `new` and destructors are called `free`, e.g. `StObject_new`, `StObject_free`
+Constructors are called `new` and destructors are called `free`, e.g. `object_new`, `object_free`
 
-For member functions, instead of something like `self` or `this`, have the first letter of the type instead, e.g. `StEntity_update(StEntity* e);`
-
-## Spacing
-
-Use tabs for spacing. I use 4 spaces but you can use any width, I don't care..
+Tabs are tabs with the size of 4 spaces
 
 Brackets are K&R style:
 
@@ -103,13 +99,17 @@ Mate* mate;
 Mate *mate;
 ```
 
-Documentation has 3 slashes:
+Documentation comments are just normal comments but with Very professional formatting.
 ```c
-/// This does something.
+// This does something.
 void man();
 ```
 
-## Misc
+Use include guards
+
+## Other crap
+
+Use [libtrippin](https://github.com/hellory4n/libtrippin) and [stb_ds](https://nothings.org/stb_ds)
 
 Functions with error handling should return true if they succeeded, and false otherwise
 
@@ -129,9 +129,3 @@ else {
 ```
 
 But if the functions are supposed to return something, return null if it fails
-
-Use `const char*` for strings, conveniently UTF-8 supports comes (mostly) for free
-
-Use `core/core.h` numbers instead of `stdint.h`, they're just aliases to `stdint.h`
-
-Use `#pragma once`.

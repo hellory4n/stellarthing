@@ -1,0 +1,3 @@
+[submodule "libtrippin"]
+	path = subprojects/libtrippin
+	url = https://github.com/hellory4n/libtrippin.git
