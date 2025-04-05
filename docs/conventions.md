@@ -116,16 +116,25 @@ Functions with error handling should return true if they succeeded, and false ot
 ```c
 bool function_that_busts()
 {
-    st_log("Oh look, function's busted.");
+    tr_log(TR_LOG_INFO, "Oh look, function's busted.");
     return false;
 }
 
 if (!function_that_busts()) {
-    st_log("the function busted :(");
+    tr_log(TR_LOG_INFO, "the function busted :(");
 }
 else {
-    st_log("yippeee");
+    tr_log(TR_LOG_INFO, "yippeee");
 }
 ```
 
 But if the functions are supposed to return something, return null if it fails
+
+How you're supposed to use the folders:
+- `assets/`: things that aren't code
+- `core/`: functionality on top of raylib/whatever
+- `docs`: documentation no shit
+- `entity/`: anything that exists in the game world
+- `generation/`: procedural generation and stuff
+- `player/`: anything the player interacts with directly (so the game's ui goes here too)
+- `vendor/`: stolen crap (this is where single header libraries go)

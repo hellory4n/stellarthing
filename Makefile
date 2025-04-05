@@ -1,5 +1,6 @@
 CC = clang
-CFLAGS = -std=c99 -Wall -Wextra -I. -Ivendor/libtrippin -Ivendor/raylib/include
+CFLAGS = -std=c99 -Wall -Wextra -Wpedantic -Wshadow -fno-strict-aliasing \
+         -I. -Ivendor/libtrippin -Ivendor/raylib/include
 LDFLAGS =
 
 # put the bloody files here
