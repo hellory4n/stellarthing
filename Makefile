@@ -8,7 +8,9 @@ SRCS = main.c \
     vendor/libtrippin/libtrippin.c \
     vendor/stb_ds.c \
     vendor/rlFPCamera.c \
-    vendor/FastNoiseLite.c
+    vendor/FastNoiseLite.c \
+    player/control/player_controller.c \
+    core/graphics.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -34,6 +36,8 @@ endif
 # lmao
 ifeq ($(build),debug)
     CFLAGS += -g -fsanitize=address -DDEBUG
+else ifeq ($(build),noasan)
+    CFLAGS += -g -DDEBUG
 else
     CFLAGS += -O2 -DRELEASE
 endif
