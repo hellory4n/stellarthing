@@ -6,6 +6,8 @@ Space game.
 
 ## Building
 
+Make sure you cloned with `--recursive`
+
 ### Linux
 
 Make sure you have clang and make

@@ -4,7 +4,10 @@ LDFLAGS =
 
 # put the bloody files here
 SRCS = main.c \
-    vendor/libtrippin/libtrippin.c
+    vendor/libtrippin/libtrippin.c \
+    vendor/stb_ds.c \
+    vendor/rlFPCamera.c \
+    vendor/FastNoiseLite.c
 
 OBJS = $(SRCS:.c=.o)
 
