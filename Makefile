@@ -42,7 +42,6 @@ else
     CFLAGS += -O2 -DRELEASE
 endif
 
-# link raylib
 ifeq ($(OS),windows)
     # -Wl,--subsystem,windows hides the console window
     LDFLAGS += -Lvendor/raylib/lib/windows -lraylib -lopengl32 -lgdi32 -lwinmm -lcomdlg32 -lole32 -Wl,--subsystem,windows,-rpath=.
@@ -54,6 +53,11 @@ all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+    ifeq ($(OS),windows)
+    cp vendor/raylib/lib/windows/raylib.dll raylib.dll
+    else
+    cp vendor/raylib/lib/linux/libraylib.so.5.5.0 libraylib.so.550
+    endif
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
