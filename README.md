@@ -27,12 +27,22 @@ sudo pacman -S alsa-lib mesa libx11 libxrandr libxi libxcursor libxinerama
 
 Run `make` from the project folder
 
+You can also use `make run` and the options `build=debug` and `build=debugasan` (which enables AddressSanitizer),
+so for example `make run build=debugasan`
+
 Now you have the executable (`stellarthing`) on the project folder
 
 Please note the C/C++ VS Code extension is dogwater, instead use clangd and then run
 `bear -- make` (you may have to install bear) so everything works properly
 
-I don't know how to setup cross-compilation (linux to windows/mac), for Windows just compile from wine, and I don't even know if it would work on Mac
+### Cross compiling
+
+For windows you need `mingw64-gcc` or the equivalent in your distro
+
+Then run `make platform=windows`
+
+I tried to setup cross-compiling to macOS a while ago but everything died and suffered and experienced
+pain and suffering and misery
 
 ### Windows
 
@@ -47,3 +57,10 @@ Go to the project folder (if you don't speak terminal it's `cd [project folder]`
 Run `make`
 
 Now you have the executable (`stellarthing.exe`) on the project folder
+
+### Releasing
+
+These are the files/directories you have to include for a released build to work:
+- `assets/`
+- `libraylib.dll` or `raylib.dll`
+- `stellarthing` or `stellarthing.exe`
