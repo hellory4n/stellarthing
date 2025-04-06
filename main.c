@@ -1,10 +1,39 @@
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
+#include <libtrippin.h>
 #include "core/core.h"
-#include "core/graphics.h"
-#include "libtrippin.h"
 #include "player/control/player_controller.h"
-#include "raylib.h"
+
+// custom allocators :)
+// graphics.h includes raylib
+// TODO: could be better
+static TrArena raylib_arena;
+// static makes it complain it's not used even though it is, just in a macro
+void* __rl_arena_realloc(void* ptr, size_t size)
+{
+	if (ptr == NULL) {
+		return tr_arena_alloc(raylib_arena, size);
+	}
+
+	if (size == 0) {
+		return NULL;
+	}
+
+	void* new_ptr = tr_arena_alloc(raylib_arena, size);
+	if (!new_ptr) return NULL;
+
+	memcpy(new_ptr, ptr, size);
+	return new_ptr;
+}
+#define RL_MALLOC(sz)       tr_arena_alloc(raylib_arena, sz)
+#define RL_CALLOC(n,sz)     tr_arena_alloc(raylib_arena, n * sz)
+#define RL_REALLOC(ptr,sz)  rl_arena_realloc(ptr, sz)
+// you can't free part of an arena
+#define RL_FREE(ptr)
+
+#include "core/graphics.h"
+#include <raylib.h>
 
 static void raylib_log_callback(int32_t level, const char* text, va_list args)
 {
@@ -49,6 +78,7 @@ static void game_free(void)
 int main(void) {
 	tr_init("log.txt");
 	tr_log(TR_LOG_INFO, "Stellarthing %s", ST_VERSION);
+	raylib_arena = tr_arena_new(TR_MB(1));
 
 	SetTraceLogCallback(&raylib_log_callback);
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI);
@@ -74,6 +104,7 @@ int main(void) {
 	game_free();
 
 	CloseWindow();
+	tr_arena_free(raylib_arena);
 	tr_free();
 	return 0;
 }

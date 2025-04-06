@@ -45,9 +45,9 @@ endif
 # link raylib
 ifeq ($(OS),windows)
     # -Wl,--subsystem,windows hides the console window
-    LDFLAGS += -Lraylib/windows -lraylib -lopengl32 -lgdi32 -lwinmm -lcomdlg32 -lole32 -Wl,--subsystem,windows
+    LDFLAGS += -Lvendor/raylib/lib/windows -lraylib -lopengl32 -lgdi32 -lwinmm -lcomdlg32 -lole32 -Wl,--subsystem,windows,-rpath=.
 else ifeq ($(OS),linux)
-    LDFLAGS += -Lraylib/linux -lraylib -lGL -lm -lpthread -ldl -lrt
+    LDFLAGS += -Lvendor/raylib/lib/linux -lraylib -lGL -lm -lpthread -ldl -lrt -Wl,-rpath=.
 endif
 
 all: $(TARGET)
@@ -59,7 +59,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET) log.txt
 
 run: $(TARGET)
 	./$(TARGET)
