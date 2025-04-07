@@ -7,7 +7,7 @@
 #define ST_MAX_3D_OBJECTS 1024
 
 #define ST_2D_RENDER_WIDTH 1280
-#define ST_2D_RENDER_HEIGHT 1280
+#define ST_2D_RENDER_HEIGHT 720
 
 // so 1, 1, 1 is actually 16 voxels :D
 #define ST_VOXEL_SIZE 16

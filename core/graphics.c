@@ -31,22 +31,44 @@ void graphics_init(void)
 
 	Vector4 ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
 	SetShaderValue(light_shader, GetShaderLocation(light_shader, "ambient"), &ambient, SHADER_UNIFORM_VEC4);
+
+	tr_log(TR_LOG_INFO, "initialized graphics");
 }
 
 void graphics_free(void)
 {
 	tr_arena_free(arenadeez);
+	UnloadShader(light_shader);
 	UnloadRenderTexture(render_target);
+
+	tr_log(TR_LOG_INFO, "deinitialized graphics");
 }
 
 void graphics_begin_2d(void)
 {
 	BeginTextureMode(render_target);
+	ClearBackground(BLANK);
 }
 
 void graphics_end_2d(void)
 {
 	EndTextureMode();
+
+	double scale = fmin(
+		GetRenderWidth() / (double)ST_2D_RENDER_WIDTH,
+		GetRenderHeight() / (double)ST_2D_RENDER_HEIGHT
+	);
+	double x = (GetRenderWidth() - ST_2D_RENDER_WIDTH * scale) * 0.5;
+	double y = (GetRenderHeight() - ST_2D_RENDER_HEIGHT * scale) * 0.5;
+	double w = ST_2D_RENDER_WIDTH * scale;
+	double h = ST_2D_RENDER_HEIGHT * scale;
+
+	DrawTexturePro(
+		render_target.texture,
+		(Rectangle){0, 0, render_target.texture.width, -render_target.texture.height},
+		(Rectangle){x, y, w, h},
+		(Vector2){0, 0}, 0, WHITE
+	);
 }
 
 void graphics_set_camera(Camera3D cam)

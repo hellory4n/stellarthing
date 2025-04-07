@@ -4,9 +4,10 @@
 #include "core/graphics.h"
 #include "libtrippin.h"
 
-rlFPCamera cam;
-Model model;
-bool paused;
+static rlFPCamera cam;
+static Model model;
+static bool paused;
+static bool ignore_input;
 
 void player_controller_new(void)
 {
@@ -33,12 +34,14 @@ void player_controller_new(void)
 	// sprint
 	cam.ControlsKeys[10] = KEY_LEFT_CONTROL;
 
-	tr_log(TR_LOG_INFO, "init player controller");
+	tr_log(TR_LOG_INFO, "initialized player controller");
 }
 
 void player_controller_free(void)
 {
 	UnloadModel(model);
+
+	tr_log(TR_LOG_INFO, "deinitialized player controller");
 }
 
 void player_controller_update(double _)
@@ -47,7 +50,7 @@ void player_controller_update(double _)
 		paused = !paused;
 	}
 
-	if (!paused) {
+	if (!paused && !ignore_input) {
 		rlFPCameraUpdate(&cam);
 
 		Camera3D rlcam = cam.ViewCamera;
@@ -57,11 +60,25 @@ void player_controller_update(double _)
 		// rlfpcamera doesn't give the cursor back
 		EnableCursor();
 
-		TrColor sigma = tr_hex_rgba(0x00000077);
-		DrawRectangle(0, 0, ST_2D_RENDER_WIDTH, ST_2D_RENDER_HEIGHT, *(Color*)(&sigma));
+		// just ignore_input
+		// player runs after UI crap so it would draw that after the crap
+		// TODO make a decent pause menu
+		if (paused) {
+			TrColor sigma = tr_hex_rgba(0x00000077);
+			DrawRectangle(0, 0, ST_2D_RENDER_WIDTH, ST_2D_RENDER_HEIGHT,
+				*(Color*)(&sigma));
+		}
 	}
 
 	if (!IsWindowFocused()) {
 		EnableCursor();
 	}
+
+	// it's supposed to reset every frame :)
+	ignore_input = false;
+}
+
+void player_controller_ignore_input(void)
+{
+	ignore_input = true;
 }

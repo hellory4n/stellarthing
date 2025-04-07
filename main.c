@@ -6,6 +6,7 @@
 #include "core/core.h"
 #include "core/graphics.h"
 #include "player/control/player_controller.h"
+#include "player/debug/console.h"
 
 static void raylib_log_callback(int32_t level, const char* text, va_list args)
 {
@@ -22,7 +23,7 @@ static void raylib_log_callback(int32_t level, const char* text, va_list args)
 		case LOG_FATAL:
 			levelma = TR_LOG_ERROR;
 			break;
-		
+
 		// raylib shows a comical amount of logs
 		// its useful to filter that out and just make it gray
 		default: levelma = TR_LOG_LIB_INFO; break;
@@ -39,6 +40,9 @@ static void game_init(void)
 
 static void game_update(double dt)
 {
+	// ui comes before the player controller
+	console_update();
+
 	player_controller_update(dt);
 }
 
@@ -53,23 +57,25 @@ int main(void) {
 
 	SetTraceLogCallback(&raylib_log_callback);
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_RESIZABLE | FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI);
+	InitWindow(1280, 720, "stellarthing");
 	SetExitKey(KEY_NULL);
-	InitWindow(800, 450, "stellarthing");
 
 	graphics_init();
+	console_init();
 
 	game_init();
 
 	while (!WindowShouldClose()) {
 		BeginDrawing();
 			ClearBackground(BLACK);
+			graphics_draw_all_3d_objects();
 			graphics_begin_2d();
 				game_update(GetFrameTime());
 			graphics_end_2d();
-			graphics_draw_all_3d_objects();
 		EndDrawing();
 	}
 
+	console_free();
 	graphics_free();
 
 	game_free();

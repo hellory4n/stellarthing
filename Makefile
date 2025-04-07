@@ -10,7 +10,8 @@ SRCS = main.c \
     vendor/rlFPCamera.c \
     vendor/FastNoiseLite.c \
     player/control/player_controller.c \
-    core/graphics.c
+    core/graphics.c \
+    player/debug/console.c
 
 OBJS = $(SRCS:.c=.o)
 
