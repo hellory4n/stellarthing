@@ -8,6 +8,8 @@
 #include "player/control/player_controller.h"
 #include "player/debug/console.h"
 
+static TrArena player_arena;
+
 static void raylib_log_callback(int32_t level, const char* text, va_list args)
 {
 	const size_t buffer_size = 256;
@@ -35,6 +37,9 @@ static void raylib_log_callback(int32_t level, const char* text, va_list args)
 
 static void game_init(void)
 {
+	player_arena = tr_arena_new(TR_MB(1));
+	console_init(player_arena);
+
 	player_controller_new();
 }
 
@@ -49,6 +54,10 @@ static void game_update(double dt)
 static void game_free(void)
 {
 	player_controller_free();
+
+	console_free();
+
+	tr_arena_free(player_arena);
 }
 
 int main(void) {
@@ -61,7 +70,6 @@ int main(void) {
 	SetExitKey(KEY_NULL);
 
 	graphics_init();
-	console_init();
 
 	game_init();
 

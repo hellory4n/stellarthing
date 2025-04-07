@@ -8,6 +8,7 @@ static rlFPCamera cam;
 static Model model;
 static bool paused;
 static bool ignore_input;
+static bool focused_last_frame;
 
 void player_controller_new(void)
 {
@@ -50,6 +51,9 @@ void player_controller_update(double _)
 		paused = !paused;
 	}
 
+	// TODO switching focus is janky as fuck
+	// TODO rewrite in rust zig jug
+
 	if (!paused && !ignore_input) {
 		rlFPCameraUpdate(&cam);
 
@@ -57,7 +61,6 @@ void player_controller_update(double _)
 		graphics_set_camera(rlcam);
 	}
 	else {
-		// rlfpcamera doesn't give the cursor back
 		EnableCursor();
 
 		// just ignore_input
@@ -70,12 +73,13 @@ void player_controller_update(double _)
 		}
 	}
 
-	if (!IsWindowFocused()) {
+	if (!IsWindowFocused() && focused_last_frame) {
 		EnableCursor();
 	}
 
 	// it's supposed to reset every frame :)
 	ignore_input = false;
+	focused_last_frame = IsWindowFocused();
 }
 
 void player_controller_ignore_input(void)
