@@ -223,7 +223,7 @@ typedef struct fnl_state
  * Creates a noise state with default values.
  * @param seed Optionally set the state seed.
  */
-fnl_state fnlCreateState();
+fnl_state fnlCreateState(void);
 
 /**
  * 2D noise at given position using the state settings
@@ -2336,7 +2336,7 @@ static void _fnlSingleDomainWarpOpenSimplex2Gradient(int seed, float warpAmp, fl
 // Public API
 // ====================
 
-fnl_state fnlCreateState()
+fnl_state fnlCreateState(void)
 {
     fnl_state newState;
     newState.seed = 1337;

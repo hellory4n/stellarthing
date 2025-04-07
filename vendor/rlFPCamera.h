@@ -152,7 +152,7 @@ RLAPI void rlFPCameraUpdate(rlFPCamera* camera);
 RLAPI void rlFPCameraBeginMode3D(rlFPCamera* camera);
 
 // end drawing with the camera
-RLAPI void rlFPCameraEndMode3D();
+RLAPI void rlFPCameraEndMode3D(void);
 
 
 #endif //FP_CAMERA_H

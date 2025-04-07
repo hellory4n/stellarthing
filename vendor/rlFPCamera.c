@@ -301,7 +301,7 @@ void rlFPCameraBeginMode3D(rlFPCamera* camera)
     SetupCamera(camera, aspect);
 }
 
-void rlFPCameraEndMode3D()
+void rlFPCameraEndMode3D(void)
 {
     EndMode3D();
 }

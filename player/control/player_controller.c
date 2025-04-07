@@ -19,10 +19,10 @@ void player_controller_free(void)
 void player_controller_update(double _)
 {
 	graphics_set_camera((Camera3D){
-		.position = (Vector3){0, 2, -5},
+		.position = (Vector3){0, 1, -2},
 		.up = (Vector3){0, 1, 0},
 		.fovy = 90,
-		.target = (Vector3){1, 0.5, -1},
+		.target = (Vector3){-11, 0.5, 1},
 		.projection = CAMERA_PERSPECTIVE,
 	});
 	graphics_draw_3d_obj((Object3D){
